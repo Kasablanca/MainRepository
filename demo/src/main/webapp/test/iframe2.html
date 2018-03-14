@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>IFRAME TEST</title>
+</head>
+<body>
+<b>Hello IFRAME2</b>
+</body>
+<script>
+window.onload = function (){
+	parent.flag = 1;
+	console.log(parent.window.flag);
+}
+</script>
+</html>

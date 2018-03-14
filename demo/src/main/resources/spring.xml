@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"  
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd ">
+	
+	<context:component-scan base-package="cn.lm.service.impl,cn.lm.ws,cn.lm.jms,cn.lm.other,cn.lm.aspect" />
+	
+	<context:property-placeholder location="classpath:config.home.properties" />
+	
+	<import resource="spring-redis.xml"/>
+	<!-- <import resource="spring-activemq.xml"/> -->
+
+	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter" />
+	
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.db_user}" />
+		<property name="password" value="${db.password}" />
+		<property name="maxActive" value="20" />
+		<property name="filters" value="stat,wall" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="log-filter" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="typeAliasesPackage" value="cn.lm.model" />
+	</bean>
+	
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="modify*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="load*" read-only="true" />
+			<tx:method name="query*" read-only="true" />
+			<tx:method name="select*" read-only="true" />
+			<tx:method name="*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:aspectj-autoproxy />
+	
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="transactionPointcut" expression="execution(* cn.lm.service.impl.*Impl.*(..))" />
+		<aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
+	</aop:config>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.lm.mapper"></property>
+	</bean>
+<!-- 
+	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+		<property name="dataSource" ref="dataSource" />
+		<property name="transactionManager" ref="txManager" />
+		<property name="databaseSchemaUpdate" value="true" />
+		<property name="mailServerHost" value="localhost" />
+		<property name="mailServerPort" value="5025" />
+		<property name="jobExecutorActivate" value="false" />
+	</bean>
+
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+	</bean>
+
+	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
+	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+	<bean id="formService" factory-bean="processEngine" factory-method="getFormService" />
+	<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
+	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+	<bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" /> -->
+	
+	<bean class="org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter">
+		<property name="baseAddress" value="http://localhost:8080/" />
+	</bean>
+	
+<!-- 
+	<bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+		<property name="serviceName" value="AccountService" />
+		<property name="service" ref="accountServiceImpl" />
+		<property name="serviceInterface" value="cn.lm.service.AccountService" />
+		<property name="registryPort" value="1199" />
+	</bean> -->
+	
+<!-- 
+	<bean id="defaultTaskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5" />
+		<property name="maxPoolSize" value="10" />
+		<property name="queueCapacity" value="25" />
+	</bean>
+	
+	<bean id="defaultTaskScheduler" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
+		<property name="poolSize" value="20" />
+		<property name="awaitTerminationSeconds" value="30" />
+	</bean>
+	
+	<task:scheduled-tasks scheduler="" >
+		<task:scheduled ref="" method="" cron="" fixed-delay="" fixed-rate="" initial-delay="" trigger="" />
+		<task:scheduled ref="" method="" cron="" fixed-delay="" fixed-rate="" initial-delay="" trigger="" />
+		<task:scheduled ref="" method="" cron="" fixed-delay="" fixed-rate="" initial-delay="" trigger="" />
+	</task:scheduled-tasks>
+	
+	<bean id="taskExecutorDemo" class="cn.lm.other.TaskExecutorDemo">
+		<constructor-arg ref="defaultTaskExecutor" />
+	</bean> -->
+	
+	<task:annotation-driven executor="defaultTaskExecutor" scheduler="defaultTaskScheduler" />
+	
+	<task:executor id="defaultTaskExecutor" keep-alive="60" pool-size="50" queue-capacity="100" rejection-policy="CALLER_RUNS" />
+	
+	<task:scheduler id="defaultTaskScheduler" pool-size="50" />
+	
+	
+	
+</beans>
