@@ -54,7 +54,10 @@ td {
 		</tfoot>
 	</table>
 </div>
+<button id="test">测试</button>
 <script src="utils.js"></script>
+<script src="jquery-1.11.0.min.js"></script>
+<script src="index.js"></script>
 <script>
 window.onload = function (){
 	
