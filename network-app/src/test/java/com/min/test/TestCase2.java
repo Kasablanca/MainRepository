@@ -11,7 +11,7 @@ public class TestCase2 {
 	}
 	
 	public static void main(String[] args) {
-		ITest target = new ITest() {
+		final ITest target = new ITest() {
 			@Override
 			public void print() {
 				System.out.println("Hello");
