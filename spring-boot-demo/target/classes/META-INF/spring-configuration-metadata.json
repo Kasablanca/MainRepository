@@ -1,0 +1,27 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.lee.model.BookBean",
+      "name": "book",
+      "type": "com.lee.model.BookBean"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.lee.model.BookBean",
+      "name": "book.author",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.lee.model.BookBean",
+      "name": "book.name",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.lee.model.BookBean",
+      "name": "book.price",
+      "type": "java.lang.String"
+    }
+  ]
+}
