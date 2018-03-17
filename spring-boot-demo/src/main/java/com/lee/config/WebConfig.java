@@ -1,16 +1,18 @@
 package com.lee.config;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -18,9 +20,6 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.lee.filter.TimeFilter;
 import com.lee.interceptor.TimeInterceptor;
 import com.lee.listener.ListenerTest;
@@ -34,17 +33,23 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfi
 	private TimeInterceptor timeInterceptor;
 
 	@Bean
-	public HttpMessageConverters fastJsonHttpMessageConverters() {
-		FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
+	public HttpMessageConverter<String> responseBodyConverter() {
+		StringHttpMessageConverter converter = new StringHttpMessageConverter(
+				Charset.forName("UTF-8"));
+		return converter;
+	}
 
-		FastJsonConfig fastJsonConfig = new FastJsonConfig();
-		fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
+	@Override
+	public void configureMessageConverters(
+			List<HttpMessageConverter<?>> converters) {
+		super.configureMessageConverters(converters);
+		converters.add(responseBodyConverter());
+	}
 
-		fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
-
-		HttpMessageConverter<?> converter = fastJsonHttpMessageConverter;
-
-		return new HttpMessageConverters(converter);
+	@Override
+	public void configureContentNegotiation(
+			ContentNegotiationConfigurer configurer) {
+		configurer.favorPathExtension(false);
 	}
 
 	@Bean
@@ -83,8 +88,8 @@ public class WebConfig extends WebMvcConfigurerAdapter implements WebSocketConfi
 
 	@Bean
 	public WebSocketHandler webSocketServer() {  
-        return new WebSocketServer();  
-    } 
+		return new WebSocketServer();  
+	} 
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {

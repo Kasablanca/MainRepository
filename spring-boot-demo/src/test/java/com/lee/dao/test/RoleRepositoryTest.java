@@ -27,7 +27,7 @@ public class RoleRepositoryTest {
     
     @Test
     public void testFindOne() {
-        Role role = this.roleRepository.findOne(1);
+        Role role = this.roleRepository.getOne(1);
         System.out.println(role);
     }
     
