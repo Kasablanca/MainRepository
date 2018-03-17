@@ -3,7 +3,7 @@
 `integer`
 ~~text~~
 *text*
-![美女](http://www.xiazaizhijia.com/bizhi/69077.html)
+![美女](http://localhost:8080/img/timg.jpg)
   * 中国
   * 美国
   * 俄国
