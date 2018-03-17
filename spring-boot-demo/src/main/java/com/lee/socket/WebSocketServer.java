@@ -6,13 +6,16 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.websocket.server.ServerEndpoint;
+
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-//@ServerEndpoint(value = "/webSocketServer/{userName}")
-//@Component
+@ServerEndpoint(value = "/webSocketServer/{userName}")
+@Component
 public class WebSocketServer extends TextWebSocketHandler {
 
 	private static final Map<WebSocketSession, String> connections = new ConcurrentHashMap<>();
