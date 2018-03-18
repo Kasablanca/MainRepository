@@ -5,6 +5,11 @@
       "sourceType": "com.lee.model.BookBean",
       "name": "book",
       "type": "com.lee.model.BookBean"
+    },
+    {
+      "sourceType": "com.lee.model.Config",
+      "name": "my",
+      "type": "com.lee.model.Config"
     }
   ],
   "properties": [
@@ -22,6 +27,11 @@
       "sourceType": "com.lee.model.BookBean",
       "name": "book.price",
       "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.lee.model.Config",
+      "name": "my.servers",
+      "type": "java.util.List<java.lang.String>"
     }
   ]
 }
