@@ -59,7 +59,7 @@ import cn.lm.utils.ParamValidateUtil;
 public class TestCase {
 	
 	public static void main(String[] args) throws Exception {
-		
+		// hello world!
 	}
 	
 	public static void getTreeTest() throws IOException {
