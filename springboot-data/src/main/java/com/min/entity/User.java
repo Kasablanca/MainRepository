@@ -2,6 +2,8 @@ package com.min.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import java.util.Date;
 
 
@@ -23,6 +25,7 @@ public class User implements Serializable {
 
 	private String password;
 
+	@NotNull
 	private String username;
 
 	public User() {
