@@ -26,4 +26,4 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-mainClassName = Application
+mainClassName = 'com.min.Application'
