@@ -16,7 +16,6 @@ repositories {
 dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-web'
 	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-	compile 'org.springframework.boot:spring-boot-starter-security'
 	compile 'org.springframework.boot:spring-boot-starter-aop'
 	compile 'org.springframework.boot:spring-boot-starter-logging'
 	compile 'org.springframework.boot:spring-boot-starter-test'
@@ -26,4 +25,4 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-mainClassName = Application
+mainClassName = 'com.min.Application'
