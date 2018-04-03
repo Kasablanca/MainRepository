@@ -25,4 +25,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+<<<<<<< HEAD
 mainClassName = 'com.min.Application'
+=======
+mainClassName = 'com.min.Application'
+>>>>>>> branch 'master' of git@github.com:Kasablanca/MainRepository.git
