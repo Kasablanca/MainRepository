@@ -1,0 +1,225 @@
+package com.min.entity;
+
+import java.util.Date;
+
+public class Meeting {
+    private Integer meetingId;
+
+    private Integer verNo;
+
+    private String addAcc;
+
+    private Date addTime;
+
+    private String updAcc;
+
+    private Date updTime;
+
+    private String meetingNo;
+
+    private String meetingName;
+
+    private String meetingAddress;
+
+    private Integer meetingDuration;
+
+    private String userId;
+
+    private Integer expectedJoinNumber;
+
+    private Integer actualJoinNumber;
+
+    private Date expectedStartTime;
+
+    private Date actualStartTime;
+
+    private Date expireTime;
+
+    private String resourceUrl;
+
+    private String remark;
+
+    private Byte status;
+
+    private Byte roomStatus;
+
+    private Byte useFlag;
+
+    private Byte openFlag;
+
+    public Integer getMeetingId() {
+        return meetingId;
+    }
+
+    public void setMeetingId(Integer meetingId) {
+        this.meetingId = meetingId;
+    }
+
+    public Integer getVerNo() {
+        return verNo;
+    }
+
+    public void setVerNo(Integer verNo) {
+        this.verNo = verNo;
+    }
+
+    public String getAddAcc() {
+        return addAcc;
+    }
+
+    public void setAddAcc(String addAcc) {
+        this.addAcc = addAcc == null ? null : addAcc.trim();
+    }
+
+    public Date getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Date addTime) {
+        this.addTime = addTime;
+    }
+
+    public String getUpdAcc() {
+        return updAcc;
+    }
+
+    public void setUpdAcc(String updAcc) {
+        this.updAcc = updAcc == null ? null : updAcc.trim();
+    }
+
+    public Date getUpdTime() {
+        return updTime;
+    }
+
+    public void setUpdTime(Date updTime) {
+        this.updTime = updTime;
+    }
+
+    public String getMeetingNo() {
+        return meetingNo;
+    }
+
+    public void setMeetingNo(String meetingNo) {
+        this.meetingNo = meetingNo == null ? null : meetingNo.trim();
+    }
+
+    public String getMeetingName() {
+        return meetingName;
+    }
+
+    public void setMeetingName(String meetingName) {
+        this.meetingName = meetingName == null ? null : meetingName.trim();
+    }
+
+    public String getMeetingAddress() {
+        return meetingAddress;
+    }
+
+    public void setMeetingAddress(String meetingAddress) {
+        this.meetingAddress = meetingAddress == null ? null : meetingAddress.trim();
+    }
+
+    public Integer getMeetingDuration() {
+        return meetingDuration;
+    }
+
+    public void setMeetingDuration(Integer meetingDuration) {
+        this.meetingDuration = meetingDuration;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
+    }
+
+    public Integer getExpectedJoinNumber() {
+        return expectedJoinNumber;
+    }
+
+    public void setExpectedJoinNumber(Integer expectedJoinNumber) {
+        this.expectedJoinNumber = expectedJoinNumber;
+    }
+
+    public Integer getActualJoinNumber() {
+        return actualJoinNumber;
+    }
+
+    public void setActualJoinNumber(Integer actualJoinNumber) {
+        this.actualJoinNumber = actualJoinNumber;
+    }
+
+    public Date getExpectedStartTime() {
+        return expectedStartTime;
+    }
+
+    public void setExpectedStartTime(Date expectedStartTime) {
+        this.expectedStartTime = expectedStartTime;
+    }
+
+    public Date getActualStartTime() {
+        return actualStartTime;
+    }
+
+    public void setActualStartTime(Date actualStartTime) {
+        this.actualStartTime = actualStartTime;
+    }
+
+    public Date getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(Date expireTime) {
+        this.expireTime = expireTime;
+    }
+
+    public String getResourceUrl() {
+        return resourceUrl;
+    }
+
+    public void setResourceUrl(String resourceUrl) {
+        this.resourceUrl = resourceUrl == null ? null : resourceUrl.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    public Byte getRoomStatus() {
+        return roomStatus;
+    }
+
+    public void setRoomStatus(Byte roomStatus) {
+        this.roomStatus = roomStatus;
+    }
+
+    public Byte getUseFlag() {
+        return useFlag;
+    }
+
+    public void setUseFlag(Byte useFlag) {
+        this.useFlag = useFlag;
+    }
+
+    public Byte getOpenFlag() {
+        return openFlag;
+    }
+
+    public void setOpenFlag(Byte openFlag) {
+        this.openFlag = openFlag;
+    }
+}
