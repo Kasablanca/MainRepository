@@ -1,8 +1,16 @@
-package com.min.entity;
+package com.min.dao.entity;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="meeting_user")
 public class MeetingUser {
+	
+	@Id
     private String meetingUserId;
 
     private Integer verNo;

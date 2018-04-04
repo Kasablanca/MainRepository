@@ -1,8 +1,26 @@
-package com.min.entity;
+package com.min.dao.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="data_info")
 public class Data {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
     private Integer dataId;
 
     private Integer verNo;
@@ -25,6 +43,7 @@ public class Data {
 
     private Byte dataLevel;
 
+    @Column(name="user_id",insertable=false,updatable=false)
     private String userId;
 
     private Date uploadedTime;
@@ -44,6 +63,16 @@ public class Data {
     private String encryptAccount;
 
     private String encryptPwd;
+    
+    @OneToOne()
+    @JoinColumn(name="user_id")
+    private User user;
+    
+    @ManyToMany(mappedBy="datas")
+    private List<Meeting> meetings = new ArrayList<>();
+    
+    @OneToMany(mappedBy="data")
+    private List<MeetingData> meetingDatas = new ArrayList<>();
 
     public Integer getDataId() {
         return dataId;
@@ -212,4 +241,20 @@ public class Data {
     public void setEncryptPwd(String encryptPwd) {
         this.encryptPwd = encryptPwd == null ? null : encryptPwd.trim();
     }
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<Meeting> getMeetings() {
+		return meetings;
+	}
+
+	public void setMeetings(List<Meeting> meetings) {
+		this.meetings = meetings;
+	}
 }

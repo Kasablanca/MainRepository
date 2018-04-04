@@ -1,8 +1,25 @@
-package com.min.entity;
+package com.min.dao.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="meeting_info")
 public class Meeting {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
     private Integer meetingId;
 
     private Integer verNo;
@@ -46,6 +63,14 @@ public class Meeting {
     private Byte useFlag;
 
     private Byte openFlag;
+    
+    @ManyToMany()
+    @JoinTable(name="meeting_data_info",joinColumns= {@JoinColumn(name="meeting_id")},
+    	inverseJoinColumns= {@JoinColumn(name="data_id")})
+    private List<Data> datas = new ArrayList<>();
+    
+    @OneToMany(mappedBy="meeting")
+    private List<MeetingData> meetingDatas = new ArrayList<>();
 
     public Integer getMeetingId() {
         return meetingId;
@@ -222,4 +247,18 @@ public class Meeting {
     public void setOpenFlag(Byte openFlag) {
         this.openFlag = openFlag;
     }
+
+	public List<Data> getDatas() {
+		return datas;
+	}
+
+	public void setDatas(List<Data> datas) {
+		this.datas = datas;
+	}
+
+	@Override
+	public String toString() {
+		return "Meeting [meetingId=" + meetingId + ", meetingName=" + meetingName + ", expectedStartTime="
+				+ expectedStartTime + "]";
+	}
 }
