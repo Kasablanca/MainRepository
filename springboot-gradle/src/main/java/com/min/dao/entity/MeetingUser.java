@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="meeting_user")
+@Table(name="meeting_user_info")
 public class MeetingUser {
 	
 	@Id
