@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '1.5.9.RELEASE'
+	id 'org.springframework.boot' version '2.0.0.RELEASE'
 }
 
 apply plugin: 'java'
@@ -18,10 +18,20 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-aop'
 	compile 'org.springframework.boot:spring-boot-starter-logging'
 	compile 'org.springframework.boot:spring-boot-starter-test'
-	compile 'org.springframework.boot:spring-boot-devtools'
+	// compile 'org.springframework.boot:spring-boot-devtools'
 	compile 'mysql:mysql-connector-java'
 
     testCompile 'junit:junit:4.12'
 }
 
 mainClassName = 'com.min.Application'
+
+class GreetingTask extends DefaultTask {
+    @TaskAction
+    def greet() {
+        println 'hello from GreetingTask'
+    }
+}
+
+// Create a task using the task type
+task hello(type: GreetingTask)
