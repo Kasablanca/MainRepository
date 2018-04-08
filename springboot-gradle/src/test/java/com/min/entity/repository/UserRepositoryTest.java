@@ -65,7 +65,8 @@ public class UserRepositoryTest extends TestCase {
 		User user = new User();
 		user.setLinkMail("@qq.com");
 		
-		ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("linkMail", match -> match.startsWith());
+		ExampleMatcher matcher = ExampleMatcher.matching().withMatcher(
+				"linkMail", match -> match.startsWith());
 		Example<User> example = Example.of(user, matcher);
 		
 		Page<User> userList = userRepository.findAll(example, PageRequest.of(0,100));
@@ -76,17 +77,23 @@ public class UserRepositoryTest extends TestCase {
 	
 	@Test
 	public void query() throws JsonProcessingException {
-		List<User> userList = userRepository.findAllByLinkMailEndsWith(null);
+		//List<User> userList = userRepository.findByAndSort((byte) 0, JpaSort.unsafe("LENGTH(userNick)"));
+		List<User.UserProjection> userList = userRepository.findByUserSex((byte)1);
 		
-		ObjectMapper mapper = new ObjectMapper();
-		System.out.println(mapper.writeValueAsString(userList));
+		System.out.println(/*new ObjectMapper().writeValueAsString(userList)*/userList.get(0).getClass().getCanonicalName());
 	}
 	
 	//@Test
 	@Transactional
 	public void delete(){
 		userRepository.deleteAll();
-		
+	}
+	
+	//@Test
+	@Transactional
+	public void update() {
+		int count = userRepository.updateSex("46492b44-4dc8-4be3-874f-3e6d95068def", (byte) 1);
+		System.out.println(count);
 	}
 	
 }

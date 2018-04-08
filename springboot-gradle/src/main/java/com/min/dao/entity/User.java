@@ -150,4 +150,11 @@ public class User {
     public void setLinkQq(String linkQq) {
         this.linkQq = linkQq == null ? null : linkQq.trim();
     }
+    
+    public static interface UserProjection {
+    	String getUserId();
+    	String getUserNick();
+    	Integer getUserAge();
+    }
+    
 }

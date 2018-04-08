@@ -7,11 +7,11 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebMvc
 @Configuration
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addFormatters(FormatterRegistry registry) {
@@ -23,7 +23,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		        return new Date(Long.valueOf(source));
 			}
 		});
-		super.addFormatters(registry);
 	}
 	
 }
