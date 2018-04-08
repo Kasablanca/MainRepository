@@ -1,11 +1,9 @@
-package com.min.entity.repository;
+package com.min.dao.repository;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-
-import javax.transaction.Transactional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,18 +15,19 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.min.Application;
 import com.min.dao.entity.User;
-import com.min.dao.repository.UserRepository;
 import com.min.utils.RandomUtils;
 
 import junit.framework.TestCase;
 
-@Import(Application.class)
+@Transactional
 @SpringBootTest
+@Import(Application.class)
 @RunWith(SpringRunner.class)
 public class UserRepositoryTest extends TestCase {
 
@@ -75,7 +74,7 @@ public class UserRepositoryTest extends TestCase {
 		System.out.println(mapper.writeValueAsString(userList));
 	}
 	
-	@Test
+	//@Test
 	public void query() throws JsonProcessingException {
 		//List<User> userList = userRepository.findByAndSort((byte) 0, JpaSort.unsafe("LENGTH(userNick)"));
 		List<User.UserProjection> userList = userRepository.findByUserSex((byte)1);
@@ -83,14 +82,12 @@ public class UserRepositoryTest extends TestCase {
 		System.out.println(/*new ObjectMapper().writeValueAsString(userList)*/userList.get(0).getClass().getCanonicalName());
 	}
 	
-	//@Test
-	@Transactional
+	@Test
 	public void delete(){
 		userRepository.deleteAll();
 	}
 	
-	//@Test
-	@Transactional
+	//@Test	
 	public void update() {
 		int count = userRepository.updateSex("46492b44-4dc8-4be3-874f-3e6d95068def", (byte) 1);
 		System.out.println(count);

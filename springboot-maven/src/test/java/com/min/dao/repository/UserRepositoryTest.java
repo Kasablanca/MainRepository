@@ -1,4 +1,4 @@
-package com.min.entity.repository;
+package com.min.dao.repository;
 
 import java.util.Date;
 import java.util.List;
@@ -74,7 +74,7 @@ public class UserRepositoryTest extends TestCase {
 		System.out.println(mapper.writeValueAsString(userList));
 	}
 	
-	@Test
+	//@Test
 	public void query() throws JsonProcessingException {
 		//List<User> userList = userRepository.findByAndSort((byte) 0, JpaSort.unsafe("LENGTH(userNick)"));
 		List<User.UserProjection> userList = userRepository.findByUserSex((byte)1);
@@ -82,10 +82,11 @@ public class UserRepositoryTest extends TestCase {
 		System.out.println(/*new ObjectMapper().writeValueAsString(userList)*/userList.get(0).getClass().getCanonicalName());
 	}
 	
-	//@Test
+	@Test
 	@Transactional
 	public void delete(){
 		userRepository.deleteAll();
+		userRepository.flush();
 	}
 	
 	//@Test

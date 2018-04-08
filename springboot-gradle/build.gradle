@@ -5,6 +5,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'war'
 
 repositories {
     mavenLocal()
@@ -17,21 +18,14 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
 	compile 'org.springframework.boot:spring-boot-starter-aop'
 	compile 'org.springframework.boot:spring-boot-starter-logging'
+	compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	compile 'org.springframework.boot:spring-boot-starter-test'
-	// compile 'org.springframework.boot:spring-boot-devtools'
+	compile 'org.springframework.boot:spring-boot-devtools'
 	compile 'mysql:mysql-connector-java'
 
     testCompile 'junit:junit:4.12'
+    
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }
 
 mainClassName = 'com.min.Application'
-
-class GreetingTask extends DefaultTask {
-    @TaskAction
-    def greet() {
-        println 'hello from GreetingTask'
-    }
-}
-
-// Create a task using the task type
-task hello(type: GreetingTask)

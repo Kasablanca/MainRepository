@@ -1,9 +1,7 @@
-package com.min.entity.repository;
+package com.min.dao.repository;
 
 import java.util.Date;
 import java.util.UUID;
-
-import javax.transaction.Transactional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,14 +17,11 @@ import com.min.Application;
 import com.min.dao.entity.Data;
 import com.min.dao.entity.Meeting;
 import com.min.dao.entity.User;
-import com.min.dao.repository.DataRepository;
-import com.min.dao.repository.MeetingRepository;
-import com.min.dao.repository.UserRepository;
 
-@SpringBootTest
 @Transactional
-@RunWith(SpringRunner.class)
+@SpringBootTest
 @Import(Application.class)
+@RunWith(SpringRunner.class)
 public class TestCase {
 
 	@Autowired
@@ -121,7 +117,7 @@ public class TestCase {
 		System.out.println(mapper.writeValueAsString(data));
 	}
 	
-	@Test
+	//@Test
 	public void meetingRepositoryAdd() {
 		Meeting meeting = new Meeting();
 		meeting.setMeetingName(UUID.randomUUID().toString());
