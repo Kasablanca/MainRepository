@@ -35,6 +35,7 @@ public class UserRepositoryTest extends TestCase {
 	private UserRepository userRepository;
 	
 	//@Test
+	@Transactional
 	public void add() {
 		Date now = new Date();
 		
@@ -84,7 +85,7 @@ public class UserRepositoryTest extends TestCase {
 	
 	@Test
 	public void delete(){
-		userRepository.deleteAll();
+		userRepository.deleteAllInBatch();
 	}
 	
 	//@Test	
