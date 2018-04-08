@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd ">
+	
+	<context:component-scan base-package="cn.lm.service.impl"></context:component-scan>
+	<context:property-placeholder location="classpath:db.properties" />
+
+	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+		<property name="resultSetLogEnabled" value="false" />
+	</bean>
+	
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="url" value="${url}" />
+		<property name="username" value="${db_user}" />
+		<property name="password" value="${password}" />
+		<property name="maxActive" value="20" />
+		<property name="filters" value="stat,wall" />
+		<property name="proxyFilters">
+			<list>
+				<ref bean="log-filter" />
+			</list>
+		</property>
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="typeAliasesPackage" value="cn.lm.model" />
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageInterceptor">
+					<property name="properties">
+						<value>
+							helperDialect=mysql
+							reasonable=true
+							supportMethodsArguments=true
+							autoRuntimeDialect=true
+							rowBoundsWithCount=true
+							PageRowBounds=true
+							offsetAsPageNum=true
+							pageSizeZero=true
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:advice id="transactionAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="modify*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="load*" read-only="true" />
+			<tx:method name="query*" read-only="true" />
+			<tx:method name="select*" read-only="true" />
+			<tx:method name="*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+<!-- 	<context:spring-configured></context:spring-configured>
+	<tx:annotation-driven/>
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy> -->
+	
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="transactionPointcut" expression="execution(* cn.lm.service.impl.*Impl.*(..))" />
+		<aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" />
+		<!-- <aop:pointcut id="logPointcut" expression="execution(* cn.lm.service.impl.*Impl.*(..))" />
+		<aop:pointcut id="authorityPointcut" expression="execution(* cn.lm.service.impl.*Impl.*(..))" />
+		
+		<aop:aspect id="logAspect" order="1">
+			<aop:after method="" pointcut-ref="logPointcut"/>
+			<aop:after-returning method=""/>
+			<aop:after-throwing method=""/>
+			<aop:around method=""/>
+			<aop:before method=""/>
+			<aop:declare-parents types-matching="" implement-interface=""/>
+			<aop:pointcut expression="" id=""/>
+		</aop:aspect>
+		<aop:aspect id="authorityAspect" order="1">
+			<aop:after method="" pointcut-ref="authorityPointcut"/>
+			<aop:after-returning method="" returning=""/>
+			<aop:after-throwing method="" throwing=""/>
+			<aop:around method=""/>
+			<aop:before method=""/>
+			<aop:declare-parents types-matching="" implement-interface="" default-impl=""/>
+			<aop:pointcut expression="" id=""/>
+		</aop:aspect> -->
+	</aop:config>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.lm.mapper"></property>
+	</bean>
+	
+	<bean id="loveProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interfaces" value="cn.lm.service.Love"></property>
+		<property name="target" ref="userServiceImpl"></property>
+		<property name="interceptorNames" value="loveAdvice"></property>
+		<!-- <property name="proxyTargetClass" value="true"></property> -->
+	</bean>
+	
+	<!-- <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+		<property name="dataSource" ref="dataSource" />
+		<property name="transactionManager" ref="txManager" />
+		<property name="databaseSchemaUpdate" value="true" />
+		<property name="mailServerHost" value="localhost" />
+		<property name="mailServerPort" value="5025" />
+		<property name="jobExecutorActivate" value="false" />
+	</bean>
+
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+	</bean>
+
+	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
+	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+	<bean id="formService" factory-bean="processEngine" factory-method="getFormService" />
+	<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
+	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+	<bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" /> -->
+</beans>
