@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import javax.transaction.Transactional;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +20,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.min.Application;
 import com.min.dao.entity.User;
-import com.min.dao.repository.UserRepository;
 import com.min.utils.RandomUtils;
 
 import junit.framework.TestCase;
 
-@Import(Application.class)
+//@Transactional
 @SpringBootTest
+@Import(Application.class)
 @RunWith(SpringRunner.class)
 public class UserRepositoryTest extends TestCase {
 
 	@Autowired
 	private UserRepository userRepository;
 	
-	//@Test
+	@Test
 	public void add() {
 		Date now = new Date();
 		
@@ -65,7 +63,8 @@ public class UserRepositoryTest extends TestCase {
 		User user = new User();
 		user.setLinkMail("@qq.com");
 		
-		ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("linkMail", match -> match.startsWith());
+		ExampleMatcher matcher = ExampleMatcher.matching().withMatcher(
+				"linkMail", match -> match.startsWith());
 		Example<User> example = Example.of(user, matcher);
 		
 		Page<User> userList = userRepository.findAll(example, PageRequest.of(0,100));
@@ -82,15 +81,12 @@ public class UserRepositoryTest extends TestCase {
 		System.out.println(/*new ObjectMapper().writeValueAsString(userList)*/userList.get(0).getClass().getCanonicalName());
 	}
 	
-	@Test
-	@Transactional
+	//@Test
 	public void delete(){
-		userRepository.deleteAll();
-		userRepository.flush();
+		userRepository.deleteAllInBatch();
 	}
 	
-	//@Test
-	@Transactional
+	//@Test	
 	public void update() {
 		int count = userRepository.updateSex("46492b44-4dc8-4be3-874f-3e6d95068def", (byte) 1);
 		System.out.println(count);
