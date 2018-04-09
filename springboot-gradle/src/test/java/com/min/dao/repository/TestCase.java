@@ -1,15 +1,15 @@
 package com.min.dao.repository;
 
 import java.util.Date;
-import java.util.UUID;
+import java.util.Random;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +18,7 @@ import com.min.dao.entity.Data;
 import com.min.dao.entity.Meeting;
 import com.min.dao.entity.User;
 
-@Transactional
+//@Transactional
 @SpringBootTest
 @Import(Application.class)
 @RunWith(SpringRunner.class)
@@ -43,7 +43,7 @@ public class TestCase {
 		user.setVerNo(-1);
 		user.setAddAcc("addAcc");
 		user.setAddTime(new Date());
-		User newUser = userRepository.saveAndFlush(user);
+		/*User newUser = */userRepository.saveAndFlush(user);
 		
 		Data data = new Data();
 		data.setAddAcc("addAcc");
@@ -62,7 +62,7 @@ public class TestCase {
 		data.setUpdTime(new Date());
 		data.setUploadedTime(new Date());
 		data.setUseFlag((byte)-1);
-		data.setUser(newUser);
+		data.setUser(user);
 		//data.setUserId("userId2");
 		data.setVerNo(-1);
 		Data newData = dataRepository.saveAndFlush(data);
@@ -120,7 +120,8 @@ public class TestCase {
 	//@Test
 	public void meetingRepositoryAdd() {
 		Meeting meeting = new Meeting();
-		meeting.setMeetingName(UUID.randomUUID().toString());
+		meeting.setMeetingName(com.min.utils.RandomUtils.randomChineseName());
+		meeting.setUser(userRepository.findAll(PageRequest.of(new Random().nextInt((int) userRepository.count()), 1)).getContent().get(0));
 		
 		meetingRepository.saveAndFlush(meeting);
 	}

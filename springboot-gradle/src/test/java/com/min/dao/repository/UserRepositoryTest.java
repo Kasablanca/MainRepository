@@ -25,7 +25,7 @@ import com.min.utils.RandomUtils;
 
 import junit.framework.TestCase;
 
-@Transactional
+//@Transactional
 @SpringBootTest
 @Import(Application.class)
 @RunWith(SpringRunner.class)
@@ -34,8 +34,7 @@ public class UserRepositoryTest extends TestCase {
 	@Autowired
 	private UserRepository userRepository;
 	
-	//@Test
-	@Transactional
+	@Test
 	public void add() {
 		Date now = new Date();
 		
@@ -83,7 +82,7 @@ public class UserRepositoryTest extends TestCase {
 		System.out.println(/*new ObjectMapper().writeValueAsString(userList)*/userList.get(0).getClass().getCanonicalName());
 	}
 	
-	@Test
+	//@Test
 	public void delete(){
 		userRepository.deleteAllInBatch();
 	}

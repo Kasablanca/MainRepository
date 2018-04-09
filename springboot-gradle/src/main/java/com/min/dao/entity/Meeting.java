@@ -274,6 +274,22 @@ public class Meeting {
 		this.meetingUsers = meetingUsers;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<MeetingData> getMeetingDatas() {
+		return meetingDatas;
+	}
+
+	public void setMeetingDatas(List<MeetingData> meetingDatas) {
+		this.meetingDatas = meetingDatas;
+	}
+
 	@Override
 	public String toString() {
 		return "Meeting [meetingId=" + meetingId + ", meetingName=" + meetingName + ", expectedStartTime="
