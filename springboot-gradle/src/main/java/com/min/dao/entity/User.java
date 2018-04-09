@@ -10,6 +10,12 @@ import javax.persistence.Table;
 @Table(name="user_info")
 public class User {
 	
+	public static interface UserProjection {
+    	String getUserId();
+    	String getUserNick();
+    	Integer getUserAge();
+    }
+	
 	@Id
     private String userId;
 
@@ -150,11 +156,30 @@ public class User {
     public void setLinkQq(String linkQq) {
         this.linkQq = linkQq == null ? null : linkQq.trim();
     }
-    
-    public static interface UserProjection {
-    	String getUserId();
-    	String getUserNick();
-    	Integer getUserAge();
-    }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (userId == null) {
+			if (other.userId != null)
+				return false;
+		} else if (!userId.equals(other.userId))
+			return false;
+		return true;
+	}
     
 }
