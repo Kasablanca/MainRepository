@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,7 +19,7 @@ import javax.persistence.Table;
 public class Data {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer dataId;
 
     private Integer verNo;
@@ -42,9 +41,9 @@ public class Data {
     private Byte dataType;
 
     private Byte dataLevel;
-
+/*
     @Column(name="user_id",insertable=false,updatable=false)
-    private String userId;
+    private String userId;*/
 
     private Date uploadedTime;
 
@@ -64,7 +63,8 @@ public class Data {
 
     private String encryptPwd;
     
-    @OneToOne()
+    /**资料上传者*/
+    @ManyToOne(optional=false)
     @JoinColumn(name="user_id")
     private User user;
     
@@ -161,14 +161,14 @@ public class Data {
     public void setDataLevel(Byte dataLevel) {
         this.dataLevel = dataLevel;
     }
-
+/*
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId == null ? null : userId.trim();
-    }
+    }*/
 
     public Date getUploadedTime() {
         return uploadedTime;

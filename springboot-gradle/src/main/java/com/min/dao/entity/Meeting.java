@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -19,7 +20,7 @@ import javax.persistence.Table;
 public class Meeting {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer meetingId;
 
     private Integer verNo;
@@ -40,7 +41,7 @@ public class Meeting {
 
     private Integer meetingDuration;
 
-    private String userId;
+    //private String userId;
 
     private Integer expectedJoinNumber;
 
@@ -64,13 +65,22 @@ public class Meeting {
 
     private Byte openFlag;
     
-    @ManyToMany()
+    /**会议发起人*/
+    @ManyToOne(optional=false)
+    @JoinColumn(name="user_id")
+    private User user;
+    
+    /**会议资料*/
+    @ManyToMany
     @JoinTable(name="meeting_data_info",joinColumns= {@JoinColumn(name="meeting_id")},
     	inverseJoinColumns= {@JoinColumn(name="data_id")})
     private List<Data> datas = new ArrayList<>();
     
     @OneToMany(mappedBy="meeting")
     private List<MeetingData> meetingDatas = new ArrayList<>();
+    
+    @OneToMany(mappedBy="meeting")
+    private List<MeetingUser> meetingUsers = new ArrayList<>();
 
     public Integer getMeetingId() {
         return meetingId;
@@ -151,14 +161,14 @@ public class Meeting {
     public void setMeetingDuration(Integer meetingDuration) {
         this.meetingDuration = meetingDuration;
     }
-
+/*
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId == null ? null : userId.trim();
-    }
+    }*/
 
     public Integer getExpectedJoinNumber() {
         return expectedJoinNumber;
@@ -254,6 +264,14 @@ public class Meeting {
 
 	public void setDatas(List<Data> datas) {
 		this.datas = datas;
+	}
+
+	public List<MeetingUser> getMeetingUsers() {
+		return meetingUsers;
+	}
+
+	public void setMeetingUsers(List<MeetingUser> meetingUsers) {
+		this.meetingUsers = meetingUsers;
 	}
 
 	@Override

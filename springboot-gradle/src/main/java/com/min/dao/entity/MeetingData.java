@@ -2,9 +2,7 @@ package com.min.dao.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -26,18 +24,18 @@ public class MeetingData {
     private String updAcc;
 
     private Date updTime;
-
+/*
     @Column(name="user_id",insertable=false,updatable=false)
     private Integer meetingId;
 
     @Column(name="user_id",insertable=false,updatable=false)
-    private Integer dataId;
+    private Integer dataId;*/
     
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(optional=false)
     @JoinColumn(name="data_id")
     private Data data;
     
-    @ManyToOne(fetch=FetchType.EAGER)
+    @ManyToOne(optional=false)
     @JoinColumn(name="meeting_id")
     private Meeting meeting;
 
@@ -88,7 +86,7 @@ public class MeetingData {
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
     }
-
+/*
     public Integer getMeetingId() {
         return meetingId;
     }
@@ -103,7 +101,7 @@ public class MeetingData {
 
     public void setDataId(Integer dataId) {
         this.dataId = dataId;
-    }
+    }*/
 
 	public Data getData() {
 		return data;

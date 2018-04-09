@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,16 +24,24 @@ public class MeetingUser {
     private String updAcc;
 
     private Date updTime;
-
+/*
     private Integer meetingId;
 
-    private String userId;
+    private String userId;*/
 
     private Date firstEnterTime;
 
     private Date lastLeaveTime;
 
     private String remark;
+    
+    @ManyToOne(optional=false)
+    @JoinColumn(name="meeting_id")
+    private Meeting meeting;
+    
+    @ManyToOne(optional=false)
+    @JoinColumn(name="user_id")
+    private User user;
 
     public String getMeetingUserId() {
         return meetingUserId;
@@ -80,7 +90,7 @@ public class MeetingUser {
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
     }
-
+/*
     public Integer getMeetingId() {
         return meetingId;
     }
@@ -95,7 +105,7 @@ public class MeetingUser {
 
     public void setUserId(String userId) {
         this.userId = userId == null ? null : userId.trim();
-    }
+    }*/
 
     public Date getFirstEnterTime() {
         return firstEnterTime;
@@ -120,4 +130,20 @@ public class MeetingUser {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+	public Meeting getMeeting() {
+		return meeting;
+	}
+
+	public void setMeeting(Meeting meeting) {
+		this.meeting = meeting;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 }
