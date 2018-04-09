@@ -238,7 +238,7 @@ public class TestCase {
 	
 	@Test
 	public void query() throws JsonProcessingException {
-		Meeting meeting = meetingRepository.getOne(77);
+		Meeting meeting = meetingRepository.getOne(48);
 		ObjectMapper writer = new ObjectMapper();
 		writer.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 		System.out.println(writer.writeValueAsString(meeting));

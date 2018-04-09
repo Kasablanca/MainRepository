@@ -1,17 +1,18 @@
 package com.min.dao.entity;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +20,7 @@ import javax.persistence.Table;
 public class Meeting {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer meetingId;
 
     private Integer verNo;
@@ -40,7 +41,7 @@ public class Meeting {
 
     private Integer meetingDuration;
 
-    private String userId;
+    //private String userId;
 
     private Integer expectedJoinNumber;
 
@@ -64,13 +65,28 @@ public class Meeting {
 
     private Byte openFlag;
     
-    @ManyToMany()
+    /**会议发起人*/
+    @ManyToOne(optional=false)
+    @JoinColumn(name="user_id")
+    private User user;
+    
+    /**会议资料*/
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="meeting_data_info",joinColumns= {@JoinColumn(name="meeting_id")},
     	inverseJoinColumns= {@JoinColumn(name="data_id")})
-    private List<Data> datas = new ArrayList<>();
+    private Set<Data> datas = new HashSet<>();
     
+    /**参会人员*/
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name="meeting_user_info",joinColumns= {@JoinColumn(name="meeting_id")},
+    	inverseJoinColumns= {@JoinColumn(name="user_id")})
+    private Set<User> members = new HashSet<>();
+/*    
     @OneToMany(mappedBy="meeting")
     private List<MeetingData> meetingDatas = new ArrayList<>();
+    
+    @OneToMany(mappedBy="meeting")
+    private List<MeetingUser> meetingUsers = new ArrayList<>();*/
 
     public Integer getMeetingId() {
         return meetingId;
@@ -151,14 +167,14 @@ public class Meeting {
     public void setMeetingDuration(Integer meetingDuration) {
         this.meetingDuration = meetingDuration;
     }
-
+/*
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId == null ? null : userId.trim();
-    }
+    }*/
 
     public Integer getExpectedJoinNumber() {
         return expectedJoinNumber;
@@ -248,17 +264,68 @@ public class Meeting {
         this.openFlag = openFlag;
     }
 
-	public List<Data> getDatas() {
+	public Set<Data> getDatas() {
 		return datas;
 	}
 
-	public void setDatas(List<Data> datas) {
+	public void setDatas(Set<Data> datas) {
 		this.datas = datas;
+	}
+/*
+	public List<MeetingUser> getMeetingUsers() {
+		return meetingUsers;
+	}
+
+	public void setMeetingUsers(List<MeetingUser> meetingUsers) {
+		this.meetingUsers = meetingUsers;
+	}*/
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+/*
+	public List<MeetingData> getMeetingDatas() {
+		return meetingDatas;
+	}
+
+	public void setMeetingDatas(List<MeetingData> meetingDatas) {
+		this.meetingDatas = meetingDatas;
+	}*/
+
+	public Set<User> getMembers() {
+		return members;
+	}
+
+	public void setMembers(Set<User> members) {
+		this.members = members;
 	}
 
 	@Override
-	public String toString() {
-		return "Meeting [meetingId=" + meetingId + ", meetingName=" + meetingName + ", expectedStartTime="
-				+ expectedStartTime + "]";
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((meetingId == null) ? 0 : meetingId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Meeting other = (Meeting) obj;
+		if (meetingId == null) {
+			if (other.meetingId != null)
+				return false;
+		} else if (!meetingId.equals(other.meetingId))
+			return false;
+		return true;
 	}
 }
