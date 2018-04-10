@@ -22,6 +22,7 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-test'
 	compile 'org.springframework.boot:spring-boot-devtools'
 	compile 'mysql:mysql-connector-java'
+	compile 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.9.4'
 
     testCompile 'junit:junit:4.12'
     
