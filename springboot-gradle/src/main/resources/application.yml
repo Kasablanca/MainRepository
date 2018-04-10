@@ -11,8 +11,7 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: true
-logging:
-  level:
-    root: info
-  file: system.log
-  path: /log
+  profiles:
+    active:
+    - prod
+    - test
