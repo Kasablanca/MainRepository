@@ -10,3 +10,10 @@ spring:
   profiles:
     active:
     - home
+  security:
+    user:
+      name: limin
+      password: limin
+management:
+  endpoints:
+    enabled-by-default: true
