@@ -10,7 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
-@WebFilter(urlPatterns="/filter",description="default filter!")
+@WebFilter("/filter")
 public class DefaultFilter implements Filter {
 
 	@Override
