@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,8 @@ import com.min.dao.repository.MeetingRepository;
 @Service
 @Transactional
 public class MeetingService {
+	
+	private static final Logger logger = Logger.getLogger(MeetingService.class);
 
 	@Autowired
 	private MeetingRepository meetingRepository;
@@ -28,10 +31,12 @@ public class MeetingService {
 	}
 	
 	public Page<Meeting> findAll(Pageable pageable){
+		logger.debug("MeetingService Page<Meeting> findAll(Pageable pageable)");
 		return meetingRepository.findAll(pageable);
 	}
 	
 	public List<Meeting> findAll(Sort sort){
+		logger.debug("MeetingService List<Meeting> findAll(Sort sort)");
 		return meetingRepository.findAll(sort);
 	}
 

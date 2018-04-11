@@ -71,13 +71,13 @@ public class Meeting {
     private User user;
     
     /**会议资料*/
-    @ManyToMany(fetch=FetchType.LAZY)
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="meeting_data_info",joinColumns= {@JoinColumn(name="meeting_id")},
     	inverseJoinColumns= {@JoinColumn(name="data_id")})
     private Set<Data> datas = new HashSet<>();
     
     /**参会人员*/
-    @ManyToMany(fetch=FetchType.LAZY)
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="meeting_user_info",joinColumns= {@JoinColumn(name="meeting_id")},
     	inverseJoinColumns= {@JoinColumn(name="user_id")})
     private Set<User> members = new HashSet<>();

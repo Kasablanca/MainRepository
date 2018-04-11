@@ -13,6 +13,7 @@ public class Application extends SpringBootServletInitializer {
 		SpringApplication application = new SpringApplication(Application.class);
 		//application.setLogStartupInfo(false);
 		//application.setBannerMode(Mode.OFF);
+		//application.addListeners(new ApplicationPidFileWriter());
 		application.run(args);
 	}
 	
