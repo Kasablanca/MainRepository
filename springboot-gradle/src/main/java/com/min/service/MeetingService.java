@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ import com.min.dao.repository.MeetingRepository;
 @Transactional
 public class MeetingService {
 	
-	private static final Logger logger = Logger.getLogger(MeetingService.class);
+	private static final Logger logger = LoggerFactory.getLogger(MeetingService.class);
 
 	@Autowired
 	private MeetingRepository meetingRepository;
