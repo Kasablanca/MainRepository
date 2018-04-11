@@ -33,3 +33,5 @@ info:
     java: 
       source: 1.8
       target: 1.8
+logging:
+  file: system.log
