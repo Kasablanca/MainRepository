@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.min.dao.entity.Meeting;
 import com.min.service.MeetingService;
@@ -21,8 +23,8 @@ public class MeetingController {
 	private MeetingService meetingService;
 	
 	@RequestMapping("save")
-	public Meeting save(Meeting meeting) {
-		return meetingService.save(meeting);
+	public Meeting save(Meeting meeting, @RequestParam("files") MultipartFile[] files) {
+		return meetingService.save(meeting,files);
 	}
 	
 	@RequestMapping("findAll1")
