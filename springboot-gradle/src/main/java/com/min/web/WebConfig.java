@@ -43,4 +43,15 @@ public class WebConfig implements WebMvcConfigurer {
 		return objectMapper;
 	}
 	
+	@Bean
+	public MultipartResolver getMultipartResolver() {
+		MultipartResolver resolver = new MultipartResolver();
+		resolver.setDefaultEncoding("UTF-8");
+		resolver.setMaxInMemorySize(1024000);
+		resolver.setMaxUploadSize(-1);
+		resolver.setMaxUploadSizePerFile(-1);
+		
+		return resolver;
+	}
+	
 }

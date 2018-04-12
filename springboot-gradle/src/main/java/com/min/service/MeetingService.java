@@ -1,5 +1,7 @@
 package com.min.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -12,9 +14,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.min.dao.entity.Meeting;
 import com.min.dao.repository.MeetingRepository;
+import com.min.utils.IoUtils;
 
 @Service
 @Transactional
@@ -25,7 +29,17 @@ public class MeetingService {
 	@Autowired
 	private MeetingRepository meetingRepository;
 	
-	public Meeting save(Meeting meeting) {
+	public Meeting save(Meeting meeting, MultipartFile[] files) {
+		for(MultipartFile file: files) {
+			if(!file.isEmpty()) {
+				try {
+					IoUtils.copy(file.getInputStream(), new File(
+							"D:/Resource/springboot-gradle/"+file.getOriginalFilename()));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		if(meeting.getExpectedStartTime().compareTo(new Date()) < 0)
 			throw new IllegalArgumentException("会议开始时间不能小于当前时间！");
 		return meetingRepository.saveAndFlush(meeting);
