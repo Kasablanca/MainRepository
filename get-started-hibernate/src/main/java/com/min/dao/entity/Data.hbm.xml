@@ -1,0 +1,18 @@
+<?xml version="1.0"?>  
+<!DOCTYPE hibernate-mapping PUBLIC   
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"  
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.min.dao.entity.Data" table="data_info">
+		<id name="dataId" column="data_id">
+			<generator class="identity" />
+		</id>
+		<version name="verNo" insert="false">
+			<column name="ver_no" default="0" />
+		</version>
+		<property name="dataName" column="data_name" length="50" />
+		<property name="dataDownloadUrl" column="download_url" length="500" />
+		<property name="status" column="status" />
+		<many-to-one name="user" column="user_id" class="com.min.dao.entity.User" not-null="true" />
+	</class>
+</hibernate-mapping>

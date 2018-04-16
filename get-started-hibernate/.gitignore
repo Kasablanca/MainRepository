@@ -1,0 +1,6 @@
+.settings
+/target/
+/build/
+.classpath
+.project
+eclipse-java-oxygen-1a-win32-x86_64/
