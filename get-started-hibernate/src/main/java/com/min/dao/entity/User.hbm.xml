@@ -3,7 +3,7 @@
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"  
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-	<class name="com.min.dao.entity.User" table="user_info">
+	<class name="com.min.dao.entity.User" table="user_info" >
 		<id name="userId" column="user_id" length="36" />
 		<property name="userNick" column="user_nick" length="20" />
 		<property name="userSex" not-null="true">
