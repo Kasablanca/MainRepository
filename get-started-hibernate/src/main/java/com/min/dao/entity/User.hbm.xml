@@ -4,7 +4,7 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 	<class name="com.min.dao.entity.User" table="user_info">
-		<id name="userId" column="user_id" />
+		<id name="userId" column="user_id" length="36" />
 		<property name="userNick" column="user_nick" length="20" />
 		<property name="userSex" not-null="true">
 			<column name="user_sex" default="0" check="user_sex in (0,1)" />

@@ -11,11 +11,11 @@
 		<property name="expectedStartTime" column="expectedStartTime" />
 		<property name="status" column="status" />
 		<many-to-one name="user" column="user_id" class="com.min.dao.entity.User" not-null="true" />
-		<set name="datas" table="meeting_data_info">
+		<set name="datas" table="meeting_data_info" cascade="all" >
 			<key column="meeting_id"></key>
 			<many-to-many column="data_id" class="com.min.dao.entity.Data"></many-to-many>
 		</set>
-		<set name="members" table="meeting_user_info">
+		<set name="members" table="meeting_user_info" cascade="all">
 			<key column="meeting_id"></key>
 			<many-to-many column="user_id" class="com.min.dao.entity.User"></many-to-many>
 		</set>
