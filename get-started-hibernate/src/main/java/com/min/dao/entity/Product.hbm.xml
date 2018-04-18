@@ -6,6 +6,6 @@
 	<class name="com.min.dao.entity.Product" table="product" >
 		<id name="id" column="id" />
 		<property name="name" column="name" length="20" />
-		<!-- <property name="warranty"  /> -->
+		<property name="warranty" column="warranty" />
 	</class>
 </hibernate-mapping>
