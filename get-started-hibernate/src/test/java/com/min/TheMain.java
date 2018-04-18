@@ -13,18 +13,22 @@ import com.min.dao.entity.User;
 public class TheMain {
 
 	public static void main(String[] args) {
+		
+	}
+
+	public static void test1() {
 		// A SessionFactory is set up once for an application!
 		final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
 				.configure() // configures settings from hibernate.cfg.xml
 				.build();
 		try {
 			SessionFactory sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
-			
+
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			
+
 			session.save(new User(UUID.randomUUID().toString(),"MR.LEE",(byte)0));
-			
+
 			session.getTransaction().commit();
 			session.close();
 			sessionFactory.close();

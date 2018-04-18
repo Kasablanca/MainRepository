@@ -26,6 +26,7 @@
 		<mapping resource="com/min/dao/entity/Meeting.hbm.xml" />
 		<mapping resource="com/min/dao/entity/Data.hbm.xml" />
 		<mapping resource="com/min/dao/entity/User.hbm.xml" />
+		<mapping resource="com/min/dao/entity/Product.hbm.xml" />
 		
 <!-- 		<class-cache usage="nonstrict-read-write" class="com.min.dao.entity.Data" include="all"/> -->
 	</session-factory>
