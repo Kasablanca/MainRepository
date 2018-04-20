@@ -28,7 +28,6 @@ import org.junit.Test;
 
 import com.min.dao.entity.Data;
 import com.min.dao.entity.Meeting;
-import com.min.dao.entity.Product;
 import com.min.dao.entity.User;
 import com.min.utils.RandomUtils;
 
@@ -275,8 +274,12 @@ public class MainTestCase {
 		} );
 
 		session.save( product );*/
-		Product product = session.get(Product.class, 1);
-		Assert.assertNotNull(product);
+		/*Product product = session.get(Product.class, 1);
+		Assert.assertNotNull(product);*/
+		
+		Meeting meeting = session.get(Meeting.class, 1);
+		System.out.println(meeting.getMeetingName());
+		System.out.println(meeting.getUser());
 		
 		session.getTransaction().commit();
 	}
