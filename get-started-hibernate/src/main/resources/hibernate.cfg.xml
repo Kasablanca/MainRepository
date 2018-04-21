@@ -5,10 +5,10 @@
 <hibernate-configuration>
 	<session-factory>
 		<!-- Database connection settings -->
-		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://192.168.2.11:3306/meeting2?characterEncoding=UTF-8</property>
-		<property name="connection.username">root</property>
-		<property name="connection.password">123456</property>
+<!-- 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://127.0.0.1:3306/meeting?characterEncoding=UTF-8</property>
+		<property name="connection.username">mwd</property>
+		<property name="connection.password">mwd</property> -->
 		<!-- JDBC connection pool (use the built-in) -->
 		<property name="connection.pool_size">1</property>
 		<!-- SQL dialect -->
@@ -21,12 +21,13 @@
 		<property name="show_sql">true</property>
 		<!-- Drop and re-create the database schema on startup -->
 		<property name="hbm2ddl.auto">update</property>
-		<property name="hibernate.cache.use_query_cache">true</property>
+<!-- 		<property name="hibernate.cache.use_query_cache">true</property> -->
 		
 		<mapping resource="com/min/dao/entity/Meeting.hbm.xml" />
 		<mapping resource="com/min/dao/entity/Data.hbm.xml" />
 		<mapping resource="com/min/dao/entity/User.hbm.xml" />
-		
+		<mapping resource="com/min/dao/entity/Product.hbm.xml" />
+		<mapping resource="com/min/dao/entity/Student.hbm.xml" />
 <!-- 		<class-cache usage="nonstrict-read-write" class="com.min.dao.entity.Data" include="all"/> -->
 	</session-factory>
 </hibernate-configuration>

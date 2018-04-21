@@ -18,7 +18,10 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
+import org.hibernate.type.ByteType;
+import org.hibernate.type.StringType;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -246,8 +249,8 @@ public class MainTestCase {
 		}
 	}
 	
+	//@Test
 	@SuppressWarnings("unchecked")
-	@Test
 	public void test12() {
 		List<Meeting> meeting = session.createQuery("select m from Meeting m left join fetch m.datas datas where m.meetingId = :meetingId")
 				.setParameter("meetingId", 45)
@@ -259,6 +262,48 @@ public class MainTestCase {
 		//Assert.assertEquals(meeting.size(), 1);
 		Assert.assertNotNull(meeting.get(0));
 		Assert.assertTrue(meeting.get(0) instanceof Meeting);
+	}
+/*	
+	@Test
+	public void test13() {
+		NativeQuery<?> userListQuery = session.createNativeQuery("select * from user_info")
+				.addScalar("USER_ID", StringType.INSTANCE)
+				.addScalar("USER_NICK", StringType.INSTANCE)
+				.addScalar("USER_SEX", ByteType.INSTANCE);
+		List<?> userList = userListQuery.getResultList();
+		for(Object o : userList) {
+			User user = (User) o;
+			System.out.println(user.getUserNick());
+		}
+	}*/
+	
+	@Test
+	public void test13() {
+		/*String warranty = "My product warranty";
+
+		final Product product = new Product();
+		product.setId( 1 );
+		product.setName( "Mobile phone" );
+
+		session.doWork( connection -> {
+		    product.setWarranty( ClobProxy.generateProxy( warranty ) );
+		} );
+
+		session.save( product );*/
+		/*Product product = session.get(Product.class, 1);
+		Assert.assertNotNull(product);*/
+		
+		Meeting meeting = session.get(Meeting.class, 1);
+		System.out.println(meeting.getMeetingName());
+		System.out.println(meeting.getUser());
+		
+		session.getTransaction().commit();
+	}
+	
+	//@Test
+	public void test14() {
+		List<?> productList = session.createNativeQuery("select * from product").list();
+		System.out.println(productList.size());
 	}
 
 }
