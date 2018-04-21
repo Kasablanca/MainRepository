@@ -1,5 +1,10 @@
 package com.min.dao.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="data_info")
 public class Data {
 
     private Integer dataId;
