@@ -17,9 +17,9 @@
 	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter" />
 	
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
-		<property name="url" value="jdbc:mysql://192.168.2.11:3306/meeting2?characterEncoding=UTF-8" />
-		<property name="username" value="root" />
-		<property name="password" value="123456" />
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/meeting?characterEncoding=UTF-8" />
+		<property name="username" value="mwd" />
+		<property name="password" value="mwd" />
 		<property name="maxActive" value="20" />
 		<property name="filters" value="stat,wall" />
 		<property name="proxyFilters">
