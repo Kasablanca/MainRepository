@@ -1,5 +1,8 @@
 package com.min.dao.entity;
 
+import javax.persistence.Entity;
+
+@Entity
 public class User {
 
     private String userId;

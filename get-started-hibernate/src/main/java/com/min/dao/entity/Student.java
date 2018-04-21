@@ -1,5 +1,8 @@
 package com.min.dao.entity;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Student {
 
 	private String stuNo;
