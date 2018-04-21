@@ -2,6 +2,11 @@ package com.min.dao.entity;
 
 import java.sql.Clob;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="product")
 public class Product {
 
     private Integer id;
