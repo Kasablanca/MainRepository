@@ -18,10 +18,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
-import org.hibernate.type.ByteType;
-import org.hibernate.type.StringType;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -263,19 +260,6 @@ public class MainTestCase {
 		Assert.assertNotNull(meeting.get(0));
 		Assert.assertTrue(meeting.get(0) instanceof Meeting);
 	}
-/*	
-	@Test
-	public void test13() {
-		NativeQuery<?> userListQuery = session.createNativeQuery("select * from user_info")
-				.addScalar("USER_ID", StringType.INSTANCE)
-				.addScalar("USER_NICK", StringType.INSTANCE)
-				.addScalar("USER_SEX", ByteType.INSTANCE);
-		List<?> userList = userListQuery.getResultList();
-		for(Object o : userList) {
-			User user = (User) o;
-			System.out.println(user.getUserNick());
-		}
-	}*/
 	
 	@Test
 	public void test13() {
