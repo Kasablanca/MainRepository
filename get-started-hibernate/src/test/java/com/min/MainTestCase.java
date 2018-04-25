@@ -8,10 +8,17 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUtil;
+import javax.persistence.Tuple;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Hibernate;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -27,7 +34,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.min.dao.entity.Data;
+import com.min.dao.entity.Data_;
 import com.min.dao.entity.Meeting;
+import com.min.dao.entity.Product;
+import com.min.dao.entity.Student;
 import com.min.dao.entity.User;
 import com.min.utils.RandomUtils;
 
@@ -261,7 +271,7 @@ public class MainTestCase {
 		Assert.assertTrue(meeting.get(0) instanceof Meeting);
 	}
 	
-	@Test
+	//@Test
 	public void test13() {
 		/*String warranty = "My product warranty";
 
@@ -288,6 +298,74 @@ public class MainTestCase {
 	public void test14() {
 		List<?> productList = session.createNativeQuery("select * from product").list();
 		System.out.println(productList.size());
+	}
+	
+	//@Test
+	public void test15() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Meeting> selectMeeting =  builder.createQuery(Meeting.class);
+		Root<Meeting> fromMeeting = selectMeeting.from(Meeting.class);
+		selectMeeting.select(fromMeeting);
+		Query<Meeting> queryMeeting = session.createQuery(selectMeeting);
+		List<Meeting> meetingList = queryMeeting.getResultList();
+		System.out.println(meetingList.size());
+	}
+	
+	//@Test
+	public void test16() {
+		EntityManager em = session;
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<Data> query = builder.createQuery(Data.class);
+		Root<Data> root = query.from(Data.class);
+		query.where(builder.equal(root.<Integer>get(Data_.dataId.getName()),1));
+		Data data = em.createQuery(query).getSingleResult();
+		Assert.assertEquals(data.getDataId(), (Integer)1);
+	}
+	
+	//@Test
+	public void test17() {
+		Query<User> query = session.createQuery("select u from User u order by u.userNick", User.class);
+		ScrollableResults cursor = query.scroll(ScrollMode.SCROLL_INSENSITIVE);
+		cursor.last();
+		int count = cursor.getRowNumber()+1;
+		System.out.println("count: "+count);
+		cursor.close();
+		List<User> users = query.setFirstResult(15).setMaxResults(20).getResultList();
+		for(User user : users) {
+			System.out.println(user.getUserNick());
+		}
+	}
+	
+	//@Test
+	public void test18() {
+		Query<?> query = session.createQuery("select o from java.lang.Object o");
+		System.out.println(query.getResultList().size());
+	}
+	
+	@Test
+	public void test19() {
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<Tuple> query = builder.createQuery(Tuple.class);
+		Root<Product> p = query.from(Product.class);
+		Root<Student> s = query.from(Student.class);
+		query.select(builder.tuple(p,s));
+		/*query.multiselect(
+				query.from(Product.class),
+				query.from(Student.class));*/
+		List<Tuple> tuples = session.createQuery(query).getResultList();
+		Set<Product> products = new HashSet<>();
+		Set<Student> students = new HashSet<>();
+		for(Tuple tuple : tuples) {
+			products.add(tuple.get(0, Product.class));
+			students.add(tuple.get(1, Student.class));
+		}
+		Assert.assertEquals(products.size(), 2);
+		Assert.assertEquals(students.size(), 2);
+	}
+	
+	@Test
+	public void test20() {
+		
 	}
 
 }
