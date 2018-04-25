@@ -1,4 +1,4 @@
-package com.min.dao.repository;
+package com.min;
 
 public class TheMain {
 

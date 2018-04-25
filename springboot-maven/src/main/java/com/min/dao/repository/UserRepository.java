@@ -26,5 +26,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 	int updateSex(String userId, byte sex);
 	
 	List<User.UserProjection> findByUserSex(Byte sex);
+	
+	User findByUserNickAndLinkMail(String userNick,String linkMail);
 
 }
