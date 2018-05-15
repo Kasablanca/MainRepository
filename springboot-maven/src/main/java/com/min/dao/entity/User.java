@@ -10,6 +10,17 @@ import javax.persistence.Table;
 @Table(name="user_info")
 public class User {
 	
+	public User() {
+		super();
+	}
+
+	public User(String userNick, Byte userSex, String linkMail) {
+		super();
+		this.userNick = userNick;
+		this.userSex = userSex;
+		this.linkMail = linkMail;
+	}
+
 	public static interface UserProjection {
     	String getUserId();
     	String getUserNick();

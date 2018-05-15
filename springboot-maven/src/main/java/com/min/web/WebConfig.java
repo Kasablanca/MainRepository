@@ -36,9 +36,11 @@ public class WebConfig implements WebMvcConfigurer {
 	public ObjectMapper getObjectMapper() {
 		Hibernate5Module module = new Hibernate5Module();
 		module.configure(Feature.FORCE_LAZY_LOADING, true);
+		module.configure(Feature.FORCE_LAZY_LOADING, true);
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.registerModule(module);
+		//objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 		
 		return objectMapper;
 	}

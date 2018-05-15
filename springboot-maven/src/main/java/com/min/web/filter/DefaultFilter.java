@@ -10,7 +10,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
-@WebFilter("/filter")
+import com.min.dao.entity.User;
+
+@WebFilter("/test/*")
 public class DefaultFilter implements Filter {
 
 	@Override
@@ -20,7 +22,9 @@ public class DefaultFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		response.getWriter().println("filtered!");
+		System.out.println("filtered!");
+		request.setAttribute("user", new User("MR.RIGHT",(byte) 1,"programonkey@sina.com"));
+		chain.doFilter(request, response);
 	}
 
 	@Override

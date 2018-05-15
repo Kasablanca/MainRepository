@@ -1,7 +1,12 @@
 package com.min.web.controller;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.min.dao.entity.User;
 import com.min.dao.repository.UserRepository;
+import com.min.utils.IoUtils;
 
 @Controller
 @RequestMapping("user")
@@ -28,13 +34,16 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@RequestMapping("/{id}")
 	public ModelAndView detail(@PathVariable("id")User user) {
 		ModelAndView mav = new ModelAndView("user/detail");
 		mav.addObject("user", user);
 		try {
-			System.out.println(new ObjectMapper().writeValueAsString(user));
+			System.out.println(objectMapper.writeValueAsString(user));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -45,7 +54,7 @@ public class UserController {
 	@RequestMapping("test1")
 	public String test1(String userid,@ModelAttribute(binding=false) User user) {
 		try {
-			System.out.println(new ObjectMapper().writeValueAsString(user));
+			System.out.println(objectMapper.writeValueAsString(user));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -95,7 +104,6 @@ public class UserController {
 		if(user != null) {
 			mav.setViewName("redirect:/user/test2");
 			session.setAttribute("user", user);
-			
 		} else {
 			mav.setViewName("redirect:/");
 		}
@@ -132,6 +140,7 @@ public class UserController {
 	}
 	
 	@ModelAttribute
+	@ResponseBody
 	@RequestMapping("test9")
 	public User test9(@SessionAttribute User user) {
 		user.setUserNick("updated");
@@ -145,9 +154,17 @@ public class UserController {
 	}
 	
 	@ModelAttribute("users")
-	public List<User> users(){
+	public List<User> users() {
 		System.out.println("users()");
 		return userRepository.findAll();
+	}
+	
+	@RequestMapping("download")
+	public void download(HttpServletResponse resp) throws IOException {
+		resp.addHeader("Content-Dispositon", "inline;filename=timg.jpg");
+		OutputStream out = resp.getOutputStream();
+		InputStream in = new FileInputStream("C:\\Users\\MIN.LEE\\Pictures/timg.jpg");
+		IoUtils.copy(in, out);
 	}
 	
 }

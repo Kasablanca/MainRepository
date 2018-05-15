@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public class IoUtils {
 
@@ -25,6 +26,24 @@ public class IoUtils {
     
     public static boolean copy(InputStream in,File targetFile) {
     	return copy(in,targetFile.getAbsolutePath());
+    }
+    
+    public static boolean copy(InputStream in, OutputStream out) {
+    	if(!(out instanceof BufferedOutputStream)) {
+    		out = new BufferedOutputStream(out);
+    	}
+    	try {
+    		byte[] buf = new byte[1024*10];
+			int len = 0;
+			while((len = in.read(buf)) != -1) {
+				out.write(buf, 0, len);
+			}
+			
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
     }
 	
 }
