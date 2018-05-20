@@ -26,4 +26,28 @@ public class Pagination {
 		this.limit = limit;
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + limit;
+		result = prime * result + page;
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pagination other = (Pagination) obj;
+		if (limit != other.limit)
+			return false;
+		if (page != other.page)
+			return false;
+		return true;
+	}
+	
 }

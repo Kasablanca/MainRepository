@@ -1,5 +1,6 @@
 package com.syhd.ahriman.web;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,8 +8,10 @@ import java.util.List;
  * @author MIN.LEE
  *
  */
-public class TableData {
-	
+public class TableData implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	/**状态码*/
 	private Integer code;
 	
