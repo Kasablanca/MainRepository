@@ -1,0 +1,37 @@
+server:
+  port: 8082
+  compression:
+    enabled: true
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: true
+  profiles:
+    active:
+    - home
+  security:
+    user:
+      name: limin
+      password: limin
+      roles:
+      - ENDPOINT_ADMIN
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: when-authorized
+info: 
+  app: 
+    encoding: UTF-8
+    java: 
+      source: 1.8
+      target: 1.8
+logging:
+  file: system.log
