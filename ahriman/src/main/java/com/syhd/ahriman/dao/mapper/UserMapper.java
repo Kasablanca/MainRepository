@@ -1,6 +1,7 @@
 package com.syhd.ahriman.dao.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -24,4 +25,6 @@ public interface UserMapper {
     List<User> findAll(@Param("page") Pagination pagination, @Param("sort") Sort sort);
     
     long findAllCount();
+    
+    List<Map<?, ?>> userDistribution();
 }

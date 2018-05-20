@@ -1,5 +1,8 @@
 package com.syhd.ahriman.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CachePut;
@@ -14,7 +17,6 @@ import com.syhd.ahriman.web.Sort;
 import com.syhd.ahriman.web.TableData;
 
 @Service
-@Transactional
 @CacheConfig(cacheNames="user")
 public class UserService {
 
@@ -32,6 +34,7 @@ public class UserService {
 	}
 	
 	@CachePut()
+	@Transactional
 	public int insert(User user) {
 		userMapper.insert(user);
 		if(user.getAge()<1) {
@@ -39,6 +42,10 @@ public class UserService {
 		}
 		user.setId(user.getId()+1);
 		return userMapper.insertSelective(user);
+	}
+	
+	public List<Map<?, ?>> userDistribution(){
+		return userMapper.userDistribution();
 	}
 	
 }

@@ -1,82 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.syhd.ahriman.dao.mapper.WorkMapper">
-  <resultMap id="BaseResultMap" type="com.syhd.ahriman.dao.model.Work">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="birthday" jdbcType="DATE" property="birthday" />
-    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
-    <result column="closing_time" jdbcType="TIMESTAMP" property="closingTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, birthday, add_time, closing_time
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_work
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from t_work
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.syhd.ahriman.dao.model.Work">
-    insert into t_work (id, birthday, add_time, 
-      closing_time)
-    values (#{id,jdbcType=INTEGER}, #{birthday,jdbcType=DATE}, #{addTime,jdbcType=TIMESTAMP}, 
-      #{closingTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.syhd.ahriman.dao.model.Work">
-    insert into t_work
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="birthday != null">
-        birthday,
-      </if>
-      <if test="addTime != null">
-        add_time,
-      </if>
-      <if test="closingTime != null">
-        closing_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="birthday != null">
-        #{birthday,jdbcType=DATE},
-      </if>
-      <if test="addTime != null">
-        #{addTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="closingTime != null">
-        #{closingTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.syhd.ahriman.dao.model.Work">
-    update t_work
-    <set>
-      <if test="birthday != null">
-        birthday = #{birthday,jdbcType=DATE},
-      </if>
-      <if test="addTime != null">
-        add_time = #{addTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="closingTime != null">
-        closing_time = #{closingTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.syhd.ahriman.dao.model.Work">
-    update t_work
-    set birthday = #{birthday,jdbcType=DATE},
-      add_time = #{addTime,jdbcType=TIMESTAMP},
-      closing_time = #{closingTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+	<resultMap id="BaseResultMap" type="com.syhd.ahriman.dao.model.Work">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="birthday" jdbcType="DATE" property="birthday" />
+		<result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+		<result column="closing_time" jdbcType="TIMESTAMP" property="closingTime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, birthday, add_time, closing_time
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_work
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_work
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.syhd.ahriman.dao.model.Work">
+		insert into t_work (id, birthday, add_time,
+		closing_time)
+		values (#{id,jdbcType=INTEGER}, #{birthday,jdbcType=DATE},
+		#{addTime,jdbcType=TIMESTAMP},
+		#{closingTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.syhd.ahriman.dao.model.Work">
+		insert into t_work
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="birthday != null">
+				birthday,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="closingTime != null">
+				closing_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="birthday != null">
+				#{birthday,jdbcType=DATE},
+			</if>
+			<if test="addTime != null">
+				#{addTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="closingTime != null">
+				#{closingTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.syhd.ahriman.dao.model.Work">
+		update t_work
+		<set>
+			<if test="birthday != null">
+				birthday = #{birthday,jdbcType=DATE},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="closingTime != null">
+				closing_time = #{closingTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.syhd.ahriman.dao.model.Work">
+		update t_work
+		set birthday = #{birthday,jdbcType=DATE},
+		add_time = #{addTime,jdbcType=TIMESTAMP},
+		closing_time = #{closingTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
 </mapper>

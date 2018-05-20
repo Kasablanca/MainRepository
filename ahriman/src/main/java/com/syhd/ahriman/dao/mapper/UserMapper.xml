@@ -106,8 +106,10 @@
 	<select id="findAll" resultType="com.syhd.ahriman.dao.model.User">
 		select * from t_user order by ${sort.field} ${sort.sord} limit ${(page.page-1)*page.limit},${page.limit}
 	</select>
-	
 	<select id="findAllCount" resultType="long">
 		select count(*) from t_user
+	</select>
+	<select id="userDistribution" resultType="map">
+		select age,count(age) count from t_user group by age order by age
 	</select>
 </mapper>
