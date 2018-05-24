@@ -1,6 +1,10 @@
-package com.syhd.ahriman.web.vo;
+package com.syhd.ahriman.dto;
 
-public class Result {
+import java.io.Serializable;
+
+public class Result implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	
 	public static final Integer DEFAULT_SUCCESS_CODE = 0;
 	public static final Integer DEFAULT_ERROR_CODE = 1;
@@ -25,14 +29,6 @@ public class Result {
 		return code;
 	}
 	
-	public static Result getSuccessResult(){
-		return new Result(DEFAULT_SUCCESS_CODE,null,DEFAULT_SUCCESS_MESSAGE);
-	}
-	
-	public static Result getErrorResult(){
-		return new Result(DEFAULT_ERROR_CODE,null,DEFAULT_ERROR_MESSAGE);
-	}
-	
 	public void setCode(Integer code) {
 		this.code = code;
 	}
@@ -47,6 +43,21 @@ public class Result {
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	
+	public static Result getSuccessResult(){
+		return new Result(DEFAULT_SUCCESS_CODE,null,DEFAULT_SUCCESS_MESSAGE);
+	}
+	
+	public static Result getErrorResult(){
+		return new Result(DEFAULT_ERROR_CODE,null,DEFAULT_ERROR_MESSAGE);
+	}
+	
+	public static boolean isSuccessResult(Result result) {
+		if(DEFAULT_SUCCESS_CODE.equals(result.code)) {
+			return true;
+		}
+		return false;
 	}
 	
 }

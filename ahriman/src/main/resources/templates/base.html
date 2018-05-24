@@ -4,7 +4,7 @@
 <!-- 公共头模板 -->
 <head th:fragment="common_header(title,links)">
 	<meta charset="UTF-8">
-	<title>untitled</title>
+	<title th:replace="${title}">untitled</title>
 	<link rel="stylesheet" href="/css/font.css" th:href="@{/css/font.css}">
 	<link rel="stylesheet" href="/css/xadmin.css" th:href="@{/css/xadmin.css}">
 	

@@ -6,8 +6,8 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.syhd.ahriman.dao.model.User;
-import com.syhd.ahriman.web.Pagination;
-import com.syhd.ahriman.web.Sort;
+import com.syhd.ahriman.dto.Pagination;
+import com.syhd.ahriman.dto.Sort;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);

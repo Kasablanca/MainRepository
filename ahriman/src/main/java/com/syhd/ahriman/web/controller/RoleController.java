@@ -9,7 +9,7 @@ public class RoleController {
 
 	@RequestMapping("index")
 	public String index() {
-		return "role/index";
+		return "system/role/index";
 	}
 	
 }

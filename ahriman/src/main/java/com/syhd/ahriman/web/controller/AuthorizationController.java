@@ -9,7 +9,7 @@ public class AuthorizationController {
 
 	@RequestMapping("index")
 	public String index() {
-		return "authorization/index";
+		return "system/authorization/index";
 	}
 	
 }

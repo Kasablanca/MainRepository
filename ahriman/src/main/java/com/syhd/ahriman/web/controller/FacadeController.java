@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.syhd.ahriman.dao.model.User;
-import com.syhd.ahriman.web.vo.Result;
+import com.syhd.ahriman.dto.Result;
 
 @Controller
 public class FacadeController {

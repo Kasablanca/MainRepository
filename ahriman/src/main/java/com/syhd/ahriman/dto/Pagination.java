@@ -1,4 +1,4 @@
-package com.syhd.ahriman.web;
+package com.syhd.ahriman.dto;
 
 /**
  * 封装前台layer插件的列表分页参数<br>

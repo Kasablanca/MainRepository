@@ -3,6 +3,8 @@ package com.syhd.ahriman.dao.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -17,6 +19,7 @@ public class User implements Serializable {
 
     private String email;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthday;
 
     public Integer getId() {

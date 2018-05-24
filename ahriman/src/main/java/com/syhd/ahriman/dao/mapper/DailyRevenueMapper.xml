@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.syhd.ahriman.dao.mapper.DailyRevenueMapper">
+	<resultMap id="BaseResultMap"
+		type="com.syhd.ahriman.dao.model.DailyRevenue">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="date" jdbcType="DATE" property="date" />
+		<result column="server_id" jdbcType="INTEGER"
+			property="serverId" />
+		<result column="server_name" jdbcType="VARCHAR"
+			property="serverName" />
+		<result column="platform" jdbcType="VARCHAR"
+			property="platform" />
+		<result column="money" jdbcType="INTEGER" property="money" />
+		<result column="money_type" jdbcType="INTEGER"
+			property="moneyType" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, date, server_id, server_name, platform, money, money_type
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_daily_revenue
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_daily_revenue
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.syhd.ahriman.dao.model.DailyRevenue">
+		insert into t_daily_revenue (id, date, server_id,
+		server_name, platform, money,
+		money_type)
+		values (#{id,jdbcType=INTEGER}, #{date,jdbcType=DATE},
+		#{serverId,jdbcType=INTEGER},
+		#{serverName,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR}, #{money,jdbcType=INTEGER},
+		#{moneyType,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.syhd.ahriman.dao.model.DailyRevenue">
+		insert into t_daily_revenue
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="serverId != null">
+				server_id,
+			</if>
+			<if test="serverName != null">
+				server_name,
+			</if>
+			<if test="platform != null">
+				platform,
+			</if>
+			<if test="money != null">
+				money,
+			</if>
+			<if test="moneyType != null">
+				money_type,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=DATE},
+			</if>
+			<if test="serverId != null">
+				#{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="serverName != null">
+				#{serverName,jdbcType=VARCHAR},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="money != null">
+				#{money,jdbcType=INTEGER},
+			</if>
+			<if test="moneyType != null">
+				#{moneyType,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.syhd.ahriman.dao.model.DailyRevenue">
+		update t_daily_revenue
+		<set>
+			<if test="date != null">
+				date = #{date,jdbcType=DATE},
+			</if>
+			<if test="serverId != null">
+				server_id = #{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="serverName != null">
+				server_name = #{serverName,jdbcType=VARCHAR},
+			</if>
+			<if test="platform != null">
+				platform = #{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="money != null">
+				money = #{money,jdbcType=INTEGER},
+			</if>
+			<if test="moneyType != null">
+				money_type = #{moneyType,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.syhd.ahriman.dao.model.DailyRevenue">
+		update t_daily_revenue
+		set date = #{date,jdbcType=DATE},
+		server_id = #{serverId,jdbcType=INTEGER},
+		server_name = #{serverName,jdbcType=VARCHAR},
+		platform = #{platform,jdbcType=VARCHAR},
+		money = #{money,jdbcType=INTEGER},
+		money_type = #{moneyType,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="getDailyRevenue" resultType="com.syhd.ahriman.dto.DailyRevenueVO">
+		select date,sum(money * <!-- 汇率 -->
+			CASE money_type WHEN 0 THEN 1 WHEN 1 THEN #{rate.usd} WHEN 2 THEN #{rate.twd} WHEN 3 THEN #{rate.hkd} END
+		) money
+		from t_daily_revenue
+		where date >= #{param.start} and date &lt; #{param.end}
+		<if test="param.platform != null and param.platform.length > 0">
+			and platform in
+			<trim prefix="(" suffixOverrides="," suffix=")">
+				<foreach collection="param.platform" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		<if test="param.serverId != null and param.serverId.length > 0">
+			and server_id in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.serverId" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		group by date
+		order by date
+	</select>
+	<select id="getEndDateByServerId" resultType="java.util.Date">
+		<!-- for update 锁住表，防止其他线程添加数据影响分析结果 -->
+		select max(date) from t_daily_revenue where server_id = #{serverId} for update
+	</select>
+	<select id="getAllServer" resultType="com.syhd.ahriman.dao.model.DailyRevenue">
+		select distinct server_id serverId,server_name serverName from t_daily_revenue order by server_name
+	</select>
+	<select id="getAllPlatform" resultType="string">
+		select distinct platform from t_daily_revenue order by platform
+	</select>
+	<update id="createTodayRevenueTable" statementType="CALLABLE">
+		{call create_temp_revenue_table()}
+	</update>
+	<insert id="insertIntoTemp" parameterType="com.syhd.ahriman.dao.model.DailyRevenue" useGeneratedKeys="true" keyProperty="id">
+		insert into t_today_revenue (id, date, server_id, server_name, platform, money, money_type)
+		values (#{id,jdbcType=INTEGER}, #{date,jdbcType=DATE},
+		#{serverId,jdbcType=INTEGER},
+		#{serverName,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR}, #{money,jdbcType=INTEGER},
+		#{moneyType,jdbcType=INTEGER})
+	</insert>
+	<select id="getMixinDailyRevenue" resultType="com.syhd.ahriman.dto.DailyRevenueVO">
+		select date,sum(money *
+			CASE money_type WHEN 0 THEN 1 WHEN 1 THEN #{rate.usd} WHEN 2 THEN #{rate.twd} WHEN 3 THEN #{rate.hkd} END
+		) money from (
+			select id,date,server_id,server_name,platform,money_type,money
+			from t_daily_revenue
+			where date >= #{param.start}
+			<if test="param.platform != null and param.platform.length > 0">
+				and platform in
+				<trim prefix="(" suffixOverrides="," suffix=")">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length > 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			union all
+			select id,date,server_id,server_name,platform,money_type,money
+			from t_today_revenue
+			where 1=1
+			<if test="param.platform != null and param.platform.length > 0">
+				and platform in
+				<trim prefix="(" suffixOverrides="," suffix=")">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length > 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+		) t
+		group by date
+		order by date
+	</select>
+</mapper>

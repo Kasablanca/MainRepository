@@ -130,7 +130,7 @@
 		<constructor-arg ref="defaultTaskExecutor" />
 	</bean> -->
 	
-	<task:annotation-driven executor="defaultTaskExecutor" scheduler="defaultTaskScheduler" />
+	<task:annotation-driven executor="defaultTaskExecutor" scheduler="defaultTaskScheduler" /> <!--  -->
 	
 	<task:executor id="defaultTaskExecutor" keep-alive="60" pool-size="50" queue-capacity="100" rejection-policy="CALLER_RUNS" />
 	

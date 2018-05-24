@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.syhd.ahriman.dao.mapper.UserMapper;
 import com.syhd.ahriman.dao.model.User;
-import com.syhd.ahriman.web.Pagination;
-import com.syhd.ahriman.web.Sort;
-import com.syhd.ahriman.web.TableData;
+import com.syhd.ahriman.dto.Pagination;
+import com.syhd.ahriman.dto.Sort;
+import com.syhd.ahriman.dto.TableData;
 
 @Service
 @CacheConfig(cacheNames="user")
@@ -44,6 +44,7 @@ public class UserService {
 		return userMapper.insertSelective(user);
 	}
 	
+	@Cacheable
 	public List<Map<?, ?>> userDistribution(){
 		return userMapper.userDistribution();
 	}

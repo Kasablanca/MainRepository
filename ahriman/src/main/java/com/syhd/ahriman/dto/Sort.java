@@ -1,4 +1,4 @@
-package com.syhd.ahriman.web;
+package com.syhd.ahriman.dto;
 
 /**
  * 封装前台layper插件的排序参数<br>

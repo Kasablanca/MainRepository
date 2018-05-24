@@ -25,7 +25,7 @@ public class TestController {
 	public String exec() {
 		task.printMessages();
 		
-		return "OK";
+		return "a中文";
 	}
 	
 	@ResponseBody
@@ -44,6 +44,14 @@ public class TestController {
 		System.out.println(user.getUserName().length());
 		
 		return Result.getSuccessResult();
+	}
+	
+	@ResponseBody
+	@RequestMapping("user")
+	public Result add(TUser user) {
+		Result result = Result.getSuccessResult();
+		result.setData(user);
+		return result;
 	}
 	
 }

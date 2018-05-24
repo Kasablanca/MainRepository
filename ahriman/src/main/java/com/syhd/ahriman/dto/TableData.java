@@ -1,4 +1,4 @@
-package com.syhd.ahriman.web;
+package com.syhd.ahriman.dto;
 
 import java.io.Serializable;
 import java.util.List;

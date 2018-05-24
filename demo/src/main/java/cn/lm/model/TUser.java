@@ -3,6 +3,8 @@ package cn.lm.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class TUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -16,6 +18,7 @@ public class TUser implements Serializable {
 
     private Byte sex;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date birthday;
 
     private String email;
