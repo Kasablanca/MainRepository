@@ -57,7 +57,7 @@ $(function (){
 			myChart.setOption(option);
 		} else {
 			// 说明获取数据失败
-			layer.msg('获取图标数据失败：'+data.msg, {icon: 5});
+			layer.msg('获取图标数据失败：'+data.message, {icon: 5});
 		}
 	});
 /*
@@ -110,7 +110,7 @@ $(function (){
 					myChart.setOption(option);
 				} else {
 					// 说明获取数据失败
-					layer.msg('获取图标数据失败：'+data.msg, {icon: 5});
+					layer.msg('获取图标数据失败：'+data.message, {icon: 5});
 				}
 			}
 			,error: function (){

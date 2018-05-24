@@ -11,6 +11,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.syhd.ahriman.dto.ExchangeRate;
@@ -37,6 +38,16 @@ public class ExchangeRateService {
 	public Result getExchangeRate() {
 		Result result = Result.getSuccessResult();
 		
+		if(StringUtils.isEmpty(exchangeRateConfig.getUrl())) {
+			//使用模拟数据
+			ExchangeRate rate = new ExchangeRate();
+			rate.setUsd(new BigDecimal("6"));
+			rate.setHkd(new BigDecimal("0.8"));
+			rate.setTwd(new BigDecimal("0.2"));
+			result.setData(rate);
+			return result;
+		}
+		
 		Result usd = getExchangeRate(CurrencyCoinEnum.AMERICA);
 		Result hkd = getExchangeRate(CurrencyCoinEnum.HONGKONG);
 		Result twd = getExchangeRate(CurrencyCoinEnum.TAIWAN);
@@ -52,7 +63,14 @@ public class ExchangeRateService {
 		}
 		
 		result = Result.getErrorResult();
-		result.setMessage("获取货币失败");
+		if(!Result.isSuccessResult(usd)) {
+			result.setMessage(usd.getMessage());
+		} else if(!Result.isSuccessResult(hkd)) {
+			result.setMessage(hkd.getMessage());
+		} else if(!Result.isSuccessResult(twd)) {
+			result.setMessage(twd.getMessage());
+		}
+		
 		return result;
 	}
 	
@@ -104,14 +122,13 @@ public class ExchangeRateService {
 					}
 					if(exchangeRate == null) {
 						// 说明返回格式已经变化
-						result.setMessage("获取实时汇率失败");
+						result.setMessage("汇率API有变化");
 						return result;
 					} else {
+						result = Result.getSuccessResult();
 						result.setData(exchangeRate);
+						return result;
 					}
-					
-					result = Result.getSuccessResult();
-					return result;
 				} else {
 					// 服务器返回错误
 					result.setMessage(data.getReason());
@@ -120,7 +137,7 @@ public class ExchangeRateService {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			result.setMessage("获取实时汇率失败");
+			result.setMessage("读取汇率信息时发生错误");
 			return result;
 		}
 	}

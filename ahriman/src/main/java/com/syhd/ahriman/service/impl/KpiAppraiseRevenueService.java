@@ -13,6 +13,7 @@ import javax.annotation.PostConstruct;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
@@ -82,7 +83,7 @@ public class KpiAppraiseRevenueService {
 		
 		result = exchangeRateService.getExchangeRate();
 		if(!Result.isSuccessResult(result)) {
-			result.setMessage("获取实时汇率失败");
+			result.setMessage(result.getMessage());
 			return result;
 		}
 		
@@ -162,7 +163,7 @@ public class KpiAppraiseRevenueService {
 		
 		result = exchangeRateService.getExchangeRate();
 		if(!Result.isSuccessResult(result)) {
-			result.setMessage("获取实时汇率失败");
+			result.setMessage(result.getMessage());
 			return result;
 		}
 		
@@ -265,7 +266,8 @@ public class KpiAppraiseRevenueService {
 	 * 初始化关于KPI考核收入的预查询的定时任务,每天凌晨0点执行
 	 */
 	@Transactional
-	@Scheduled(cron="0 * * * * ?") // 每天凌晨0点执行：0 0 0 * * ?
+	@Scheduled(cron="0 0 0 * * ?")
+	@CacheEvict
 	public void kpiAppraiseRevenueTask() {
 		List<AppServer> serverList = appServerMapper.getAllServer();
 

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.springbootdemo.dao.mapper.UserMapper">
+	<resultMap id="BaseResultMap" type="com.min.springbootdemo.dao.model.User">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="username" jdbcType="VARCHAR" property="username" />
+		<result column="age" jdbcType="INTEGER" property="age" />
+		<result column="sex" jdbcType="TINYINT" property="sex" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
+		<result column="birthday" jdbcType="DATE" property="birthday" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, username, age, sex, email, birthday
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_user
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_user
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.min.springbootdemo.dao.model.User">
+		insert into t_user (id, username, age,
+		sex, email, birthday)
+		values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR},
+		#{age,jdbcType=INTEGER},
+		#{sex,jdbcType=TINYINT}, #{email,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE})
+	</insert>
+	<insert id="insertSelective" parameterType="com.min.springbootdemo.dao.model.User">
+		insert into t_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="age != null">
+				age,
+			</if>
+			<if test="sex != null">
+				sex,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="birthday != null">
+				birthday,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="age != null">
+				#{age,jdbcType=INTEGER},
+			</if>
+			<if test="sex != null">
+				#{sex,jdbcType=TINYINT},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="birthday != null">
+				#{birthday,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.min.springbootdemo.dao.model.User">
+		update t_user
+		<set>
+			<if test="username != null">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="age != null">
+				age = #{age,jdbcType=INTEGER},
+			</if>
+			<if test="sex != null">
+				sex = #{sex,jdbcType=TINYINT},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="birthday != null">
+				birthday = #{birthday,jdbcType=DATE},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.min.springbootdemo.dao.model.User">
+		update t_user
+		set username = #{username,jdbcType=VARCHAR},
+		age = #{age,jdbcType=INTEGER},
+		sex = #{sex,jdbcType=TINYINT},
+		email = #{email,jdbcType=VARCHAR},
+		birthday = #{birthday,jdbcType=DATE}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="findAll" resultType="com.min.springbootdemo.dao.model.User">
+		select * from t_user order by ${sort.field} ${sort.sord} limit ${(page.page-1)*page.limit},${page.limit}
+	</select>
+	<select id="findAllCount" resultType="long">
+		select count(*) from t_user
+	</select>
+	<select id="userDistribution" resultType="map">
+		select age,count(age) count from t_user group by age order by age
+	</select>
+</mapper>

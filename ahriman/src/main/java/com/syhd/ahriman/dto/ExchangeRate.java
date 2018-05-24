@@ -1,5 +1,6 @@
 package com.syhd.ahriman.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -7,7 +8,9 @@ import java.math.BigDecimal;
  * @author MIN.LEE
  *
  */
-public class ExchangeRate {
+public class ExchangeRate implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	/**美元*/
 	private BigDecimal usd;

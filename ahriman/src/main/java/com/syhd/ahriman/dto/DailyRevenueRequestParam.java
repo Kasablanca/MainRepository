@@ -1,12 +1,15 @@
 package com.syhd.ahriman.dto;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class DailyRevenueRequestParam {
-	
+public class DailyRevenueRequestParam implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date start;
 	

@@ -5,16 +5,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * 日期实用工具栏
+ * 日期实用工具类
  * @author MIN.LEE
  *
  */
 public class DateUtils {
-
-	public static void main(String[] args) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-		System.out.println(format.format(getTodayTime0()));
-	}
 	
 	/**
 	 * 获取今天凌晨00:00:00.000

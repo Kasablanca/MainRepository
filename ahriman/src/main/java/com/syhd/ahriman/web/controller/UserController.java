@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.syhd.ahriman.dao.model.User;
-import com.syhd.ahriman.dto.Result;
 import com.syhd.ahriman.service.impl.UserService;
 
 @Controller
@@ -32,11 +31,8 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping("add")
-	public Result add(User user) {
-		Result result = Result.getSuccessResult();
-		result.setData(user);
-		
-		return result;
+	public int add(User user) {
+		return userService.insert(user);
 	}
-
+	
 }
