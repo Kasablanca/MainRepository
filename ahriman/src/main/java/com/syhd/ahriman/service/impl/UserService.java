@@ -22,31 +22,35 @@ public class UserService {
 
 	@Autowired
 	private UserMapper userMapper;
-	
+
 	@Cacheable
 	public User findById(Integer id) {
 		return userMapper.selectByPrimaryKey(id);
 	}
-	
+
 	@Cacheable
 	public TableData findAll(Pagination pagination, Sort sort){
 		return new TableData(userMapper.findAllCount(),userMapper.findAll(pagination,sort));
 	}
-	
+
 	@CachePut()
 	@Transactional
-	public int insert(User user) {
+	public User insert(User user) {
 		userMapper.insert(user);
-		if(user.getAge()<1) {
+		/*if(user.getAge()<1) {
 			throw new RuntimeException("无效的年龄");
 		}
-		user.setId(user.getId()+1);
-		return userMapper.insertSelective(user);
+		user.setAge(user.getAge()+1);*/
+		return user;
 	}
-	
+
 	@Cacheable
 	public List<Map<?, ?>> userDistribution(){
 		return userMapper.userDistribution();
 	}
 	
+	public User myInsert(User user) {
+		return insert(user);
+	}
+
 }

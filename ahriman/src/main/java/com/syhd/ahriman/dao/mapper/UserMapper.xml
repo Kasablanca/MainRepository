@@ -23,7 +23,7 @@
 		delete from t_user
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
-	<insert id="insert" parameterType="com.syhd.ahriman.dao.model.User">
+	<insert id="insert" parameterType="com.syhd.ahriman.dao.model.User" useGeneratedKeys="true" keyProperty="id">
 		insert into t_user (id, username, age,
 		sex, email, birthday)
 		values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR},

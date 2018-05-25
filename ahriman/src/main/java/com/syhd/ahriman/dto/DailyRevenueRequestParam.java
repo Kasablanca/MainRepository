@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class DailyRevenueRequestParam implements Serializable {
+public class DailyRevenueRequestParam implements Serializable,Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -19,6 +19,22 @@ public class DailyRevenueRequestParam implements Serializable {
 	private String[] platform;
 	private Integer[] serverId;
 	
+	public DailyRevenueRequestParam() {
+		super();
+	}
+	public DailyRevenueRequestParam(Date start, Date end, String[] platform, Integer[] serverId) {
+		super();
+		this.start = start;
+		this.end = end;
+		this.platform = platform;
+		this.serverId = serverId;
+	}
+	public DailyRevenueRequestParam(DailyRevenueRequestParam other) {
+		this.start = other.start;
+		this.end = other.end;
+		this.platform = other.platform;
+		this.serverId = other.serverId;
+	}
 	public Date getStart() {
 		return start;
 	}
@@ -84,6 +100,28 @@ public class DailyRevenueRequestParam implements Serializable {
 	public String toString() {
 		return "DailyRevenueRequestParam [start=" + start + ", end=" + end + ", platform=" + Arrays.toString(platform)
 				+ ", serverId=" + Arrays.toString(serverId) + "]";
+	}
+	
+	/**
+	 * 深拷贝
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		DailyRevenueRequestParam copy = (DailyRevenueRequestParam) super.clone();
+		if(this.start != null) {
+			copy.start = (Date) this.start.clone();
+		}
+		if(this.end != null) {
+			copy.end = (Date) this.end.clone();
+		}
+		if(this.platform != null) {
+			copy.platform = this.platform.clone();
+		}
+		if(this.serverId != null) {
+			copy.serverId = this.serverId.clone();
+		}
+		
+		return copy;
 	}
 
 }

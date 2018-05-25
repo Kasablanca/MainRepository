@@ -219,4 +219,17 @@
 		group by date
 		order by date
 	</select>
+	<insert id="batchInsert">
+		insert into t_daily_revenue (date, server_id, server_name, platform, money, money_type) values 
+		<trim suffixOverrides=",">
+			<foreach collection="records" item="record">
+				(#{record.date,jdbcType=DATE},
+				#{record.serverId,jdbcType=INTEGER},
+				#{record.serverName,jdbcType=VARCHAR}, 
+				#{record.platform,jdbcType=VARCHAR}, 
+				#{record.money,jdbcType=INTEGER},
+				#{record.moneyType,jdbcType=INTEGER}),
+			</foreach>
+		</trim>
+	</insert>
 </mapper>

@@ -73,7 +73,7 @@ public class TestController {
 	
 	@ResponseBody
 	@RequestMapping("user/add")
-	public int add(User user) {
+	public User add(User user) {
 		return userService.insert(user);
 	}
 	

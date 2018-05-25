@@ -31,8 +31,8 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping("add")
-	public int add(User user) {
-		return userService.insert(user);
+	public User add(User user) {
+		return userService.myInsert(user);
 	}
 	
 }

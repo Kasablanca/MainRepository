@@ -4,11 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import javax.annotation.PostConstruct;
 
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,26 +57,28 @@ public class KpiAppraiseRevenueService {
 	 */
 	@Cacheable(sync=true)
 	public Result getDailyRevenue(DailyRevenueRequestParam param) {
+		DailyRevenueRequestParam copy = new DailyRevenueRequestParam(param);
+		
 		Result result = Result.getErrorResult();
 		
-		if(StringUtils.isEmpty(param.getStart())) {
+		if(StringUtils.isEmpty(copy.getStart())) {
 			// 若没给开始日期，则设置为上月同一天凌晨00:00:00
-			param.setStart(DateUtils.getOneMonthBeforeTime0());
+			copy.setStart(DateUtils.getOneMonthBeforeTime0());
 		}
-		if(StringUtils.isEmpty(param.getEnd()))	{
+		if(StringUtils.isEmpty(copy.getEnd()))	{
 			// 若没给结束日期，则设置为今天凌晨00:00:00.000
-			param.setEnd(DateUtils.getTodayTime0());
+			copy.setEnd(DateUtils.getTodayTime0());
 		} else {
 			// 若已给截止日期，则判断是否超过今天凌晨00:00:00
-			if(!param.getEnd().before(DateUtils.getTodayTime0())) {
+			if(!copy.getEnd().before(DateUtils.getTodayTime0())) {
 				// 说明 param.end >= 今天凌晨,则需要查询原始数据库和当前数据库的混合数据
-				return getMixinRevenue(param);
+				return getMixinRevenue(copy);
 			} else {
 				// 说明在今天凌晨之前，则将截止日期设置为第二天凌晨
 				Calendar now = Calendar.getInstance();
-				now.setTime(param.getEnd());
+				now.setTime(copy.getEnd());
 				now.add(Calendar.DAY_OF_MONTH, 1);
-				param.setEnd(now.getTime());
+				copy.setEnd(now.getTime());
 			}
 		}
 		
@@ -89,7 +90,7 @@ public class KpiAppraiseRevenueService {
 		
 		ExchangeRate rate = (ExchangeRate) result.getData();
 		result = Result.getSuccessResult();
-		result.setData(dailyRevenueMapper.getDailyRevenue(param,rate));
+		result.setData(dailyRevenueMapper.getDailyRevenue(copy,rate));
 		
 		return result;
 	}
@@ -110,13 +111,15 @@ public class KpiAppraiseRevenueService {
 		return dailyRevenueMapper.getAllPlatform();
 	}
 	
+	/*====================================分割线,以下方法非对外使用====================================*/
+	
 	/**
 	 * 查询原始数据库和当前数据库的混合数据
 	 * @param param 查询参数
 	 * @return 查询结果或失败信息
 	 */
 	@Transactional
-	private Result getMixinRevenue(DailyRevenueRequestParam param) {
+	public Result getMixinRevenue(DailyRevenueRequestParam param) {
 		Result result = Result.getErrorResult();
 		
 		List<AppServer> serverList = appServerMapper.getAllServer();
@@ -174,90 +177,92 @@ public class KpiAppraiseRevenueService {
 		return result;
 	}
 	
-	/*====================================分割线====================================*/
-	
-	@PostConstruct
-	public void init() {
-		preFetch();
-	}
-	
+	/**
+	 * 抓取每个日志服务器的KPI信息
+	 * @param server 游戏日日志服务器信息
+	 */
 	@Async
 	@Transactional
-	private void preFetch() {
-		List<AppServer> serverList = appServerMapper.getAllServer();
-		
+	public void preFetch(AppServer server) {
 		Date yesterdayTime0 = DateUtils.getYesterdayTime0();
-		for(AppServer server : serverList) {
-			Date endDate = dailyRevenueMapper.getEndDateByServerId(server.getServerid());
-			if(endDate == null || endDate.compareTo(yesterdayTime0) <= 0) {
-				// 如果昨天或者之前的日期没有统计，则需要在系统启动时进行统计
-				String url = getLogDbUrl(server.getLogDb());
-				String user = gamelogProperties.getUsername();
-				String password = gamelogProperties.getPassword();
-				try(Connection conn = DriverManager.getConnection(url, user, password)) {	
-					PreparedStatement stmt = null;
+		Date endDate = dailyRevenueMapper.getEndDateByServerId(server.getServerid());
+		if(endDate == null || endDate.compareTo(yesterdayTime0) <= 0) {
+			// 如果昨天或者之前的日期没有统计，则需要在系统启动时进行统计
+			String url = getLogDbUrl(server.getLogDb());
+			String user = gamelogProperties.getUsername();
+			String password = gamelogProperties.getPassword();
+			try(Connection conn = DriverManager.getConnection(url, user, password)) {	
+				PreparedStatement stmt = null;
+				
+				if(endDate == null) {
+					// 说明没任何统计，则统计截止今天凌晨00:00:00的数据
+					stmt = conn.prepareStatement(
+							"select date,platform,moneyType,sum(money) money from " + 
+							"(select date(date) date,platform,rmb money,lv moneyType from t_rechargelog where date < ?) t "+
+							"group by date,platform,moneyType");
 					
-					if(endDate == null) {
-						// 说明没任何统计，则统计截止今天凌晨00:00:00的数据
-						stmt = conn.prepareStatement(
-								"select date,platform,moneyType,sum(money) money from " + 
-								"(select date(date) date,platform,rmb money,lv moneyType from t_rechargelog where date < ?) t "+
-								"group by date,platform,moneyType");
-						
-						java.sql.Date end = DateUtils.conver2SqlDate(new Date()); // 统计截止日期(不包含)
-						stmt.setDate(1, end);
-					} else {
-						// 说明有统计，则判断统计信息是否已经最新
-						stmt = conn.prepareStatement("select count(*) from t_rechargelog where date >= ?");
-						
-						Calendar now = Calendar.getInstance();
-						now.setTime(endDate);
-						now.add(Calendar.DAY_OF_MONTH, 1);
-						java.sql.Date critical = DateUtils.conver2SqlDate(now.getTime());
-						stmt.setDate(1, critical);
-						
-						ResultSet resultSet = stmt.executeQuery();
-						if(resultSet.next()) {
-							int count = resultSet.getInt(1);
-							if(count == 0) continue; // 说明主数据库的信息已经是最新的
-						}
-						stmt.close();
-						
-						// 说明有统计，则统计从第二天截止今天凌晨00:00:00的数据
-						stmt = conn.prepareStatement(
-								"select date,platform,moneyType,sum(money) money from " + 
-								"(select date(date) date,platform,rmb money,lv moneyType from t_rechargelog where date >= ? and date < ?) t "+
-								"group by date,platform,moneyType");
-
-						java.sql.Date start = DateUtils.conver2SqlDate(critical);
-						stmt.setDate(1, start); // 统计开始日期(包含)
-						
-						java.sql.Date end = DateUtils.conver2SqlDate(DateUtils.getTodayTime0());
-						stmt.setDate(2, end); // 统计截止日期(不包含)
-					}
+					java.sql.Date end = DateUtils.conver2SqlDate(new Date()); // 统计截止日期(不包含)
+					stmt.setDate(1, end);
+				} else {
+					// 说明有统计，则判断统计信息是否已经最新
+					stmt = conn.prepareStatement("select count(*) from t_rechargelog where date >= ?");
+					
+					Calendar now = Calendar.getInstance();
+					now.setTime(endDate);
+					now.add(Calendar.DAY_OF_MONTH, 1);
+					java.sql.Date critical = DateUtils.conver2SqlDate(now.getTime());
+					stmt.setDate(1, critical);
 					
 					ResultSet resultSet = stmt.executeQuery();
-
-					while(resultSet.next()) {
-						Date date = resultSet.getDate(1);
-						String platform = resultSet.getString(2);
-						Integer moneyType = resultSet.getInt(3);
-						Integer money = resultSet.getInt(4);
-
-						DailyRevenue record = new DailyRevenue();
-						record.setDate(date);
-						record.setMoney(money);
-						record.setMoneyType(moneyType);
-						record.setPlatform(platform);
-						record.setServerId(server.getServerid());
-						record.setServerName(server.getServername());
-						insert(record);
+					if(resultSet.next()) {
+						int count = resultSet.getInt(1);
+						if(count == 0) return; // 说明主数据库的信息已经是最新的
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					logger.error("KPI考核收入查询失败", e.getCause());
-					throw new RuntimeException("KPI考核收入查询失败"); // 需要回滚事务
+					stmt.close();
+					
+					// 说明有统计，则统计从第二天截止今天凌晨00:00:00的数据
+					stmt = conn.prepareStatement(
+							"select date,platform,moneyType,sum(money) money from " + 
+							"(select date(date) date,platform,rmb money,lv moneyType from t_rechargelog where date >= ? and date < ?) t "+
+							"group by date,platform,moneyType");
+
+					java.sql.Date start = DateUtils.conver2SqlDate(critical);
+					stmt.setDate(1, start); // 统计开始日期(包含)
+					
+					java.sql.Date end = DateUtils.conver2SqlDate(DateUtils.getTodayTime0());
+					stmt.setDate(2, end); // 统计截止日期(不包含)
 				}
+				
+				ResultSet resultSet = stmt.executeQuery();
+				final int batchSize = 100; // 每次批量插入的阈值
+				List<DailyRevenue> revenueList = new ArrayList<>(batchSize*2);
+				while(resultSet.next()) {
+					Date date = resultSet.getDate(1);
+					String platform = resultSet.getString(2);
+					Integer moneyType = resultSet.getInt(3);
+					Integer money = resultSet.getInt(4);
+
+					DailyRevenue record = new DailyRevenue();
+					record.setDate(date);
+					record.setMoney(money);
+					record.setMoneyType(moneyType);
+					record.setPlatform(platform);
+					record.setServerId(server.getServerid());
+					record.setServerName(server.getServername());
+					revenueList.add(record);
+					
+					if(revenueList.size() == batchSize) {
+						dailyRevenueMapper.batchInsert(revenueList);
+						revenueList.clear();
+					}
+				}
+				if(revenueList.size() > 0) {
+					dailyRevenueMapper.batchInsert(revenueList);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("KPI考核收入查询失败", e.getCause());
+				throw new RuntimeException("KPI考核收入查询失败"); // 需要回滚事务
 			}
 		}
 	}

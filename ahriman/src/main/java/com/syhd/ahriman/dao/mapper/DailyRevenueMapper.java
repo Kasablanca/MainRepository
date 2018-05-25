@@ -1,5 +1,6 @@
 package com.syhd.ahriman.dao.mapper;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,9 @@ public interface DailyRevenueMapper {
      * @param rate 汇率
      * @return 统计结果
      */
-    List<DailyRevenueVO> getDailyRevenue(@Param("param")DailyRevenueRequestParam param,@Param("rate")ExchangeRate rate);
+    List<DailyRevenueVO> getDailyRevenue(
+    		@Param("param")DailyRevenueRequestParam param,
+    		@Param("rate")ExchangeRate rate);
     
     /**
      * 获取服务器统计截止日期
@@ -68,5 +71,13 @@ public interface DailyRevenueMapper {
      * @param rate 汇率
      * @return 统计结果
      */
-    List<DailyRevenueVO> getMixinDailyRevenue(@Param("param")DailyRevenueRequestParam param,@Param("rate")ExchangeRate rate);
+    List<DailyRevenueVO> getMixinDailyRevenue(
+    		@Param("param")DailyRevenueRequestParam param,
+    		@Param("rate")ExchangeRate rate);
+    
+    /**
+     * 批量插入每个服务器、每天、每个平台、每种货币的收益
+     * @param records 需要插入的数据
+     */
+    void batchInsert(@Param("records")Collection<DailyRevenue> records);
 }
