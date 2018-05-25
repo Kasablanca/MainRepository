@@ -179,7 +179,7 @@ public class KpiAppraiseRevenueService {
 	
 	/**
 	 * 抓取每个日志服务器的KPI信息
-	 * @param server 游戏日日志服务器信息
+	 * @param server 游戏日志服务器信息
 	 */
 	@Async
 	@Transactional
