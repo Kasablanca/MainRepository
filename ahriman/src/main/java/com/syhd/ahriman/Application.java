@@ -19,6 +19,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @EnableAsync // 启用异步执行注解(@Async)
 @EnableScheduling //启用任务调度注解(@Scheduled)
 @SpringBootApplication
+//@EnableLoadTimeWeaving
 @MapperScan("com.syhd.ahriman.dao.mapper") //扫描该包下面的所有接口为mapper，不加该注解则需要在每个接口上添加"@Mapper"注解
 public class Application extends SpringBootServletInitializer {
 
@@ -56,5 +57,10 @@ public class Application extends SpringBootServletInitializer {
 		});
 		return scheduler;
 	}
+/*	
+	@Bean
+	public LoadTimeWeaver getLoadTimeWeaver() {
+		return new TomcatLoadTimeWeaver();
+	}*/
 
 }

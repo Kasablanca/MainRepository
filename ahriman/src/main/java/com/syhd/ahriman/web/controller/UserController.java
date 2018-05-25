@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -32,7 +33,14 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("add")
 	public User add(User user) {
-		return userService.myInsert(user);
+		return userService.insert2(user);
+	}
+	
+	@ResponseBody
+	@RequestMapping("{id}")
+	public User findById(@PathVariable Integer id) {
+		System.out.println(userService.getClass().getName());
+		return userService.findById(id);
 	}
 	
 }

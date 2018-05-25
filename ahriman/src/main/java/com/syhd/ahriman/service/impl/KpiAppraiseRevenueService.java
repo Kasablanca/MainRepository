@@ -183,6 +183,7 @@ public class KpiAppraiseRevenueService {
 	 */
 	@Async
 	@Transactional
+	@CacheEvict(allEntries=true)
 	public void preFetch(AppServer server) {
 		Date yesterdayTime0 = DateUtils.getYesterdayTime0();
 		Date endDate = dailyRevenueMapper.getEndDateByServerId(server.getServerid());
@@ -272,7 +273,7 @@ public class KpiAppraiseRevenueService {
 	 */
 	@Transactional
 	@Scheduled(cron="0 0 0 * * ?")
-	@CacheEvict
+	@CacheEvict(allEntries=true)
 	public void kpiAppraiseRevenueTask() {
 		List<AppServer> serverList = appServerMapper.getAllServer();
 

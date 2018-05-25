@@ -36,7 +36,7 @@ $(function (){
 				itemStyle: { 
 					normal: {
 						label: {
-							show: true
+							show: false
 						}
 					}
 				},

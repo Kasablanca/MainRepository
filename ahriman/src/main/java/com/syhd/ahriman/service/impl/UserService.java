@@ -33,14 +33,10 @@ public class UserService {
 		return new TableData(userMapper.findAllCount(),userMapper.findAll(pagination,sort));
 	}
 
-	@CachePut()
+	@CachePut(key="#user.id")
 	@Transactional
 	public User insert(User user) {
 		userMapper.insert(user);
-		/*if(user.getAge()<1) {
-			throw new RuntimeException("无效的年龄");
-		}
-		user.setAge(user.getAge()+1);*/
 		return user;
 	}
 
@@ -49,7 +45,7 @@ public class UserService {
 		return userMapper.userDistribution();
 	}
 	
-	public User myInsert(User user) {
+	public User insert2(User user) {
 		return insert(user);
 	}
 

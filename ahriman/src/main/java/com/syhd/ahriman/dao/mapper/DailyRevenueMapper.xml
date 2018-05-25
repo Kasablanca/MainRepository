@@ -154,7 +154,7 @@
 	</select>
 	<select id="getEndDateByServerId" resultType="java.util.Date">
 		<!-- for update 锁住表，防止其他线程添加数据影响分析结果 -->
-		select max(date) from t_daily_revenue where server_id = #{serverId} for update
+		select max(date) from t_daily_revenue where server_id = #{serverId}
 	</select>
 	<select id="getAllServer" resultType="com.syhd.ahriman.dao.model.DailyRevenue">
 		select distinct server_id serverId,server_name serverName from t_daily_revenue order by server_name

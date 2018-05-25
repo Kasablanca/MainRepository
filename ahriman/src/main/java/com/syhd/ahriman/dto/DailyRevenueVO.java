@@ -13,7 +13,6 @@ public class DailyRevenueVO implements Serializable {
 	private Date date;
 	
 	private Integer money;
-	private Integer moneyType;
 	
 	public Date getDate() {
 		return date;
@@ -26,12 +25,6 @@ public class DailyRevenueVO implements Serializable {
 	}
 	public void setMoney(Integer money) {
 		this.money = money;
-	}
-	public Integer getMoneyType() {
-		return moneyType;
-	}
-	public void setMoneyType(Integer moneyType) {
-		this.moneyType = moneyType;
 	}
 	
 }
