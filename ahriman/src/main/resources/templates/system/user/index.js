@@ -5,7 +5,7 @@ layui.use('table', function(){
 	table.render({
 		elem: '#demo'
 		,height: 315
-		,url: /*[[@{/test/user}]]*/ '/test/user' //数据接口
+		,url: /*[[@{/test/user}]]*/ 'test/user' //数据接口
 		,page: true //开启分页
 		,limit: 30
 		,loading: true

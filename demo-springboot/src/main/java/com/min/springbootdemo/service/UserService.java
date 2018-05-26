@@ -3,6 +3,7 @@ package com.min.springbootdemo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,12 @@ public class UserService {
 	@CacheEvict
 	public int delete(Integer id) {
 		return userMapper.deleteByPrimaryKey(id);
+	}
+	
+	@CachePut(key="#user.id")
+	public User add(User user) {
+		userMapper.insert(user);
+		return user;
 	}
 	
 }

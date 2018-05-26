@@ -19,7 +19,7 @@ public class UserController {
 
 	@RequestMapping("add")
 	public User add(User user) {
-		return user;
+		return userService.add(user);
 	}
 	
 	@RequestMapping("date")
