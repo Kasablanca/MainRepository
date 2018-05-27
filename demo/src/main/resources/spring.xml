@@ -12,7 +12,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd ">
 	
-	<context:component-scan base-package="cn.lm.service.impl,cn.lm.ws,cn.lm.jms,cn.lm.other,cn.lm.aspect" />
+	<context:component-scan base-package="cn.lm.service,cn.lm.service.impl,cn.lm.ws,cn.lm.jms,cn.lm.other,cn.lm.aspect" />
 	
 	<context:property-placeholder location="classpath:config.home.properties" />
 	
@@ -63,7 +63,7 @@
 		</tx:attributes>
 	</tx:advice>
 	
-	<aop:aspectj-autoproxy />
+	<aop:aspectj-autoproxy proxy-target-class="true" />
 	
 	<aop:config proxy-target-class="true">
 		<aop:pointcut id="transactionPointcut" expression="execution(* cn.lm.service.impl.*Impl.*(..))" />
@@ -136,6 +136,6 @@
 	
 	<task:scheduler id="defaultTaskScheduler" pool-size="50" />
 	
-	
+	<context:load-time-weaver aspectj-weaving="autodetect" />
 	
 </beans>

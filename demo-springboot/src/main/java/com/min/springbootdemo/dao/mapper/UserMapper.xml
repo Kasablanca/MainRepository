@@ -23,12 +23,16 @@
 		delete from t_user
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
-	<insert id="insert" parameterType="com.min.springbootdemo.dao.model.User" useGeneratedKeys="true" keyProperty="id">
-		insert into t_user (id, username, age,
+	<insert id="insert" parameterType="com.min.springbootdemo.dao.model.User"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into t_user (id, username,
+		age,
 		sex, email, birthday)
-		values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR},
+		values (#{id,jdbcType=INTEGER},
+		#{username,jdbcType=VARCHAR},
 		#{age,jdbcType=INTEGER},
-		#{sex,jdbcType=TINYINT}, #{email,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE})
+		#{sex,jdbcType=TINYINT}, #{email,jdbcType=VARCHAR},
+		#{birthday,jdbcType=DATE})
 	</insert>
 	<insert id="insertSelective" parameterType="com.min.springbootdemo.dao.model.User">
 		insert into t_user
@@ -96,7 +100,8 @@
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.min.springbootdemo.dao.model.User">
 		update t_user
-		set username = #{username,jdbcType=VARCHAR},
+		set
+		username = #{username,jdbcType=VARCHAR},
 		age = #{age,jdbcType=INTEGER},
 		sex = #{sex,jdbcType=TINYINT},
 		email = #{email,jdbcType=VARCHAR},
@@ -104,12 +109,15 @@
 		where id = #{id,jdbcType=INTEGER}
 	</update>
 	<select id="findAll" resultType="com.min.springbootdemo.dao.model.User">
-		select * from t_user order by ${sort.field} ${sort.sord} limit ${(page.page-1)*page.limit},${page.limit}
+		select * from t_user order by
+		${sort.field} ${sort.sord} limit
+		${(page.page-1)*page.limit},${page.limit}
 	</select>
 	<select id="findAllCount" resultType="long">
 		select count(*) from t_user
 	</select>
 	<select id="userDistribution" resultType="map">
-		select age,count(age) count from t_user group by age order by age
+		select age,count(age)
+		count from t_user group by age order by age
 	</select>
 </mapper>

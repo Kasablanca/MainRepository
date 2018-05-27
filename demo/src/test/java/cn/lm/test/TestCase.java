@@ -54,15 +54,16 @@ import cn.lm.mapper.MenuMapper;
 import cn.lm.model.MenuNode;
 import cn.lm.model.TUser;
 import cn.lm.model.User;
+import cn.lm.service.TestTarget;
 import cn.lm.utils.ParamValidateUtil;
 
 public class TestCase {
 	
 	public static void main(String[] args) throws Exception {
-		Integer i1 = 100, i2 = 100, i3 = 150, i4 = 150;
-		System.out.println(i1==i2);
-		System.out.println(i3 == i4);
-		System.out.println("中文");
+		ApplicationContext ctx = getSpringContext();
+		/*TestTarget target = ctx.getBean(TestTarget.class);
+		target.helloworld();*/
+		new TestTarget().helloworld();
 	}
 	
 	public static void getTreeTest() throws IOException {
