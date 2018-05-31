@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- 公共头模板 -->
+<head th:fragment="common_header(title,links)">
+	<meta charset="UTF-8">
+	<base href="/" th:href="@{/}">
+	<title th:replace="${title}">untitled</title>
+	<link rel="stylesheet" href="/css/font.css" th:href="@{/css/font.css}">
+	<link rel="stylesheet" href="/css/xadmin.css" th:href="@{/css/xadmin.css}">
+	
+	<!-- 插入私有css文件 -->
+	<th:block th:replace="${links}" />
+</head>
+<body>
+	<!-- 公共js模板 -->
+	<th:block th:fragment="common_javascript(scripts)">
+		<script src="/js/jquery-3.3.1.js" th:src="@{/js/jquery-3.3.1.js}"></script>
+		<script src="/depend/layui/layui.all.js" th:src="@{/depend/layui/layui.all.js}"></script>
+		<script src="/js/xadmin.js" th:src="@{/js/xadmin.js}"></script>
+		
+		<!-- 插入私有js文件 -->
+		<th:block th:replace="${scripts}"/>
+	</th:block>
+</body>
+</html>
