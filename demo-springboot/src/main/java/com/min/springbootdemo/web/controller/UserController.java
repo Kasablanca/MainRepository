@@ -34,6 +34,8 @@ public class UserController {
 	
 	@RequestMapping("find/{id}")
 	public User find(@PathVariable Integer id) {
+		System.out.println(Thread.currentThread().getId());
+		userService.async();
 		return userService.findById(id);
 	}
 	

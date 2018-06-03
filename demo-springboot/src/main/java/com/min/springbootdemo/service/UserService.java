@@ -20,8 +20,6 @@ public class UserService {
 	
 	@Cacheable
 	public User findById(Integer id) {
-		System.out.println(Thread.currentThread().getId());
-		async();
 		return userMapper.selectByPrimaryKey(id);
 	}
 	

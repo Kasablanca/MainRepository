@@ -9,19 +9,23 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@EnableAsync
-@EnableCaching
 @EnableScheduling
 @SpringBootApplication
+@EnableAsync(mode=AdviceMode.ASPECTJ)
+@EnableCaching(mode=AdviceMode.ASPECTJ)
+@EnableTransactionManagement(mode=AdviceMode.ASPECTJ)
 @MapperScan("com.min.springbootdemo.dao.mapper")
-//@EnableLoadTimeWeaving(aspectjWeaving=AspectJWeaving.ENABLED)
-public class Application extends SpringBootServletInitializer /*implements LoadTimeWeavingConfigurer*/ {
+public class Application extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication application = new SpringApplication(Application.class);
@@ -31,13 +35,9 @@ public class Application extends SpringBootServletInitializer /*implements LoadT
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Application.class);
 	}
-/*	
-	public LoadTimeWeaver getLoadTimeWeaver() {
-		return new TomcatLoadTimeWeaver();
-	}*/
 	
-	@Bean  
-	public ThreadPoolTaskExecutor getTaskExecutor(){
+	@Bean
+	public TaskExecutor getTaskExecutor(){
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setKeepAliveSeconds(60);
 		executor.setMaxPoolSize(1000);
@@ -51,7 +51,7 @@ public class Application extends SpringBootServletInitializer /*implements LoadT
 	}
 	
 	@Bean
-	public ThreadPoolTaskScheduler getTaskScheduler() {
+	public TaskScheduler getTaskScheduler() {
 		ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
 		scheduler.setPoolSize(1000);
 		scheduler.setRejectedExecutionHandler(new RejectedExecutionHandler() {
