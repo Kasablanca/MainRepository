@@ -1,8 +1,0 @@
-.settings
-/target/
-/build/
-.classpath
-.project
-.factorypath
-system.*
-workspace*/
