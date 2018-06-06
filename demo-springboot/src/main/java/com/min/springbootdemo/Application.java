@@ -36,7 +36,7 @@ public class Application extends SpringBootServletInitializer {
 		return application.sources(Application.class);
 	}
 	
-	@Bean
+	@Bean("taskExecutor")
 	public TaskExecutor getTaskExecutor(){
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 		executor.setKeepAliveSeconds(60);
@@ -50,7 +50,7 @@ public class Application extends SpringBootServletInitializer {
 		return executor;
 	}
 	
-	@Bean
+	@Bean("taskScheduler")
 	public TaskScheduler getTaskScheduler() {
 		ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
 		scheduler.setPoolSize(1000);
