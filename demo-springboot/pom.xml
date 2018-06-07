@@ -96,12 +96,12 @@
 					<encoding>UTF-8</encoding>
 					<verbose>false</verbose>
 					<outxml>true</outxml>
-<!--					<aspectLibraries>
+					<aspectLibraries>
  						<aspectLibrary>
 							<groupId>org.springframework</groupId>
 							<artifactId>spring-aspects</artifactId>
 						</aspectLibrary>
-					</aspectLibraries> -->
+					</aspectLibraries>
 				</configuration>
 				<executions>
 					<execution>
