@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<base th:href="@{/}">
+	<meta charset="UTF-8">
+	<title>权限管理</title>
+	<link type="text/css" rel="stylesheet" th:href="@{/depend/layui/css/layui.css}">
+	<link type="text/css" rel="stylesheet" th:href="@{/depend/ztree/css/zTreeStyle/zTreeStyle.css}">
+	
+	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.js}"></script>
+	<script type="text/javascript" th:src="@{/depend/layui/layui.all.js}"></script>
+	<script type="text/javascript" th:src="@{/depend/ztree/js/jquery.ztree.all.js}"></script>
+	<script type="text/javascript" th:src="@{/system/authority/index.js}"></script>
+	
+	<style type="text/css">
+		div#contextMenu {
+			position: absolute;
+			display: none;
+			top: 0;
+			background-color: #555;
+			text-align: left;
+			padding: 2px;
+		}
+		
+		div#contextMenu ul li {
+			margin: 1px 0;
+			padding: 0 5px;
+			cursor: pointer;
+			list-style: none outside none;
+			background-color: #DFDFDF;
+		}
+	</style>
+</head>
+<body class="layui-box">
+	
+	<div class="layui-container">
+		<div class="layui-card">
+			<div class="layui-card-header">
+				header
+			</div>
+			<div class="layui-card-body">
+				<ul id="main" class="ztree"></ul>
+			</div>
+		</div>
+	</div>
+	
+	<div id="contextMenu">
+		<ul>
+			<li id="addNode">增加权限</li>
+			<li id="deleteNode">删除权限</li>
+			<li id="editNode">编辑权限</li>
+		</ul>
+	</div>
+</body>
+</html>
