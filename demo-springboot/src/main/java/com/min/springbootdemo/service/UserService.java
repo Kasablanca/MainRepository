@@ -24,7 +24,11 @@ public class UserService {
 	@Cacheable
 	public User findById(Integer id) {
 		async();
+<<<<<<< HEAD
 		System.out.println(Thread.currentThread().getId());
+=======
+		System.out.println("init:"+Thread.currentThread().getId());
+>>>>>>> branch 'master' of https://github.com/Kasablanca/MainRepository.git
 		return userMapper.selectByPrimaryKey(id);
 	}
 	
