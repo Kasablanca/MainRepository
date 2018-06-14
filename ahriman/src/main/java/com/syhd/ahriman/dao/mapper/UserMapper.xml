@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhd.ahriman.dao.mapper.UserMapper">
+	<resultMap id="BaseResultMap"
+		type="com.syhd.ahriman.dao.model.User">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="add_time" jdbcType="TIMESTAMP"
+			property="addTime" />
+		<result column="add_acc_id" jdbcType="INTEGER"
+			property="addAccId" />
+		<result column="upd_time" jdbcType="TIMESTAMP"
+			property="updTime" />
+		<result column="upd_acc_id" jdbcType="INTEGER"
+			property="updAccId" />
+		<result column="ver_no" jdbcType="INTEGER" property="verNo" />
+		<result column="acc_name" jdbcType="VARCHAR" property="accName" />
+		<result column="username" jdbcType="VARCHAR"
+			property="username" />
+		<result column="password" jdbcType="VARCHAR"
+			property="password" />
+		<result column="last_login_time" jdbcType="TIMESTAMP"
+			property="lastLoginTime" />
+		<result column="status" jdbcType="TINYINT" property="status" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, add_time, add_acc_id, upd_time, upd_acc_id, ver_no, acc_name,
+		username, password,
+		last_login_time, status
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_user
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_user
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.syhd.ahriman.dao.model.User">
+		insert into t_user (id, add_time, add_acc_id,
+		upd_time, upd_acc_id, ver_no,
+		acc_name, username, password,
+		last_login_time, status)
+		values (#{id,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP},
+		#{addAccId,jdbcType=INTEGER},
+		#{updTime,jdbcType=TIMESTAMP}, #{updAccId,jdbcType=INTEGER}, #{verNo,jdbcType=INTEGER},
+		#{accName,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{lastLoginTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.syhd.ahriman.dao.model.User">
+		insert into t_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="addAccId != null">
+				add_acc_id,
+			</if>
+			<if test="updTime != null">
+				upd_time,
+			</if>
+			<if test="updAccId != null">
+				upd_acc_id,
+			</if>
+			<if test="verNo != null">
+				ver_no,
+			</if>
+			<if test="accName != null">
+				acc_name,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="addTime != null">
+				#{addTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="addAccId != null">
+				#{addAccId,jdbcType=INTEGER},
+			</if>
+			<if test="updTime != null">
+				#{updTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updAccId != null">
+				#{updAccId,jdbcType=INTEGER},
+			</if>
+			<if test="verNo != null">
+				#{verNo,jdbcType=INTEGER},
+			</if>
+			<if test="accName != null">
+				#{accName,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="lastLoginTime != null">
+				#{lastLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.syhd.ahriman.dao.model.User">
+		update t_user
+		<set>
+			<if test="addTime != null">
+				add_time = #{addTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="addAccId != null">
+				add_acc_id = #{addAccId,jdbcType=INTEGER},
+			</if>
+			<if test="updTime != null">
+				upd_time = #{updTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updAccId != null">
+				upd_acc_id = #{updAccId,jdbcType=INTEGER},
+			</if>
+			<if test="verNo != null">
+				ver_no = #{verNo,jdbcType=INTEGER},
+			</if>
+			<if test="accName != null">
+				acc_name = #{accName,jdbcType=VARCHAR},
+			</if>
+			<if test="username != null">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.syhd.ahriman.dao.model.User">
+		update t_user
+		set add_time = #{addTime,jdbcType=TIMESTAMP},
+		add_acc_id = #{addAccId,jdbcType=INTEGER},
+		upd_time = #{updTime,jdbcType=TIMESTAMP},
+		upd_acc_id = #{updAccId,jdbcType=INTEGER},
+		ver_no = #{verNo,jdbcType=INTEGER},
+		acc_name = #{accName,jdbcType=VARCHAR},
+		username = #{username,jdbcType=VARCHAR},
+		password = #{password,jdbcType=VARCHAR},
+		last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+		status = #{status,jdbcType=TINYINT}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="getByAccName" resultType="com.syhd.ahriman.dao.model.User" >
+		select * from t_user where acc_name = #{accName}
+	</select>
+	<select id="getUserList" resultType="com.syhd.ahriman.dao.model.User">
+		select * from (
+			select id,ver_no verNo,acc_name accName,username,last_login_time lastLoginTime from t_user
+			<where>
+				<if test="filter.accName !=null and filter.accName != ''">
+					acc_name like '%${filter.accName}%'
+				</if>
+				<if test="filter.username !=null and filter.username != ''">
+					username like '%${filter.username}%'
+				</if>
+			</where>
+		) t
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}	
+	</select>
+	<select id="getUserListCount" resultType="long">
+		select count(*) from t_user
+		<where>
+			<if test="filter.accName !=null and filter.accName != ''">
+				acc_name like '%${filter.accName}%'
+			</if>
+			<if test="filter.username !=null and filter.username != ''">
+				username like '%${filter.username}%'
+			</if>
+		</where>
+	</select>
+	<update id="updateLastLoginTime">
+		update t_user set last_login_time = #{lastLoginTime} where id = #{id}
+	</update>
+	<select id="getAuthorityGroupId" resultType="int">
+		select group_id from t_user_group where user_id = #{id}
+	</select>
+	<insert id="batchInsertAuthorityGroups">
+		insert into t_user_group(user_id,group_id) values
+		<trim suffixOverrides=",">
+			<foreach collection="list" item="item">
+				(#{item.userId},#{item.groupId}),
+			</foreach>
+		</trim>
+	</insert>
+	<delete id="clearGroups">
+		delete from t_user_group where user_id = #{userId}
+	</delete>
+	<select id="getAuthoritiesUrl" resultType="string">
+		select url from t_user_group t1
+		inner join t_group_authority t2 on t1.group_id = t2.group_id
+		inner join t_authority t3 on t2.authority_id = t3.id
+		where t1.user_id = #{id}
+	</select>
+</mapper>

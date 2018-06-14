@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::common_header(~{::title},~{})">
+	<title>错误</title>
+</head>
+<body>
+	<th:block th:replace="base:: common_javascript(~{::script})">
+		<script th:inline="javascript">
+			var message = /*[[${#request.getAttribute('error')}]]*/ '错误';
+			$(function (){
+				layer.open({
+					title: '提示',
+					content: message,
+					btn: ['确定'],
+					yes: function (index){
+						layer.close(index);
+					},
+					icon: 5
+				});
+			});
+		</script>
+	</th:block>
+</body>
+</html>

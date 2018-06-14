@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.syhd.ahriman.dao.mapper.DailyActiveUserMapper">
+	<resultMap id="BaseResultMap"
+		type="com.syhd.ahriman.dao.model.DailyActiveUser">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="date" jdbcType="DATE" property="date" />
+		<result column="server_id" jdbcType="INTEGER"
+			property="serverId" />
+		<result column="server_name" jdbcType="VARCHAR"
+			property="serverName" />
+		<result column="platform" jdbcType="VARCHAR"
+			property="platform" />
+		<result column="count" jdbcType="BIGINT" property="count" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, date, server_id, server_name, platform, count
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_daily_activeuser
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from t_daily_activeuser
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.syhd.ahriman.dao.model.DailyActiveUser">
+		insert into t_daily_activeuser (id, date, server_id,
+		server_name, platform, count
+		)
+		values (#{id,jdbcType=BIGINT}, #{date,jdbcType=DATE},
+		#{serverId,jdbcType=INTEGER},
+		#{serverName,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR}, #{count,jdbcType=BIGINT}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.syhd.ahriman.dao.model.DailyActiveUser">
+		insert into t_daily_activeuser
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="serverId != null">
+				server_id,
+			</if>
+			<if test="serverName != null">
+				server_name,
+			</if>
+			<if test="platform != null">
+				platform,
+			</if>
+			<if test="count != null">
+				count,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=DATE},
+			</if>
+			<if test="serverId != null">
+				#{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="serverName != null">
+				#{serverName,jdbcType=VARCHAR},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="count != null">
+				#{count,jdbcType=BIGINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.syhd.ahriman.dao.model.DailyActiveUser">
+		update t_daily_activeuser
+		<set>
+			<if test="date != null">
+				date = #{date,jdbcType=DATE},
+			</if>
+			<if test="serverId != null">
+				server_id = #{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="serverName != null">
+				server_name = #{serverName,jdbcType=VARCHAR},
+			</if>
+			<if test="platform != null">
+				platform = #{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="count != null">
+				count = #{count,jdbcType=BIGINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.syhd.ahriman.dao.model.DailyActiveUser">
+		update t_daily_activeuser
+		set date = #{date,jdbcType=DATE},
+		server_id = #{serverId,jdbcType=INTEGER},
+		server_name = #{serverName,jdbcType=VARCHAR},
+		platform = #{platform,jdbcType=VARCHAR},
+		count = #{count,jdbcType=BIGINT}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<select id="getStatistic" resultType="com.syhd.ahriman.dto.KpiStatistic">
+		select date,sum(count) count
+		from t_daily_activeuser
+		where date >= #{param.start} and date &lt; #{param.end}
+		<if test="param.platform != null and param.platform.length > 0">
+			and platform in
+			<trim prefix="(" suffixOverrides="," suffix=")">
+				<foreach collection="param.platform" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		<if test="param.serverId != null and param.serverId.length > 0">
+			and server_id in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.serverId" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		group by date
+		order by date
+	</select>
+	<select id="getAllServer" resultType="com.syhd.ahriman.dao.model.DailyActiveUser">
+		select distinct server_id serverId,server_name serverName from t_daily_activeuser order by server_name
+	</select>
+	<select id="getAllPlatform" resultType="string">
+		select distinct platform from t_daily_activeuser order by platform
+	</select>
+	<update id="createTodayActiveuserTable">
+		{call create_temp_activeuser_table()}
+	</update>
+	<insert id="insertIntoTemp" useGeneratedKeys="true" keyProperty="id">
+		insert into t_daily_activeuser (id, date, server_id,
+		server_name, platform, count)
+		values (#{id,jdbcType=BIGINT}, #{date,jdbcType=DATE},
+		#{serverId,jdbcType=INTEGER},
+		#{serverName,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR}, #{count,jdbcType=BIGINT})
+	</insert>
+	<select id="getMixinStatistic" resultType="com.syhd.ahriman.dto.KpiStatistic">
+		select date,sum(count) count from (
+			select date,count
+			from t_daily_activeuser
+			where date >= #{param.start}
+			<if test="param.platform != null and param.platform.length > 0">
+				and platform in
+				<trim prefix="(" suffixOverrides="," suffix=")">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length > 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			union all
+			select date,count
+			from t_today_activeuser
+			where 1=1
+			<if test="param.platform != null and param.platform.length > 0">
+				and platform in
+				<trim prefix="(" suffixOverrides="," suffix=")">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length > 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+		) t
+		group by date
+		order by date
+	</select>
+	<select id="getEndDateByServerId" resultType="java.util.Date">
+		select max(date) from t_daily_activeuser where server_id = #{serverId}
+	</select>
+	<insert id="batchInsert">
+		insert into t_daily_activeuser (date, server_id, server_name, platform, count) values 
+		<trim suffixOverrides=",">
+			<foreach collection="records" item="record">
+				(#{record.date,jdbcType=DATE}, #{record.serverId,jdbcType=INTEGER},
+				#{record.serverName,jdbcType=VARCHAR}, #{record.platform,jdbcType=VARCHAR}, #{record.count,jdbcType=BIGINT}),
+			</foreach>
+		</trim>
+	</insert>
+</mapper>

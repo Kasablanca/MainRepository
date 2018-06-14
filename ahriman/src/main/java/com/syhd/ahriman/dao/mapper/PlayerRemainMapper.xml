@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.syhd.ahriman.dao.mapper.PlayerRemainMapper">
+	<resultMap id="BaseResultMap"
+		type="com.syhd.ahriman.dao.model.PlayerRemain">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="server_id" jdbcType="INTEGER"
+			property="serverId" />
+		<result column="platform" jdbcType="VARCHAR"
+			property="platform" />
+		<result column="date" jdbcType="DATE" property="date" />
+		<result column="day1" jdbcType="DECIMAL" property="day1" />
+		<result column="day2" jdbcType="DECIMAL" property="day2" />
+		<result column="day3" jdbcType="DECIMAL" property="day3" />
+		<result column="day4" jdbcType="DECIMAL" property="day4" />
+		<result column="day5" jdbcType="DECIMAL" property="day5" />
+		<result column="day6" jdbcType="DECIMAL" property="day6" />
+		<result column="day7" jdbcType="DECIMAL" property="day7" />
+		<result column="day14" jdbcType="DECIMAL" property="day14" />
+		<result column="day30" jdbcType="DECIMAL" property="day30" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, server_id, platform, date, day1, day2, day3, day4, day5, day6, day7,
+		day14, day30
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_player_remain
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from t_player_remain
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.syhd.ahriman.dao.model.PlayerRemain">
+		insert into t_player_remain (id, server_id, platform,
+		date, day1, day2, day3,
+		day4, day5, day6, day7,
+		day14, day30)
+		values (#{id,jdbcType=BIGINT}, #{serverId,jdbcType=INTEGER},
+		#{platform,jdbcType=VARCHAR},
+		#{date,jdbcType=DATE}, #{day1,jdbcType=DECIMAL}, #{day2,jdbcType=DECIMAL},
+		#{day3,jdbcType=DECIMAL},
+		#{day4,jdbcType=DECIMAL}, #{day5,jdbcType=DECIMAL}, #{day6,jdbcType=DECIMAL},
+		#{day7,jdbcType=DECIMAL},
+		#{day14,jdbcType=DECIMAL}, #{day30,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.syhd.ahriman.dao.model.PlayerRemain">
+		insert into t_player_remain
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="serverId != null">
+				server_id,
+			</if>
+			<if test="platform != null">
+				platform,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="day1 != null">
+				day1,
+			</if>
+			<if test="day2 != null">
+				day2,
+			</if>
+			<if test="day3 != null">
+				day3,
+			</if>
+			<if test="day4 != null">
+				day4,
+			</if>
+			<if test="day5 != null">
+				day5,
+			</if>
+			<if test="day6 != null">
+				day6,
+			</if>
+			<if test="day7 != null">
+				day7,
+			</if>
+			<if test="day14 != null">
+				day14,
+			</if>
+			<if test="day30 != null">
+				day30,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="serverId != null">
+				#{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=DATE},
+			</if>
+			<if test="day1 != null">
+				#{day1,jdbcType=DECIMAL},
+			</if>
+			<if test="day2 != null">
+				#{day2,jdbcType=DECIMAL},
+			</if>
+			<if test="day3 != null">
+				#{day3,jdbcType=DECIMAL},
+			</if>
+			<if test="day4 != null">
+				#{day4,jdbcType=DECIMAL},
+			</if>
+			<if test="day5 != null">
+				#{day5,jdbcType=DECIMAL},
+			</if>
+			<if test="day6 != null">
+				#{day6,jdbcType=DECIMAL},
+			</if>
+			<if test="day7 != null">
+				#{day7,jdbcType=DECIMAL},
+			</if>
+			<if test="day14 != null">
+				#{day14,jdbcType=DECIMAL},
+			</if>
+			<if test="day30 != null">
+				#{day30,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.syhd.ahriman.dao.model.PlayerRemain">
+		update t_player_remain
+		<set>
+			<if test="serverId != null">
+				server_id = #{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="platform != null">
+				platform = #{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="date != null">
+				date = #{date,jdbcType=DATE},
+			</if>
+			<if test="day1 != null">
+				day1 = #{day1,jdbcType=DECIMAL},
+			</if>
+			<if test="day2 != null">
+				day2 = #{day2,jdbcType=DECIMAL},
+			</if>
+			<if test="day3 != null">
+				day3 = #{day3,jdbcType=DECIMAL},
+			</if>
+			<if test="day4 != null">
+				day4 = #{day4,jdbcType=DECIMAL},
+			</if>
+			<if test="day5 != null">
+				day5 = #{day5,jdbcType=DECIMAL},
+			</if>
+			<if test="day6 != null">
+				day6 = #{day6,jdbcType=DECIMAL},
+			</if>
+			<if test="day7 != null">
+				day7 = #{day7,jdbcType=DECIMAL},
+			</if>
+			<if test="day14 != null">
+				day14 = #{day14,jdbcType=DECIMAL},
+			</if>
+			<if test="day30 != null">
+				day30 = #{day30,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.syhd.ahriman.dao.model.PlayerRemain">
+		update t_player_remain
+		set server_id = #{serverId,jdbcType=INTEGER},
+		platform = #{platform,jdbcType=VARCHAR},
+		date = #{date,jdbcType=DATE},
+		day1 = #{day1,jdbcType=DECIMAL},
+		day2 = #{day2,jdbcType=DECIMAL},
+		day3 = #{day3,jdbcType=DECIMAL},
+		day4 = #{day4,jdbcType=DECIMAL},
+		day5 = #{day5,jdbcType=DECIMAL},
+		day6 = #{day6,jdbcType=DECIMAL},
+		day7 = #{day7,jdbcType=DECIMAL},
+		day14 = #{day14,jdbcType=DECIMAL},
+		day30 = #{day30,jdbcType=DECIMAL}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<select id="getStatistic" resultType="com.syhd.ahriman.dao.model.PlayerRemain">
+		select 
+			date,
+			sum(day1) day1,
+			sum(day2)/sum(day1) day2,
+			sum(day3)/sum(day1) day3,
+			sum(day4)/sum(day1) day4,
+			sum(day5)/sum(day1) day5,
+			sum(day6)/sum(day1) day6,
+			sum(day7)/sum(day1) day7,
+			sum(day14)/sum(day1) day14,
+			sum(day30)/sum(day1) day30
+		from t_player_remain
+		where date >= #{param.start} and date &lt; #{param.end}
+		<if test="param.platform != null and param.platform.length > 0">
+			and platform in
+			<trim prefix="(" suffixOverrides="," suffix=")">
+				<foreach collection="param.platform" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		<if test="param.serverId != null and param.serverId.length > 0">
+			and server_id in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.serverId" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		group by date
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
+	</select>
+	<select id="getStatisticCount" resultType="int">
+		select count(distinct date)
+		from t_player_remain
+		where date >= #{param.start} and date &lt; #{param.end}
+		<if test="param.platform != null and param.platform.length > 0">
+			and platform in
+			<trim prefix="(" suffixOverrides="," suffix=")">
+				<foreach collection="param.platform" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		<if test="param.serverId != null and param.serverId.length > 0">
+			and server_id in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.serverId" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+	</select>
+	<select id="getAllPlatform" resultType="string">
+		select distinct platform from t_player_remain
+	</select>
+	<select id="getLastCountDate" resultType="java.util.Date" >
+		select max(date) from t_player_remain where server_id = #{serverId}
+	</select>
+	<insert id="batchInsert">
+		insert into t_player_remain (date, server_id, platform, day1, day2, day3,day4,day5,day6,day7,day14,day30) 
+		values <trim suffixOverrides=",">
+			<foreach collection="records" item="record">
+				(#{record.date,jdbcType=DATE}, #{record.serverId,jdbcType=INTEGER},
+				#{record.platform,jdbcType=VARCHAR}, 
+				#{record.day1},#{record.day2},#{record.day3},#{record.day4},#{record.day5},#{record.day6},
+				#{record.day7},#{record.day14},#{record.day30}),
+			</foreach>
+		</trim>
+	</insert>
+	<select id="getEarlyDate" resultType="date">
+		SELECT MIN(date) FROM t_player_remain WHERE day30 IS NULL
+	</select>
+	<update id="updateByUniqueKeySelective" parameterType="com.syhd.ahriman.dao.model.PlayerRemain">
+		update t_player_remain
+		<set>
+			<if test="day2 != null">
+				day2 = #{day2,jdbcType=DECIMAL},
+			</if>
+			<if test="day3 != null">
+				day3 = #{day3,jdbcType=DECIMAL},
+			</if>
+			<if test="day4 != null">
+				day4 = #{day4,jdbcType=DECIMAL},
+			</if>
+			<if test="day5 != null">
+				day5 = #{day5,jdbcType=DECIMAL},
+			</if>
+			<if test="day6 != null">
+				day6 = #{day6,jdbcType=DECIMAL},
+			</if>
+			<if test="day7 != null">
+				day7 = #{day7,jdbcType=DECIMAL},
+			</if>
+			<if test="day14 != null">
+				day14 = #{day14,jdbcType=DECIMAL},
+			</if>
+			<if test="day30 != null">
+				day30 = #{day30,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where server_id = #{serverId} and platform = #{platform} and date = #{date,jdbcType=DATE}
+	</update>
+</mapper>

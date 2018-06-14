@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.syhd.ahriman.dao.mapper.AuthorityGroupMapper">
+	<resultMap id="BaseResultMap"
+		type="com.syhd.ahriman.dao.model.AuthorityGroup">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="add_acc_id" jdbcType="INTEGER"
+			property="addAccId" />
+		<result column="add_time" jdbcType="TIMESTAMP"
+			property="addTime" />
+		<result column="upd_acc_id" jdbcType="INTEGER"
+			property="updAccId" />
+		<result column="upd_time" jdbcType="TIMESTAMP"
+			property="updTime" />
+		<result column="ver_no" jdbcType="INTEGER" property="verNo" />
+		<result column="group_name" jdbcType="VARCHAR"
+			property="groupName" />
+		<result column="status" jdbcType="TINYINT" property="status" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, add_acc_id, add_time, upd_acc_id, upd_time, ver_no, group_name,
+		status
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_authority_group
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_authority_group
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.syhd.ahriman.dao.model.AuthorityGroup">
+		insert into t_authority_group (id, add_acc_id, add_time,
+		upd_acc_id, upd_time, ver_no,
+		group_name, status)
+		values (#{id,jdbcType=INTEGER}, #{addAccId,jdbcType=INTEGER},
+		#{addTime,jdbcType=TIMESTAMP},
+		#{updAccId,jdbcType=INTEGER}, #{updTime,jdbcType=TIMESTAMP}, #{verNo,jdbcType=INTEGER},
+		#{groupName,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.syhd.ahriman.dao.model.AuthorityGroup">
+		insert into t_authority_group
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="addAccId != null">
+				add_acc_id,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="updAccId != null">
+				upd_acc_id,
+			</if>
+			<if test="updTime != null">
+				upd_time,
+			</if>
+			<if test="verNo != null">
+				ver_no,
+			</if>
+			<if test="groupName != null">
+				group_name,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="addAccId != null">
+				#{addAccId,jdbcType=INTEGER},
+			</if>
+			<if test="addTime != null">
+				#{addTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updAccId != null">
+				#{updAccId,jdbcType=INTEGER},
+			</if>
+			<if test="updTime != null">
+				#{updTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="verNo != null">
+				#{verNo,jdbcType=INTEGER},
+			</if>
+			<if test="groupName != null">
+				#{groupName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.syhd.ahriman.dao.model.AuthorityGroup">
+		update t_authority_group
+		<set>
+			<if test="addAccId != null">
+				add_acc_id = #{addAccId,jdbcType=INTEGER},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updAccId != null">
+				upd_acc_id = #{updAccId,jdbcType=INTEGER},
+			</if>
+			<if test="updTime != null">
+				upd_time = #{updTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="verNo != null">
+				ver_no = #{verNo,jdbcType=INTEGER},
+			</if>
+			<if test="groupName != null">
+				group_name = #{groupName,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.syhd.ahriman.dao.model.AuthorityGroup">
+		update t_authority_group
+		set add_acc_id = #{addAccId,jdbcType=INTEGER},
+		add_time = #{addTime,jdbcType=TIMESTAMP},
+		upd_acc_id = #{updAccId,jdbcType=INTEGER},
+		upd_time = #{updTime,jdbcType=TIMESTAMP},
+		ver_no = #{verNo,jdbcType=INTEGER},
+		group_name = #{groupName,jdbcType=VARCHAR},
+		status = #{status,jdbcType=TINYINT}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="getByGroupName" resultType="com.syhd.ahriman.dao.model.AuthorityGroup">
+		select * from t_authority_group where group_name = #{groupName}
+	</select>
+	<select id="getRecordList" resultType="com.syhd.ahriman.dao.model.AuthorityGroup">
+		select * from (
+			select id,ver_no verNo,group_name groupName from t_authority_group
+			<where>
+				<if test="filter.groupName !=null and filter.groupName != ''">
+					group_name like '%${filter.groupName}%'
+				</if>
+			</where>
+		) t
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}	
+	</select>
+	<select id="getRecordListCount" resultType="long">
+		select count(*) from t_authority_group
+		<where>
+			<if test="filter.groupName !=null and filter.groupName != ''">
+				group_name like '%${filter.groupName}%'
+			</if>
+		</where>
+	</select>
+	<select id="getAuthorities" resultType="int">
+		select authority_id from t_group_authority where group_id = #{groupId}
+	</select>
+	<select id="getAuthoritiesUrl" resultType="string">
+		select url from t_group_authority t1 inner join t_authority t2 on t1.authority_id = t2.id 
+		where t1.group_id = #{groupId}
+	</select>
+	<delete id="clearAuthorities">
+		delete from t_group_authority where group_id = #{groupId}
+	</delete>
+	<insert id="batchInsertAuthorities">
+		insert into t_group_authority(group_id,authority_id) values
+		<trim suffixOverrides=",">
+			<foreach collection="list" item="item">
+				(#{item.groupId},#{item.authorityId}),
+			</foreach>
+		</trim>
+	</insert>
+	<select id="getAllRecord" resultType="com.syhd.ahriman.dao.model.AuthorityGroup">
+		select id,group_name groupName from t_authority_group where status = 0
+	</select>
+</mapper>
