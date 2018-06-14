@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::common_header(~{::title},~{::link})">
+	<title>角色留存</title>
+	<link rel="stylesheet" href="/css/chosen.css" th:href="@{/css/chosen.css}">
+	<link rel="stylesheet" href="/css/style.css" th:href="@{/css/style.css}">
+  	<link rel="stylesheet" href="/css/prism.css" th:href="@{/css/prism.css}">
+</head>
+<body>
+	<div class="x-nav">
+		<span class="layui-breadcrumb">
+			<a href="javascript:;"><cite>首页</cite></a>
+			<a href="javascript:;"><cite>重要监控数据</cite></a>
+			<a href="javascript:;"><cite>付费数据</cite></a>
+		</span>
+		<a class="layui-btn layui-btn-small" style="line-height: 1.6em; margin-top: 3px; float: right" href="javascript:location.replace(location.href);" title="刷新">
+			<i class="layui-icon" style="line-height: 30px">&#xe666;</i></a>
+	</div>
+	<div class="x-body">
+		<div class="layui-card">
+			<div class="layui-card-header">查询条件</div>
+			<div class="layui-card-body">
+				<form id="searchForm" class="layui-container x-so">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">开始日</label>
+							<div class="layui-input-inline" style="width: 100px;">
+								<input name="start" autocomplete="off" id="start"
+									class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">截止日</label>
+							<div class="layui-input-inline" style="width: 100px;">
+								<input name="end" autocomplete="off" id="end"
+									class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">渠道</label>
+							<div class="layui-input-inline">
+								<select id="platform" name="platform" multiple class="chosen-select">
+									<option value="-1" selected>全部渠道</option>
+									<option th:each="item : ${platform}" th:value="${item}" th:text="${item}"></option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">服务器</label>
+							<div class="layui-input-inline">
+								<select id="serverId" name="serverId" multiple class="chosen-select">
+									<option value="-1" selected>全部服务器</option>
+									<option th:each="server : ${serverList}" th:value="${server.serverid}" th:text="${server.servername}"></option>
+								</select>
+							</div>
+						</div>
+						<button class="layui-btn" type="button" lay-submit lay-filter="export" style="float: right;margin-left: 5px;"><i class="layui-icon">&#xe601;</i></button>
+						<button id="searchBtn" class="layui-btn" type="button" lay-submit lay-filter="search" style="float: right;"><i class="layui-icon">&#xe615;</i></button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-header">数据说明</div>
+			<div class="layui-card-body">
+				活跃用户：每日登录过游戏用户数（去重）<br>
+				每日收入：每日00：00-24：00累计充值金额的总和<br>
+				付费用户数：每日充值的用户数(去重）<br>
+				付费ARPPU：每日收入/付费人数<br>
+				付费率：付费用户数/活跃用户<br>
+				活跃ARPU：每日收入/活跃用户
+			</div>
+		</div>
+		<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+		<div class="layui-card" style="background-color: rgba(0,0,0,0);">
+			<div id="main" lay-filter="main"></div><!-- style="height: 400px;width: 100%;" class="layui-col-lg12" -->
+		</div>
+	</div>
+
+	<th:block th:replace="base:: common_javascript(~{::script})">
+		<script src="/js/chosen.jquery.js" th:src="@{/js/chosen.jquery.js}"></script>
+		<script src="/js/prism.js" th:src="@{/js/prism.js}"></script>
+  		<script src="/js/init.js" th:src="@{/js/init.js}"></script>
+  		<script src="./index.js" th:src="@{/importantMonitor/kpipay/index.js}"></script>
+	</th:block>
+</body>
+</html>
