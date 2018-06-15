@@ -258,73 +258,218 @@
 		where id = #{id,jdbcType=BIGINT}
 	</update>
 	<select id="getStatistic" resultType="com.syhd.ahriman.dto.BasicInfoVO">
-		select 
-			date,
-			(
-				SELECT IFNULL(sum(totalRevenue),0) FROM (SELECT platform,max(total_revenue) totalRevenue FROM t_basic_info t2 WHERE t2.date &lt;= t1.date GROUP BY t2.platform) t3
-			) totalRevenue,
-			IFNULL(sum(daily_revenue),0) dailyRevenue,
-			IFNULL(sum(daily_revenue_new),0) dailyRevenueNew,
-			IFNULL(sum(daily_revenue)-sum(daily_revenue_new),0) dailyRevenueOld,
-			IFNULL(sum(live_user),0) liveUser,
-			IFNULL(sum(live_user_new),0) liveUserNew,
-			IFNULL(sum(live_user)-sum(live_user_new),0) liveUserOld,
-			IFNULL(sum(retention_day2),0) retentionDay2,
-			IFNULL(sum(retention_day3),0) retentionDay3,
-			IFNULL(sum(retention_day5),0) retentionDay5,
-			IFNULL(sum(retention_day7),0) retentionDay7,
-			IFNULL(sum(retention_day15),0) retentionDay15,
-			IFNULL(sum(retention_day30),0) retentionDay30,
-			IFNULL(sum(pay_user),0) payUser,
-			IFNULL(sum(pay_user_new),0) payUserNew,
-			IFNULL(sum(pay_user)-sum(pay_user_new),0) payUserOld,
-			IFNULL(sum(pay_user)/sum(live_user),0) payRate,
-			IFNULL(sum(pay_user_new)/sum(live_user_new),0) payRateNew,
-			IFNULL((sum(pay_user)-sum(pay_user_new))/(sum(live_user)-sum(live_user_new)),0) payRateOld,
-			IFNULL(sum(daily_revenue)/sum(live_user),0) arpu,
-			IFNULL(sum(daily_revenue)/sum(pay_user),0) arppu
-		from t_basic_info t1
+		SELECT * FROM (
+			SELECT 
+				t1.date,
+				IFNULL(t1.total_revenue,0) totalRevenue,
+				IFNULL(t2.dailyRevenue,0) dailyRevenue,
+				IFNULL(t2.dailyRevenueNew,0) dailyRevenueNew,
+				IFNULL(t2.dailyRevenueOld,0) dailyRevenueOld,
+				IFNULL(t2.liveUser,0) liveUser,
+				IFNULL(t2.liveUserNew,0) liveUserNew,
+				IFNULL(t2.liveUserOld,0) liveUserOld,
+				IFNULL(t2.retentionDay2,0) retentionDay2,
+				IFNULL(t2.retentionDay3,0) retentionDay3,
+				IFNULL(t2.retentionDay5,0) retentionDay5,
+				IFNULL(t2.retentionDay7,0) retentionDay7,
+				IFNULL(t2.retentionDay15,0) retentionDay15,
+				IFNULL(t2.retentionDay30,0) retentionDay30,
+				IFNULL(t2.payUser,0) payUser,
+				IFNULL(t2.payUserNew,0) payUserNew,
+				IFNULL(t2.payUserOld,0) payUserOld,
+				IFNULL(t2.payRate,0) payRate,
+				IFNULL(t2.payRateNew,0) payRateNew,
+				IFNULL(t2.payRateOld,0) payRateOld,
+				IFNULL(t2.arpu,0) arpu,
+				IFNULL(t2.arppu,0) arppu
+			FROM (
+				SELECT date,sum(total_revenue) total_revenue FROM (
+					SELECT
+						t1.date,
+						t2.server_id,
+						t2.platform,
+						max( t2.total_revenue ) total_revenue 
+					FROM t_date t1
+					LEFT JOIN t_basic_info t2 ON t2.date &lt;= t1.date
+					WHERE 1 = 1
+					<if test="param.platform != null and param.platform.length &gt; 0">
+						and t2.platform in
+						<trim prefix="(" suffix=")" suffixOverrides=",">
+							<foreach collection="param.platform" item="item">
+								#{item},
+							</foreach>
+						</trim>
+					</if>
+					<if test="param.serverId != null and param.serverId.length &gt; 0">
+						and t2.server_id in
+						<trim prefix="(" suffix=")" suffixOverrides=",">
+							<foreach collection="param.serverId" item="item">
+								#{item},
+							</foreach>
+						</trim>
+					</if>
+					GROUP BY t1.date,t2.server_id,t2.platform
+				) t GROUP BY date
+			) t1
+			LEFT JOIN (
+				select 
+					date,
+					sum(daily_revenue) dailyRevenue,
+					sum(daily_revenue_new) dailyRevenueNew,
+					sum(daily_revenue)-sum(daily_revenue_new) dailyRevenueOld,
+					sum(live_user) liveUser,
+					sum(live_user_new) liveUserNew,
+					sum(live_user)-sum(live_user_new) liveUserOld,
+					sum(retention_day2) retentionDay2,
+					sum(retention_day3) retentionDay3,
+					sum(retention_day5) retentionDay5,
+					sum(retention_day7) retentionDay7,
+					sum(retention_day15) retentionDay15,
+					sum(retention_day30) retentionDay30,
+					sum(pay_user) payUser,
+					sum(pay_user_new) payUserNew,
+					sum(pay_user)-sum(pay_user_new) payUserOld,
+					sum(pay_user)/sum(live_user) payRate,
+					sum(pay_user_new)/sum(live_user_new) payRateNew,
+					(sum(pay_user)-sum(pay_user_new))/(sum(live_user)-sum(live_user_new)) payRateOld,
+					sum(daily_revenue)/sum(live_user) arpu,
+					sum(daily_revenue)/sum(pay_user) arppu
+				from t_basic_info t1
+				where date &gt;= #{param.start} and date &lt; #{param.end}
+				<if test="param.platform != null and param.platform.length &gt; 0">
+					and platform in
+					<trim prefix="(" suffix=")" suffixOverrides=",">
+						<foreach collection="param.platform" item="item">
+							#{item},
+						</foreach>
+					</trim>
+				</if>
+				<if test="param.serverId != null and param.serverId.length &gt; 0">
+					and server_id in
+					<trim prefix="(" suffix=")" suffixOverrides=",">
+						<foreach collection="param.serverId" item="item">
+							#{item},
+						</foreach>
+					</trim>
+				</if>
+				group by date
+			)t2 ON t2.date = t1.date 
+		) t
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit};
+	</select>
+	<select id="getStatisticCount" resultType="long">
+		select count(date)
+		from t_date
 		where date &gt;= #{param.start} and date &lt; #{param.end}
-		<if test="param.platform != null and param.platform.length &gt; 0">
-			and platform in
-			<trim prefix="(" suffix=")" suffixOverrides=",">
-				<foreach collection="param.platform" item="item">
-					#{item},
-				</foreach>
-			</trim>
-		</if>
-		<if test="param.serverId != null and param.serverId.length &gt; 0">
-			and server_id in
-			<trim prefix="(" suffix=")" suffixOverrides=",">
-				<foreach collection="param.serverId" item="item">
-					#{item},
-				</foreach>
-			</trim>
-		</if>
-		group by date
+	</select>
+	<select id="getStatisticWithUserRegistered" resultType="com.syhd.ahriman.dto.BasicInfoVO">
+		SELECT * FROM (
+			SELECT 
+				t0.date,
+				IFNULL(t0.totalRegistered,0) totalRegistered,
+				IFNULL(t2.total_revenue,0) totalRevenue,
+				IFNULL(t1.dailyRevenue,0) dailyRevenue,
+				IFNULL(t1.dailyRevenueNew,0) dailyRevenueNew,
+				IFNULL(t1.dailyRevenueOld,0) dailyRevenueOld,
+				IFNULL(t1.liveUser,0) liveUser,
+				IFNULL(t1.liveUserNew,0) liveUserNew,
+				IFNULL(t1.liveUserOld,0) liveUserOld,
+				IFNULL(t1.retentionDay2,0) retentionDay2,
+				IFNULL(t1.retentionDay3,0) retentionDay3,
+				IFNULL(t1.retentionDay5,0) retentionDay5,
+				IFNULL(t1.retentionDay7,0) retentionDay7,
+				IFNULL(t1.retentionDay15,0) retentionDay15,
+				IFNULL(t1.retentionDay30,0) retentionDay30,
+				IFNULL(t1.payUser,0) payUser,
+				IFNULL(t1.payUserNew,0) payUserNew,
+				IFNULL(t1.payUserOld,0) payUserOld,
+				IFNULL(t1.payRate,0) payRate,
+				IFNULL(t1.payRateNew,0) payRateNew,
+				IFNULL(t1.payRateOld,0) payRateOld,
+				IFNULL(t1.arpu,0) arpu,
+				IFNULL(t1.arppu,0) arppu
+			FROM (
+				SELECT date,sum(totalRegistered) totalRegistered
+				FROM (
+					SELECT t1.date,t2.platform,max(t2.total_registered) totalRegistered 
+					FROM t_date t1
+					LEFT JOIN t_user_registered t2 ON t2.date &lt; t1.date
+					WHERE 1 = 1
+					<if test="param.platform != null and param.platform.length &gt; 0">
+						AND platform in
+						<trim prefix="(" suffix=")" suffixOverrides=",">
+							<foreach collection="param.platform" item="item">
+								#{item},
+							</foreach>
+						</trim>
+					</if>
+					GROUP BY t1.date,t2.platform
+				) t
+				GROUP BY date
+			) t0
+			LEFT JOIN (
+				select 
+					date,
+					sum(daily_revenue) dailyRevenue,
+					sum(daily_revenue_new) dailyRevenueNew,
+					sum(daily_revenue)-sum(daily_revenue_new) dailyRevenueOld,
+					sum(live_user) liveUser,
+					sum(live_user_new) liveUserNew,
+					sum(live_user)-sum(live_user_new) liveUserOld,
+					sum(retention_day2) retentionDay2,
+					sum(retention_day3) retentionDay3,
+					sum(retention_day5) retentionDay5,
+					sum(retention_day7) retentionDay7,
+					sum(retention_day15) retentionDay15,
+					sum(retention_day30) retentionDay30,
+					sum(pay_user) payUser,
+					sum(pay_user_new) payUserNew,
+					sum(pay_user)-sum(pay_user_new) payUserOld,
+					sum(pay_user)/sum(live_user) payRate,
+					sum(pay_user_new)/sum(live_user_new) payRateNew,
+					(sum(pay_user)-sum(pay_user_new))/(sum(live_user)-sum(live_user_new)) payRateOld,
+					sum(daily_revenue)/sum(live_user) arpu,
+					sum(daily_revenue)/sum(pay_user) arppu
+				from t_basic_info t1
+				where date &gt;= #{param.start} and date &lt; #{param.end}
+				<if test="param.platform != null and param.platform.length &gt; 0">
+					and platform in
+					<trim prefix="(" suffix=")" suffixOverrides=",">
+						<foreach collection="param.platform" item="item">
+							#{item},
+						</foreach>
+					</trim>
+				</if>
+				group by date
+			) t1 ON t1.date = t0.date
+			LEFT JOIN (
+				SELECT date,sum(total_revenue) total_revenue 
+				FROM (
+					SELECT t1.date,t2.server_id,t2.platform,max( t2.total_revenue ) total_revenue 
+					FROM t_date t1
+					LEFT JOIN t_basic_info t2 ON t2.date &lt;= t1.date
+					WHERE 1 = 1
+					<if test="param.platform != null and param.platform.length &gt; 0">
+						and t2.platform in
+						<trim prefix="(" suffix=")" suffixOverrides=",">
+							<foreach collection="param.platform" item="item">
+								#{item},
+							</foreach>
+						</trim>
+					</if>
+					GROUP BY t1.date,t2.server_id,t2.platform
+				) t 
+				GROUP BY date
+			) t2 ON t2.date = t0.date
+		) t
 		order by ${pageAndSort.field} ${pageAndSort.sord}
 		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
 	</select>
-	<select id="getStatisticCount" resultType="long">
-		select count(distinct date)
-		from t_basic_info
+	<select id="getStatisticCountWithUserRegistered" resultType="long">
+		select count(date)
+		from t_date
 		where date &gt;= #{param.start} and date &lt; #{param.end}
-		<if test="param.platform != null and param.platform.length &gt; 0">
-			and platform in
-			<trim prefix="(" suffix=")" suffixOverrides=",">
-				<foreach collection="param.platform" item="item">
-					#{item},
-				</foreach>
-			</trim>
-		</if>
-		<if test="param.serverId != null and param.serverId.length &gt; 0">
-			and server_id in
-			<trim prefix="(" suffix=")" suffixOverrides=",">
-				<foreach collection="param.serverId" item="item">
-					#{item},
-				</foreach>
-			</trim>
-		</if>
 	</select>
 	<select id="getAllPlatform" resultType="string">
 		select distinct platform from t_basic_info
@@ -349,6 +494,9 @@
 			</foreach>
 		</trim>
 	</insert>
+	<update id="insertTDate" statementType="CALLABLE">
+		{call insert_t_date(#{startDate,jdbcType=DATE},#{endDate,jdbcType=DATE})}
+	</update>
 <!-- 
 	<update id="createTodayKpiPayTable" statementType="CALLABLE">
 		{call create_temp_kpi_pay_table()}

@@ -23,9 +23,33 @@ public interface BasicInfoMapper {
 
     int updateByPrimaryKey(BasicInfo record);
 
-	List<BasicInfoVO> getStatistic(@Param("param")RequestPayload copy, @Param("pageAndSort")PageAndSort pageAndSort);
+    /**
+     * 获取基础数据表
+     * @param copy 查询参数，包括了服务器ID
+     * @param pageAndSort 排序和分页参数
+     * @return 未包含用户注册数信息
+     */
+	List<BasicInfoVO> getStatistic(
+			@Param("param")RequestPayload copy, 
+			@Param("pageAndSort")PageAndSort pageAndSort);
 
-	Long getStatisticCount(@Param("param")RequestPayload copy, @Param("pageAndSort")PageAndSort pageAndSort);
+	Long getStatisticCount(
+			@Param("param")RequestPayload copy, 
+			@Param("pageAndSort")PageAndSort pageAndSort);
+	
+	/**
+     * 获取基础数据表
+     * @param copy 查询参数，不包括服务器ID
+     * @param pageAndSort 排序和分页参数
+     * @return 包含用户注册数信息
+     */
+	List<BasicInfoVO> getStatisticWithUserRegistered(
+			@Param("param")RequestPayload copy, 
+			@Param("pageAndSort")PageAndSort pageAndSort);
+	
+	Long getStatisticCountWithUserRegistered(
+			@Param("param")RequestPayload copy, 
+			@Param("pageAndSort")PageAndSort pageAndSort);
 
 	List<String> getAllPlatform();
 
@@ -40,4 +64,17 @@ public interface BasicInfoMapper {
 	Date getLastCountDate(Integer serverid);
 
 	void batchInsert(@Param("records")List<BasicInfo> recordList);
+	
+	/**
+	 * 添加日期记录,并锁表
+	 * @param startDate
+	 * @param endDate
+	 */
+	void insertTDate(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
+	
+	/**
+	 * 清空日期表
+	 */
+	void truncateTDate();
+	
 }
