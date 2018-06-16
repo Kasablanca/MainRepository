@@ -104,7 +104,8 @@
 			WHERE
 				user_info.regTime &lt;= DATE_ADD( t.date, INTERVAL 1 DAY ) 
 				AND user_info.regType = t.platform 
-			) total_registered<!-- ,
+			) totalRegistered
+		<!-- ,
 			(
 			SELECT
 				count( uid ) 

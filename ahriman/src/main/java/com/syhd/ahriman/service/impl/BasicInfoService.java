@@ -106,10 +106,19 @@ public class BasicInfoService {
 		}
 		
 		TableData result = new TableData();
-		List<BasicInfoVO> list = basicInfoMapper.getStatistic(copy,pageAndSort);
-		result.setData(list);
 		result.setCode(0);
-		result.setCount(basicInfoMapper.getStatisticCount(copy, pageAndSort));
+		List<BasicInfoVO> list;
+		Long count;
+		basicInfoMapper.insertTDate(copy.getStart(), copy.getEnd());
+		if(copy.getServerId() == null) {
+			list = basicInfoMapper.getStatisticWithUserRegistered(copy,pageAndSort);
+			count = basicInfoMapper.getStatisticCountWithUserRegistered(copy, pageAndSort);
+		} else {
+			list = basicInfoMapper.getStatistic(copy,pageAndSort);
+			count = basicInfoMapper.getStatisticCount(copy, pageAndSort);
+		}
+		result.setData(list);
+		result.setCount(count);
 		
 		return result;
 	}
@@ -401,7 +410,7 @@ public class BasicInfoService {
 		Result result = exchangeRateService.getExchangeRate();
 		if(!Result.isSuccessResult(result)) {
 			result.setMessage(result.getMessage());
-			logger.error("付综合数据-基础数据初始查询失败，原因："+result.getMessage());
+			logger.error("综合数据-基础数据初始查询失败，原因："+result.getMessage());
 			return;
 		}
 		ExchangeRate rate = (ExchangeRate) result.getData();// 汇率
