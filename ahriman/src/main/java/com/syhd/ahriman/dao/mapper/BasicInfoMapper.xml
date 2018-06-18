@@ -478,7 +478,7 @@
 		select max(date) from t_basic_info where server_id = #{serverId}
 	</select>
 	<insert id="batchInsert">
-		insert into t_basic_info (date, server_id, platform, total_revenue, daily_revenue,
+		insert into ${storedTable} (date, server_id, platform, total_revenue, daily_revenue,
 		daily_revenue_new, live_user, live_user_new, retention_day2, retention_day3, 
 		retention_day5, retention_day7, retention_day15, retention_day30, pay_user, pay_user_new) 
 		values <trim suffixOverrides=",">
