@@ -35,7 +35,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 		<!--生成对应表及类名 -->
-		<table tableName="t_user_registered" domainObjectName="UserRegistered"
+		<table tableName="t_general_online_info" domainObjectName="GeneralOnlineInfo"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">

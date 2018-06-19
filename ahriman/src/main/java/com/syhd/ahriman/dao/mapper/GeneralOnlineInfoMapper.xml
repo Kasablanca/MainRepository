@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.syhd.ahriman.dao.mapper.GeneralOnlineInfoMapper">
+	<resultMap id="BaseResultMap"
+		type="com.syhd.ahriman.dao.model.GeneralOnlineInfo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="date" jdbcType="TIMESTAMP" property="date" />
+		<result column="server_id" jdbcType="INTEGER"
+			property="serverId" />
+		<result column="platform" jdbcType="VARCHAR"
+			property="platform" />
+		<result column="total_duration" jdbcType="BIGINT"
+			property="totalDuration" />
+		<result column="max_online" jdbcType="INTEGER"
+			property="maxOnline" />
+		<result column="liveness" jdbcType="INTEGER"
+			property="liveness" />
+		<result column="login_count" jdbcType="INTEGER"
+			property="loginCount" />
+		<result column="new_player_count" jdbcType="INTEGER"
+			property="newPlayerCount" />
+		<result column="back_user_count" jdbcType="INTEGER"
+			property="backUserCount" />
+		<result column="total_duration_new" jdbcType="INTEGER"
+			property="totalDurationNew" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, date, server_id, platform, total_duration, max_online, liveness,
+		login_count,
+		new_player_count, back_user_count, total_duration_new
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_general_online_info
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_general_online_info
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.syhd.ahriman.dao.model.GeneralOnlineInfo">
+		insert into t_general_online_info (id, date, server_id,
+		platform, total_duration, max_online,
+		liveness, login_count, new_player_count,
+		back_user_count, total_duration_new)
+		values (#{id,jdbcType=INTEGER}, #{date,jdbcType=TIMESTAMP},
+		#{serverId,jdbcType=INTEGER},
+		#{platform,jdbcType=VARCHAR}, #{totalDuration,jdbcType=BIGINT}, #{maxOnline,jdbcType=INTEGER},
+		#{liveness,jdbcType=INTEGER}, #{loginCount,jdbcType=INTEGER},
+		#{newPlayerCount,jdbcType=INTEGER},
+		#{backUserCount,jdbcType=INTEGER}, #{totalDurationNew,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.syhd.ahriman.dao.model.GeneralOnlineInfo">
+		insert into t_general_online_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="serverId != null">
+				server_id,
+			</if>
+			<if test="platform != null">
+				platform,
+			</if>
+			<if test="totalDuration != null">
+				total_duration,
+			</if>
+			<if test="maxOnline != null">
+				max_online,
+			</if>
+			<if test="liveness != null">
+				liveness,
+			</if>
+			<if test="loginCount != null">
+				login_count,
+			</if>
+			<if test="newPlayerCount != null">
+				new_player_count,
+			</if>
+			<if test="backUserCount != null">
+				back_user_count,
+			</if>
+			<if test="totalDurationNew != null">
+				total_duration_new,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=TIMESTAMP},
+			</if>
+			<if test="serverId != null">
+				#{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="totalDuration != null">
+				#{totalDuration,jdbcType=BIGINT},
+			</if>
+			<if test="maxOnline != null">
+				#{maxOnline,jdbcType=INTEGER},
+			</if>
+			<if test="liveness != null">
+				#{liveness,jdbcType=INTEGER},
+			</if>
+			<if test="loginCount != null">
+				#{loginCount,jdbcType=INTEGER},
+			</if>
+			<if test="newPlayerCount != null">
+				#{newPlayerCount,jdbcType=INTEGER},
+			</if>
+			<if test="backUserCount != null">
+				#{backUserCount,jdbcType=INTEGER},
+			</if>
+			<if test="totalDurationNew != null">
+				#{totalDurationNew,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.syhd.ahriman.dao.model.GeneralOnlineInfo">
+		update t_general_online_info
+		<set>
+			<if test="date != null">
+				date = #{date,jdbcType=TIMESTAMP},
+			</if>
+			<if test="serverId != null">
+				server_id = #{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="platform != null">
+				platform = #{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="totalDuration != null">
+				total_duration = #{totalDuration,jdbcType=BIGINT},
+			</if>
+			<if test="maxOnline != null">
+				max_online = #{maxOnline,jdbcType=INTEGER},
+			</if>
+			<if test="liveness != null">
+				liveness = #{liveness,jdbcType=INTEGER},
+			</if>
+			<if test="loginCount != null">
+				login_count = #{loginCount,jdbcType=INTEGER},
+			</if>
+			<if test="newPlayerCount != null">
+				new_player_count = #{newPlayerCount,jdbcType=INTEGER},
+			</if>
+			<if test="backUserCount != null">
+				back_user_count = #{backUserCount,jdbcType=INTEGER},
+			</if>
+			<if test="totalDurationNew != null">
+				total_duration_new = #{totalDurationNew,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.syhd.ahriman.dao.model.GeneralOnlineInfo">
+		update t_general_online_info
+		set date = #{date,jdbcType=TIMESTAMP},
+		server_id = #{serverId,jdbcType=INTEGER},
+		platform = #{platform,jdbcType=VARCHAR},
+		total_duration = #{totalDuration,jdbcType=BIGINT},
+		max_online = #{maxOnline,jdbcType=INTEGER},
+		liveness = #{liveness,jdbcType=INTEGER},
+		login_count = #{loginCount,jdbcType=INTEGER},
+		new_player_count = #{newPlayerCount,jdbcType=INTEGER},
+		back_user_count = #{backUserCount,jdbcType=INTEGER},
+		total_duration_new = #{totalDurationNew,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

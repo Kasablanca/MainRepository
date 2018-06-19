@@ -105,7 +105,7 @@
 				user_info.regTime &lt;= DATE_ADD( t.date, INTERVAL 1 DAY ) 
 				AND user_info.regType = t.platform 
 			) totalRegistered
-		<!-- ,
+		,
 			(
 			SELECT
 				count( uid ) 
@@ -114,7 +114,7 @@
 			WHERE
 				date(user_info.regTime) = t.date
 				AND user_info.regType = t.platform 
-			) daily_registered -->
+			) dailyRegistered
 		FROM
 			( SELECT DISTINCT date( regTime ) date, regType platform FROM user_info ) t
 		WHERE date &lt; #{endDate}
@@ -129,7 +129,8 @@
 			<foreach collection="list" item="item">
 				(#{item.date,jdbcType=DATE},
 				 #{item.platform,jdbcType=VARCHAR},
-				 #{item.totalRegistered,jdbcType=INTEGER}),
+				 #{item.totalRegistered,jdbcType=INTEGER},
+				 #{item.dailyRegistered,jdbcType=INTEGER}),
 			</foreach>
 		</trim>
 	</insert>

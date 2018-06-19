@@ -1,5 +1,7 @@
 package com.min.springbootdemo.service;
 
+import java.util.Date;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +10,10 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.min.springbootdemo.dao.mapper.UserMapper;
 import com.min.springbootdemo.dao.model.User;
@@ -49,6 +53,13 @@ public class UserService {
 	public void init() {
 		async();
 		System.out.println("init:"+Thread.currentThread().getId());
+	}
+	
+	@Transactional
+	@Scheduled(cron="1/10 * * * * ?")
+	public void task() {
+		System.out.println("task: "+new Date());
+		System.out.println("isNewTransaction: "+TransactionAspectSupport.currentTransactionStatus().isNewTransaction());
 	}
 	
 }

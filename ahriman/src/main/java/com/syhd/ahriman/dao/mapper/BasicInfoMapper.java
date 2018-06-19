@@ -63,7 +63,7 @@ public interface BasicInfoMapper {
 
 	Date getLastCountDate(Integer serverid);
 
-	void batchInsert(@Param("records")List<BasicInfo> recordList);
+	void batchInsert(@Param("records")List<BasicInfo> recordList, @Param("storedTable")String storedTable);
 	
 	/**
 	 * 添加日期记录,并锁表
