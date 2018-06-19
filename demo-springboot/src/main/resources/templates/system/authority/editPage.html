@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<base th:href="@{/}">
+	<meta charset="UTF-8">
+	<title>编辑权限</title>
+	<link type="text/css" rel="stylesheet" th:href="@{/depend/layui/css/layui.css}">
+</head>
+<body>
+	<div class="layui-container">
+		<form id="mainForm" class="layui-form">
+			<input id="id" name="id" th:if="${model != null}" th:value="${model?.id}" hidden="hidden">
+			<input id="verNo" name="verNo" th:if="${model != null}" th:value="${model?.verNo}" hidden="hidden">
+			<div class="layui-form-item">
+				<label for="name" class="layui-form-label"> <span
+					class="x-red">*</span>权限名
+				</label>
+				<div class="layui-input-inline">
+					<input type="text" id="name" name="name" required="required" lay-verify="name" autocomplete="off" class="layui-input" th:value="${model?.name}">
+				</div>
+				<div class="layui-form-mid layui-word-aux">
+					<span class="x-red">*</span>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label for="type" class="layui-form-label"><span class="x-red">*</span>权限类型
+				</label>
+				<div class="layui-input-inline">
+					<select id="type" name="type" required="required" lay-verify="type" autocomplete="off" multiple>
+						<option value="0" th:selected="${model?.type==0?'selected':_}">菜单</option>
+						<option value="1" th:selected="${model?.type==1?'selected':_}">页面</option>
+						<option value="2" th:selected="${model?.type==2?'selected':_}">功能</option>
+					</select>
+				</div>
+				<div class="layui-form-mid layui-word-aux">
+					<span class="x-red">*</span>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label for="path" class="layui-form-label"> <span
+					class="x-red">*</span>权限全路径
+				</label>
+				<div class="layui-input-inline">
+					<input id="path" name="path" required="required" lay-verify="path" autocomplete="off" class="layui-input" th:value="${model?.path}">
+				</div>
+				<div class="layui-form-mid layui-word-aux">*</div>
+			</div>
+			<div class="layui-form-item">
+				<label for="submit" class="layui-form-label"></label>
+				<button class="layui-btn" lay-filter="insert" lay-submit th:text="${model==null?'增加':'修改'}">增加</button>
+			</div>
+		</form>
+	</div>
+	
+	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.js}"></script>
+	<script type="text/javascript" th:src="@{/depend/layui/layui.all.js}"></script>
+	<script type="text/javascript" th:src="@{/system/authority/editPage.js}"></script>
+</body>
+</html>
