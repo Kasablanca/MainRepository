@@ -39,7 +39,7 @@ public interface DailyRevenueMapper {
      * @param serverId 服务器ID
      * @return 截止日期
      */
-    Date getEndDateByServerId(Integer serverId);
+    Date getLastCountDate(Integer serverId);
     
     /**
      * 获取所有的服务器
@@ -59,13 +59,6 @@ public interface DailyRevenueMapper {
     void createTodayRevenueTable();
     
     /**
-     * 插入数据到临时表
-     * @param record 每个服务器今天截止现在的收入
-     * @return 影响记录数
-     */
-    int insertIntoTemp(DailyRevenue record);
-    
-    /**
      * 获取今天和之前的混合KPI考核收入
      * @param param 查询参数
      * @param rate 汇率
@@ -79,5 +72,5 @@ public interface DailyRevenueMapper {
      * 批量插入每个服务器、每天、每个平台、每种货币的收益
      * @param records 需要插入的数据
      */
-    void batchInsert(@Param("records")Collection<DailyRevenue> records);
+    void batchInsert(@Param("records")Collection<DailyRevenue> records,@Param("storedTable")String storedTable);
 }

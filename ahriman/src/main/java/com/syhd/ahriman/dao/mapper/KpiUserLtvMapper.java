@@ -32,8 +32,6 @@ public interface KpiUserLtvMapper {
 	 * 创建存储今天用户价值LTV的临时表
 	 */
 	void createTodayKpiUserLtvTable();
-	
-	void batchInsertTemp(@Param("records")List<KpiUserLtv> recordList);
 
 	Long getMixinStatisticCount(@Param("param")RequestPayload param, @Param("pageAndSort")PageAndSort pageAndSort);
 
@@ -41,5 +39,5 @@ public interface KpiUserLtvMapper {
 
 	Date getLastCountDate(Integer serverid);
 
-	void batchInsert(@Param("records")List<KpiUserLtv> recordList);
+	void batchInsert(@Param("records")List<KpiUserLtv> recordList, @Param("storedTable")String storedTable);
 }

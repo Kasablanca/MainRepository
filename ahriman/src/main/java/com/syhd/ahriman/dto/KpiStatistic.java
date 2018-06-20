@@ -45,8 +45,8 @@ public class KpiStatistic implements Serializable {
 	/**
 	 * 填满日期，以0填充
 	 * @param list 需要填满的列表
-	 * @param start 开始日期
-	 * @param end 结束日期
+	 * @param start 开始日期（包含）
+	 * @param end 结束日期（不包含）
 	 * @return 填满后的列表
 	 */
 	public static List<KpiStatistic> fill(List<KpiStatistic> list,Date start,Date end) {
@@ -64,15 +64,42 @@ public class KpiStatistic implements Serializable {
 			}
 			cal.add(Calendar.DAY_OF_MONTH, 1);
 		}
+		
+		if(list.size()==0 && start.before(end)) {
+			list.add(new KpiStatistic(start, 0));
+		}
+		
 		if(list.size()>0) {
-			while((temp=list.get(list.size()-1).date).before(end)) {
-				cal.setTime(temp);
-				cal.add(Calendar.DAY_OF_MONTH, 1);
-				list.add(new KpiStatistic(cal.getTime(), 0));
+			while((temp=dateAdd(cal,list.get(list.size()-1).date)).before(end)) {
+				list.add(new KpiStatistic(temp, 0));
 			}
 		}
 		
 		return list;
 	}
+	
+	/**
+	 * 将日期增加一天
+	 * @param cal 日历
+	 * @param target 目标日期
+	 * @return 结果日期
+	 */
+	public static Date dateAdd(Calendar cal, Date target) {
+		cal.setTime(target);
+		cal.add(Calendar.DAY_OF_MONTH, 1);
+		return cal.getTime();
+	}
+	/*
+	public static void main(String[] args) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date start = sdf.parse("2018-06-10");
+		Date end = sdf.parse("2018-06-20");
+		
+		List<KpiStatistic> list = fill(new ArrayList<KpiStatistic>(), start, end);
+		
+		for(KpiStatistic item : list) {
+			System.out.println(item.date);
+		}
+	}*/
 
 }

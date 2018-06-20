@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -34,6 +36,9 @@ public class AuthorityGroupService {
 		return authorityGroupMapper.selectByPrimaryKey(id);
 	}
 	
+	@Caching(evict= {
+			@CacheEvict(cacheNames="authorityGroups",allEntries=true),
+			@CacheEvict(cacheNames="user",allEntries=true)})
 	@Transactional
 	public Result insert(AuthorityGroup record,String authorityIds) {
 		Result result = Result.getErrorResult();
@@ -86,6 +91,9 @@ public class AuthorityGroupService {
 		return result;
 	}
 	
+	@Caching(evict= {
+			@CacheEvict(cacheNames="authorityGroups",allEntries=true),
+			@CacheEvict(cacheNames="user",allEntries=true)})
 	@Transactional
 	public Result delete(AuthorityGroup role) {
 		Result result = Result.getErrorResult();
@@ -106,6 +114,9 @@ public class AuthorityGroupService {
 		return Result.getSuccessResult();
 	}
 	
+	@Caching(evict= {
+			@CacheEvict(cacheNames="authorityGroups",allEntries=true),
+			@CacheEvict(cacheNames="user",allEntries=true)})
 	@Transactional
 	public Result update(AuthorityGroup role,String authorityIds) {
 		Result result = Result.getErrorResult();

@@ -137,11 +137,11 @@ $(function (){
 							header: [],
 							value: []
 					};
-					for(var v of data.data.newRole){
+					for(var v of data.data.response.newRole){
 						role.header.push(v.date);
 						role.value.push(v.count);
 					}
-					for(var v of data.data.newAccount){
+					for(var v of data.data.response.newAccount){
 						account.header.push(v.date);
 						account.value.push(v.count);
 					}

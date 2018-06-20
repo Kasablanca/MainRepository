@@ -152,8 +152,7 @@
 		group by date
 		order by date
 	</select>
-	<select id="getEndDateByServerId" resultType="java.util.Date" >
-		<!-- for update 锁住表，防止其他线程添加数据影响分析结果 -->
+	<select id="getLastCountDate" resultType="java.util.Date" >
 		select max(date) from t_daily_revenue where server_id = #{serverId}
 	</select>
 	<select id="getAllServer" resultType="com.syhd.ahriman.dao.model.DailyRevenue">
@@ -165,13 +164,6 @@
 	<update id="createTodayRevenueTable" statementType="CALLABLE">
 		{call create_temp_revenue_table()}
 	</update>
-	<insert id="insertIntoTemp" parameterType="com.syhd.ahriman.dao.model.DailyRevenue" useGeneratedKeys="true" keyProperty="id">
-		insert into t_today_revenue (id, date, server_id, server_name, platform, money, money_type)
-		values (#{id,jdbcType=INTEGER}, #{date,jdbcType=DATE},
-		#{serverId,jdbcType=INTEGER},
-		#{serverName,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR}, #{money,jdbcType=INTEGER},
-		#{moneyType,jdbcType=INTEGER})
-	</insert>
 	<select id="getMixinStatistic" resultType="com.syhd.ahriman.dto.KpiStatistic">
 		select date,sum(money *
 			CASE money_type WHEN 0 THEN 1 WHEN 1 THEN #{rate.usd} WHEN 2 THEN #{rate.twd} WHEN 3 THEN #{rate.hkd} END
@@ -220,7 +212,7 @@
 		order by date
 	</select>
 	<insert id="batchInsert">
-		insert into t_daily_revenue (date, server_id, server_name, platform, money, money_type) values 
+		insert into ${storedTable} (date, server_id, server_name, platform, money, money_type) values 
 		<trim suffixOverrides=",">
 			<foreach collection="records" item="record">
 				(#{record.date,jdbcType=DATE},

@@ -29,18 +29,14 @@ public interface KpiPayMapper {
 
 	Date getLastCountDate(Integer serverid);
 
-	void batchInsert(@Param("records")List<KpiPay> recordList);
+	void batchInsert(
+			@Param("records")List<KpiPay> recordList,
+			@Param("storedTable")String storedTable);
 
 	/**
 	 * 创建存储今天支付数据的临时表
 	 */
 	void createTodayKpiPayTable();
-	
-	/**
-	 * 插入临时表
-	 * @param recordList 待插入数
-	 */
-	void batchInsertTemp(@Param("records")List<KpiPay> recordList);
 
 	List<KpiPayVO> getMixinStatistic(@Param("param")RequestPayload param, @Param("pageAndSort")PageAndSort pageAndSort);
 

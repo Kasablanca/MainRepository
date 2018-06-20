@@ -277,7 +277,7 @@
 		select max(date) from t_kpi_pay where server_id = #{serverId}
 	</select>
 	<insert id="batchInsert">
-		insert into t_kpi_pay (date, server_id, platform, active_user_number, revenue,
+		insert into ${storedTable} (date, server_id, platform, active_user_number, revenue,
 		pay_user_number, old_player_number,
 		old_pay_revenue, old_pay_number, new_player_number, new_pay_revenue, new_pay_number) 
 		values <trim suffixOverrides=",">
@@ -294,21 +294,6 @@
 	<update id="createTodayKpiPayTable" statementType="CALLABLE">
 		{call create_temp_kpi_pay_table()}
 	</update>
-	<insert id="batchInsertTemp">
-		insert into t_today_kpi_pay (date, server_id, platform, active_user_number, revenue,
-		pay_user_number, old_player_number,
-		old_pay_revenue, old_pay_number, new_player_number, new_pay_revenue, new_pay_number) 
-		values <trim suffixOverrides=",">
-			<foreach collection="records" item="record">
-				(#{record.date,jdbcType=DATE}, #{record.serverId,jdbcType=INTEGER},
-				#{record.platform,jdbcType=VARCHAR}, #{record.activeUserNumber,jdbcType=INTEGER}, 
-				#{record.revenue,jdbcType=DECIMAL}, #{record.payUserNumber,jdbcType=INTEGER},
-				#{record.oldPlayerNumber,jdbcType=INTEGER}, #{record.oldPayRevenue,jdbcType=DECIMAL},
-				#{record.oldPayNumber,jdbcType=INTEGER}, #{record.newPlayerNumber,jdbcType=INTEGER},
-				#{record.newPayRevenue,jdbcType=DECIMAL}, #{record.newPayNumber,jdbcType=INTEGER}),
-			</foreach>
-		</trim>
-	</insert>
 	<select id="getMixinStatistic" resultType="com.syhd.ahriman.dto.KpiPayVO">
 		select
 			date,

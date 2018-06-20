@@ -198,11 +198,11 @@
 		group by date
 		order by date
 	</select>
-	<select id="getEndDateByServerId" resultType="java.util.Date">
+	<select id="getLastCountDate" resultType="java.util.Date">
 		select max(date) from t_daily_activeuser where server_id = #{serverId}
 	</select>
 	<insert id="batchInsert">
-		insert into t_daily_activeuser (date, server_id, server_name, platform, count) values 
+		insert into ${storedTable} (date, server_id, server_name, platform, count) values 
 		<trim suffixOverrides=",">
 			<foreach collection="records" item="record">
 				(#{record.date,jdbcType=DATE}, #{record.serverId,jdbcType=INTEGER},

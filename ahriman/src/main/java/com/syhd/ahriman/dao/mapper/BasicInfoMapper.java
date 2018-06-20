@@ -65,16 +65,4 @@ public interface BasicInfoMapper {
 
 	void batchInsert(@Param("records")List<BasicInfo> recordList, @Param("storedTable")String storedTable);
 	
-	/**
-	 * 添加日期记录,并锁表
-	 * @param startDate
-	 * @param endDate
-	 */
-	void insertTDate(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
-	
-	/**
-	 * 清空日期表
-	 */
-	void truncateTDate();
-	
 }

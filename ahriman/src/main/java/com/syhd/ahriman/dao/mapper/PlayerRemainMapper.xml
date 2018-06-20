@@ -229,7 +229,7 @@
 		order by ${pageAndSort.field} ${pageAndSort.sord}
 		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
 	</select>
-	<select id="getStatisticCount" resultType="int">
+	<select id="getStatisticCount" resultType="long">
 		select count(distinct date)
 		from t_player_remain
 		where date >= #{param.start} and date &lt; #{param.end}
@@ -257,7 +257,7 @@
 		select max(date) from t_player_remain where server_id = #{serverId}
 	</select>
 	<insert id="batchInsert">
-		insert into t_player_remain (date, server_id, platform, day1, day2, day3,day4,day5,day6,day7,day14,day30) 
+		insert into ${storedTable} (date, server_id, platform, day1, day2, day3,day4,day5,day6,day7,day14,day30) 
 		values <trim suffixOverrides=",">
 			<foreach collection="records" item="record">
 				(#{record.date,jdbcType=DATE}, #{record.serverId,jdbcType=INTEGER},

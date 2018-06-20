@@ -14,17 +14,17 @@ import javax.annotation.PostConstruct;
 
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import com.syhd.ahriman.dao.mapper.BasicInfoMapper;
+import com.syhd.ahriman.dao.mapper.CommonMapper;
 import com.syhd.ahriman.dao.mapper.UserRegisteredMapper;
 import com.syhd.ahriman.dao.model.AppServer;
 import com.syhd.ahriman.dao.model.BasicInfo;
@@ -36,7 +36,6 @@ import com.syhd.ahriman.dto.RequestPayload;
 import com.syhd.ahriman.dto.Result;
 import com.syhd.ahriman.dto.TableData;
 import com.syhd.ahriman.properties.GamelogProperties;
-import com.syhd.ahriman.utils.ArrayUtils;
 import com.syhd.ahriman.utils.DateUtils;
 
 @Service
@@ -61,7 +60,7 @@ public class BasicInfoService {
 	private UserRegisteredMapper userRegisteredMapper;
 	
 	@Autowired
-	private CacheManager cacheManager;
+	private CommonMapper commonMapper;
 	
 	/**
 	 * 获取KPI活跃用户
@@ -70,46 +69,15 @@ public class BasicInfoService {
 	 */
 	@Cacheable(sync=true)
 	public TableData getStatistic(RequestPayload param,PageAndSort pageAndSort) {
-		RequestPayload copy = new RequestPayload(param);
-		
-		String[] platforms = copy.getPlatform();
-		if(platforms != null && ArrayUtils.contains(platforms, "-1")) {
-			// 说明选择的全部平台，应该去掉此参数
-			copy.setPlatform(null);
-		}
-		
-		Integer[] serverIds = copy.getServerId();
-		if(serverIds != null && ArrayUtils.contains(serverIds, -1)) {
-			// 说明选择的全部服务器，应该去掉此参数
-			copy.setServerId(null);
-		}
-		
-		if(StringUtils.isEmpty(copy.getStart())) {
-			// 若没给开始日期，则设置为上周同一天凌晨00:00:00
-			copy.setStart(DateUtils.getOneMonthBeforeTime0());
-		}
-		if(StringUtils.isEmpty(copy.getEnd()))	{
-			// 若没给结束日期，则设置为今天凌晨00:00:00.000
-			copy.setEnd(DateUtils.getTodayTime0());
-		} else {
-			// 若已给截止日期，则判断是否超过今天凌晨00:00:00
-			if(!copy.getEnd().before(DateUtils.getTodayTime0())) {
-				// 说明 param.end >= 今天凌晨,则需要查询原始数据库和当前数据库的混合数据
-				// return getMixinStatistic(copy,pageAndSort); 最后一天的不查询
-			} else {
-				// 说明在今天凌晨之前，则将截止日期设置为第二天凌晨
-				Calendar now = Calendar.getInstance();
-				now.setTime(copy.getEnd());
-				now.add(Calendar.DAY_OF_MONTH, 1);
-				copy.setEnd(now.getTime());
-			}
-		}
+		RequestPayload copy = RequestPayload.prepare(param,null);
 		
 		TableData result = new TableData();
 		result.setCode(0);
+		
 		List<BasicInfoVO> list;
 		Long count;
-		basicInfoMapper.insertTDate(copy.getStart(), copy.getEnd());
+		
+		commonMapper.insertTDate(copy.getStart(), copy.getEnd());
 		if(copy.getServerId() == null) {
 			list = basicInfoMapper.getStatisticWithUserRegistered(copy,pageAndSort);
 			count = basicInfoMapper.getStatisticCountWithUserRegistered(copy, pageAndSort);
@@ -140,6 +108,14 @@ public class BasicInfoService {
 	 * 每次服务器启动时执行
 	 */
 	@PostConstruct
+	public void init() {
+		initTask();
+	}
+	
+	/**
+	 * 被异步执行，否则影响项目启动速度
+	 */
+	@Async
 	public void initTask() {
 		task();
 	}
@@ -152,8 +128,9 @@ public class BasicInfoService {
 		task();
 	}
 	
-	private void task() {
-		cacheManager.getCache("basicInfo").clear();		// 手动清除缓存
+	@Transactional
+	@CacheEvict(allEntries=true)
+	public void task() {
 		List<AppServer> serverList = appServerService.getAllServer();
 		for(AppServer server : serverList) {
 			basicInfoTask(server);
@@ -164,8 +141,6 @@ public class BasicInfoService {
 	/**
 	 * 抓取用户注册表的每日累计注册数
 	 */
-	@Async
-	@Transactional
 	public void userRegisterTask() {
 		Date lastCountDate = userRegisteredMapper.getLastCountDate();
 		
@@ -193,8 +168,6 @@ public class BasicInfoService {
 	 * 抓取每个日志服务器的综合数据-基础数据信息
 	 * @param server 游戏日志服务器信息
 	 */
-	@Async
-	@Transactional
 	public void basicInfoTask(AppServer server) {
 		Date startDate = null;
 		Date endDate = DateUtils.getTodayTime0();
@@ -278,12 +251,12 @@ public class BasicInfoService {
 				recordList.add(record);
 				
 				if(recordList.size() == batchSize) {
-					basicInfoMapper.batchInsert(recordList,"t_basic_info");
+					basicInfoMapper.batchInsert(recordList,storedTable);
 					recordList.clear();
 				}
 			}
 			if(recordList.size() > 0) {
-				basicInfoMapper.batchInsert(recordList,"t_basic_info");
+				basicInfoMapper.batchInsert(recordList,storedTable);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

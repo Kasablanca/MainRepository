@@ -9,7 +9,10 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -30,11 +33,15 @@ public class ExchangeRateService {
 	@Autowired
 	private ObjectMapper jackson;
 	
-	//@Cacheable(sync=true,key="#root.method")
+	@Autowired
+	private CacheManager cacheManager;
+	
+	
 	/**
 	 * 查询实时利率
 	 * @return 包含类型为{@link com.syhd.ahriman.dto.ExchangeRate}的利率
 	 */
+	@Cacheable(sync=true,key="#root.method")
 	public Result getExchangeRate() {
 		Result result = Result.getSuccessResult();
 		
@@ -140,5 +147,10 @@ public class ExchangeRateService {
 			result.setMessage("读取汇率信息时发生错误");
 			return result;
 		}
+	}
+	
+	@Scheduled(cron="0 0 0 * * ?")
+	public void dailyTask() {
+		cacheManager.getCache("exchangeRate").clear(); // 手动清除缓存
 	}
 }

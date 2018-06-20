@@ -24,7 +24,7 @@ public interface PlayerRemainMapper {
     
     List<PlayerRemain> getStatistic(@Param("param")RequestPayload payload,@Param("pageAndSort")PageAndSort pageAndSort);
     
-    int getStatisticCount(@Param("param")RequestPayload payload,@Param("pageAndSort")PageAndSort pageAndSort);
+    Long getStatisticCount(@Param("param")RequestPayload payload,@Param("pageAndSort")PageAndSort pageAndSort);
 
 	List<String> getAllPlatform();
 	
@@ -39,7 +39,7 @@ public interface PlayerRemainMapper {
 	 * 批量添加新增角色统计数据
 	 * @param recordList
 	 */
-	void batchInsert(@Param("records")List<PlayerRemain> recordList);
+	void batchInsert(@Param("records")List<PlayerRemain> recordList,@Param("storedTable")String storedTable);
 	
 	/**
 	 * 获取没完成统计的最早日期

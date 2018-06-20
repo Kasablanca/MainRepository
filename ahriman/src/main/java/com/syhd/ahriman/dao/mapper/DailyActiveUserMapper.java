@@ -66,11 +66,11 @@ public interface DailyActiveUserMapper {
 	 * @param serverid 服务器ID
 	 * @return 该服务器的活跃用户统计截止日期
 	 */
-	Date getEndDateByServerId(Integer serverid);
+	Date getLastCountDate(Integer serverid);
 
 	/**
 	 * 批量插入活跃用户数据
 	 * @param recordList 活跃用户数据
 	 */
-	void batchInsert(@Param("records")List<DailyActiveUser> recordList);
+	void batchInsert(@Param("records")List<DailyActiveUser> recordList, @Param("storedTable")String storedTable);
 }

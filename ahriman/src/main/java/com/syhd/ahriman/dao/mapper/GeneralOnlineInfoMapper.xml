@@ -181,4 +181,137 @@
 		total_duration_new = #{totalDurationNew,jdbcType=INTEGER}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
+	<select id="getStatistic" resultType="com.syhd.ahriman.dto.GeneralOnlineInfoVO">
+		SELECT * FROM (
+			SELECT
+				date,
+				IFNULL(sum(total_duration/1440),0) totalDuration,
+				IFNULL(max(max_online),0) maxOnline,
+				IFNULL(sum(liveness),0) liveness,
+				IFNULL(sum(login_count),0) loginCount,
+				IFNULL(sum(login_count)/sum(liveness),0) loginCountAvg,
+				IFNULL(sum(new_player_count),0) newPlayerCount,
+				IFNULL(sum(back_user_count),0) backUserCount,
+				IFNULL(sum(total_duration)/sum(liveness),0) onlineTimeAvg,
+				IFNULL(sum(total_duration_new),0) totalDurationNew,
+				IFNULL(sum(total_duration)-sum(total_duration_new),0) totalDurationOld
+			FROM
+				t_general_online_info
+			where date &gt;= #{param.start} and date &lt; #{param.end}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			group by date
+		) t
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
+	</select>
+	<select id="getStatisticCount" resultType="long">
+		select count(distinct date)
+		from t_general_online_info
+		where date &gt;= #{param.start} and date &lt; #{param.end}
+		<if test="param.platform != null and param.platform.length &gt; 0">
+			and platform in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.platform" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		<if test="param.serverId != null and param.serverId.length &gt; 0">
+			and server_id in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.serverId" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+	</select>
+	<select id="getStatisticWithUserRegistered" resultType="com.syhd.ahriman.dto.GeneralOnlineInfoVO">
+		SELECT * FROM (
+			SELECT
+				t1.date,
+				IFNULL(sum(t2.total_duration/1440),0) totalDuration,
+				IFNULL(max(t2.max_online),0) maxOnline,
+				IFNULL(sum(t2.liveness),0) liveness,
+				IFNULL(sum(t2.login_count),0) loginCount,
+				IFNULL(sum(t2.login_count)/sum(t2.liveness),0) loginCountAvg,
+				IFNULL(sum(t2.new_player_count),0) newPlayerCount,
+				IFNULL(sum(t1.dailyRegistered),0) newUserCount,
+				IFNULL(sum(t2.back_user_count),0) backUserCount,
+				IFNULL(sum(t2.total_duration)/sum(t2.liveness),0) onlineTimeAvg,
+				IFNULL(sum(t2.total_duration_new),0) totalDurationNew,
+				IFNULL(sum(t2.total_duration)-sum(t2.total_duration_new),0) totalDurationOld
+			FROM (
+				SELECT date,sum(dailyRegistered) dailyRegistered
+				FROM (
+					SELECT t1.date,t2.platform,max(t2.daily_registered) dailyRegistered 
+					FROM t_date t1
+					LEFT JOIN t_user_registered t2 ON t2.date &lt; t1.date
+					WHERE 1 = 1
+					<if test="param.platform != null and param.platform.length &gt; 0">
+						AND platform in
+						<trim prefix="(" suffix=")" suffixOverrides=",">
+							<foreach collection="param.platform" item="item">
+								#{item},
+							</foreach>
+						</trim>
+					</if>
+					GROUP BY t1.date,t2.platform
+				) t
+				GROUP BY date
+			) t1
+			LEFT JOIN t_general_online_info t2 ON t1.date = t2.date
+			where t2.date &gt;= #{param.start} and t2.date &lt; #{param.end}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and t2.platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			group by date
+		) t
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
+	</select>
+	<select id="getStatisticCountWithUserRegistered" resultType="long">
+		select count(date)
+		from t_date
+		where date &gt;= #{param.start} and date &lt; #{param.end}
+	</select>
+	<select id="getAllPlatform" resultType="string">
+		select distinct platform from t_general_online_info
+	</select>
+	<select id="getLastCountDate" resultType="java.util.Date">
+		select max(date) from t_general_online_info where server_id = #{serverId}
+	</select>
+	<insert id="batchInsert">
+		insert into ${storedTable} (date, server_id, platform, total_duration, max_online, liveness,
+		login_count,
+		new_player_count, back_user_count, total_duration_new) 
+		values <trim suffixOverrides=",">
+			<foreach collection="records" item="record">
+				(#{record.date,jdbcType=TIMESTAMP},#{record.serverId,jdbcType=INTEGER},
+				 #{record.platform,jdbcType=VARCHAR}, #{record.totalDuration,jdbcType=BIGINT}, 
+				 #{record.maxOnline,jdbcType=INTEGER},#{record.liveness,jdbcType=INTEGER}, 
+				 #{record.loginCount,jdbcType=INTEGER},#{record.newPlayerCount,jdbcType=INTEGER},
+				 #{record.backUserCount,jdbcType=INTEGER}, #{record.totalDurationNew,jdbcType=INTEGER}),
+			</foreach>
+		</trim>
+	</insert>
 </mapper>

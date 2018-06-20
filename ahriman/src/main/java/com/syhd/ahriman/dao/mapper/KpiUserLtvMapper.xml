@@ -559,7 +559,7 @@
 		select max(date) from t_kpi_user_ltv where server_id = #{serverId}
 	</select>
 	<insert id="batchInsert">
-		insert into t_kpi_user_ltv (date, server_id, platform, new_user_number, total_money, day1, day2, day3, day4,
+		insert into ${storedTable} (date, server_id, platform, new_user_number, total_money, day1, day2, day3, day4,
 		day5, day6, day7, day8, day9, day10, day11, day12, day13, day14, day15, day16, day17,
 		day18, day19, day20, day21, day22, day23, day24, day25, day26, day27, day28,day29, day30) 
 		values <trim suffixOverrides=",">
@@ -586,31 +586,6 @@
 	<update id="createTodayKpiUserLtvTable" statementType="CALLABLE">
 		{call create_temp_kpi_userltv_table()}
 	</update>
-	<insert id="batchInsertTemp">
-		insert into t_today_kpi_pay (date, server_id, platform, new_user_number, total_money, day1, day2, day3, day4,
-		day5, day6, day7, day8, day9, day10, day11, day12, day13, day14, day15, day16, day17,
-		day18, day19, day20, day21, day22, day23, day24, day25, day26, day27, day28,day29, day30) 
-		values <trim suffixOverrides=",">
-			<foreach collection="records" item="record">
-				(#{record.date,jdbcType=DATE},
-				#{record.serverId,jdbcType=INTEGER},
-				#{record.platform,jdbcType=VARCHAR}, #{record.newUserNumber,jdbcType=INTEGER}, #{record.totalMoney,jdbcType=DECIMAL},
-				#{record.day1,jdbcType=DECIMAL}, #{record.day2,jdbcType=DECIMAL},
-				#{record.day3,jdbcType=DECIMAL}, #{record.day4,jdbcType=DECIMAL},
-				#{record.day5,jdbcType=DECIMAL}, #{record.day6,jdbcType=DECIMAL},
-				#{record.day7,jdbcType=DECIMAL}, #{record.day8,jdbcType=DECIMAL},
-				#{record.day9,jdbcType=DECIMAL}, #{record.day10,jdbcType=DECIMAL}, #{record.day11,jdbcType=DECIMAL},
-				#{record.day12,jdbcType=DECIMAL}, #{record.day13,jdbcType=DECIMAL}, #{record.day14,jdbcType=DECIMAL},
-				#{record.day15,jdbcType=DECIMAL}, #{record.day16,jdbcType=DECIMAL}, #{record.day17,jdbcType=DECIMAL},
-				#{record.day18,jdbcType=DECIMAL}, #{record.day19,jdbcType=DECIMAL}, #{record.day20,jdbcType=DECIMAL},
-				#{record.day21,jdbcType=DECIMAL}, #{record.day22,jdbcType=DECIMAL},
-				#{record.day23,jdbcType=DECIMAL},
-				#{record.day24,jdbcType=DECIMAL}, #{record.day25,jdbcType=DECIMAL}, #{record.day26,jdbcType=DECIMAL},
-				#{record.day27,jdbcType=DECIMAL}, #{record.day28,jdbcType=DECIMAL},
-				#{record.day29,jdbcType=DECIMAL}, #{record.day30,jdbcType=DECIMAL}),
-			</foreach>
-		</trim>
-	</insert>
 	<select id="getMixinStatistic" resultType="com.syhd.ahriman.dao.model.KpiUserLtv">
 		select
 			date,

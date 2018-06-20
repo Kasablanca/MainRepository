@@ -152,6 +152,10 @@ $(function (){
 				return '<font color="red">'+value.day30.toFixed(2)+'</font>';
 			}}
 		]]
+		,done: function (response){
+			$('#start').val(response.extra.start);
+			$('#end').val(response.extra.end);
+		}
 	});
 
 	table.on('sort(main)', function(obj){

@@ -1,7 +1,5 @@
 package com.min.springbootdemo.service;
 
-import java.util.Date;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,6 @@ public class UserService {
 	
 	@Cacheable
 	public User findById(Integer id) {
-		async();
 		System.out.println(Thread.currentThread().getId());
 		return userMapper.selectByPrimaryKey(id);
 	}
@@ -43,22 +40,25 @@ public class UserService {
 		return user;
 	}
 	
-	@Async
-	public void async() {
-		System.out.println("async:"+Thread.currentThread().getId());
-	}
-	
-	@Transactional
 	@PostConstruct
 	public void init() {
-		async();
-		System.out.println("init:"+Thread.currentThread().getId());
+		initTask();
+		System.out.println("thread id: "+Thread.currentThread().getId());
+	}
+	
+	@Async
+	public void initTask() {
+		task();
+	}
+	
+	@Scheduled(cron="1/10 * * * * ?")
+	public void scheduledTask() {
+		task();
 	}
 	
 	@Transactional
-	@Scheduled(cron="1/10 * * * * ?")
 	public void task() {
-		System.out.println("task: "+new Date());
+		System.out.println("thread id: "+Thread.currentThread().getId());
 		System.out.println("isNewTransaction: "+TransactionAspectSupport.currentTransactionStatus().isNewTransaction());
 	}
 	

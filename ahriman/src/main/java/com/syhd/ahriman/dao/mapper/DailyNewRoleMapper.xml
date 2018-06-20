@@ -188,17 +188,11 @@
 		group by date
 		order by date
 	</select>
-	<insert id="insertIntoTemp" useGeneratedKeys="true" keyProperty="id">
-		insert into t_today_new_role (id, date, server_id, server_name, platform, count)
-		values 
-		(#{id,jdbcType=INTEGER}, #{date,jdbcType=DATE}, #{serverId,jdbcType=INTEGER},
-		#{serverName,jdbcType=VARCHAR}, #{platform,jdbcType=VARCHAR}, #{count,jdbcType=INTEGER})
-	</insert>
 	<select id="getLastCountDate" resultType="java.util.Date" >
 		select max(date) from t_daily_new_role where server_id = #{serverId}
 	</select>
 	<insert id="batchInsert">
-		insert into t_daily_new_role (date, server_id, server_name, platform, count) values 
+		insert into ${storedTable} (date, server_id, server_name, platform, count) values 
 		<trim suffixOverrides=",">
 			<foreach collection="records" item="record">
 				(#{record.date,jdbcType=DATE}, #{record.serverId,jdbcType=INTEGER},

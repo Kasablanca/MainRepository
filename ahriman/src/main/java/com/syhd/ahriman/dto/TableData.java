@@ -24,6 +24,9 @@ public class TableData implements Serializable {
 	/**实际数据*/
 	private List<?> data;
 	
+	/**额外信息*/
+	private Object extra;
+	
 	public TableData() {
 		super();
 	}
@@ -63,6 +66,14 @@ public class TableData implements Serializable {
 	}
 	public void setData(List<?> data) {
 		this.data = data;
+	}
+
+	public Object getExtra() {
+		return extra;
+	}
+
+	public void setExtra(Object extra) {
+		this.extra = extra;
 	}
 	
 }

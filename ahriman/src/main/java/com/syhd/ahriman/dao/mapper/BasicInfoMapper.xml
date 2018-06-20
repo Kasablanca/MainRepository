@@ -494,9 +494,6 @@
 			</foreach>
 		</trim>
 	</insert>
-	<update id="insertTDate" statementType="CALLABLE">
-		{call insert_t_date(#{startDate,jdbcType=DATE},#{endDate,jdbcType=DATE})}
-	</update>
 <!-- 
 	<update id="createTodayKpiPayTable" statementType="CALLABLE">
 		{call create_temp_kpi_pay_table()}

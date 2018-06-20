@@ -41,13 +41,6 @@ public interface DailyNewRoleMapper {
 	void createTodayNewRoleTable();
 
 	/**
-	 * 插入临时表
-	 * @param record 今天的新增角色统计数据
-	 * @return 影响记录数
-	 */
-	int insertIntoTemp(DailyNewRole record);
-
-	/**
 	 * 获取混合今天和之前的新增角色统计数据
 	 * @param param 查询参数
 	 * @return 新增角色统计数据
@@ -65,5 +58,5 @@ public interface DailyNewRoleMapper {
 	 * 批量添加新增角色统计数据
 	 * @param recordList
 	 */
-	void batchInsert(@Param("records")List<DailyNewRole> recordList);
+	void batchInsert(@Param("records")List<DailyNewRole> recordList, @Param("storedTable")String storedTable);
 }

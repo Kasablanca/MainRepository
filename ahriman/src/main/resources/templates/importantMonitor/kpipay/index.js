@@ -70,6 +70,10 @@ $(function (){
 				return value.activeArpuNew.toFixed(2);
 			}}
 		]]
+		,done: function (response){
+			$('#start').val(response.extra.start);
+			$('#end').val(response.extra.end);
+		}
 	});
 
 	table.on('sort(main)', function(obj){

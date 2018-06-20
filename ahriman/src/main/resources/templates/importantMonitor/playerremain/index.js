@@ -61,6 +61,10 @@ $(function (){
 				return new Number(value.day30*100).toFixed(2).toString()+'%';
 			}}
 		]]
+		,done: function (response){
+			$('#start').val(response.extra.start);
+			$('#end').val(response.extra.end);
+		}
 	});
 
 	table.on('sort(main)', function(obj){
