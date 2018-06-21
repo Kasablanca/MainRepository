@@ -17,7 +17,6 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -58,7 +57,6 @@ public class NewUserService {
 	 * @param param 查询参数
 	 * @return 包含汇总数据
 	 */
-	@Cacheable(sync=true)
 	public Result getStatistic(RequestPayload param) {
 		RequestPayload copy = RequestPayload.prepare(param,null);
 		
@@ -90,19 +88,12 @@ public class NewUserService {
 		Calendar now = Calendar.getInstance();
 		now.setTime(startDate);
 		now.add(Calendar.DAY_OF_MONTH, 1);
-		startDate = now.getTime();
 		Date endDate = now.getTime();
 		
 		dailyNewRoleMapper.createTodayNewRoleTable();
 		for(AppServer server : serverList) {
 			doNewUserTask(startDate,endDate,server,"t_today_new_role");
 		}
-	}
-	
-	@CachePut
-	@Transactional
-	public int insert(DailyNewRole record) {
-		return dailyNewRoleMapper.insert(record);
 	}
 	
 	@Cacheable(key="#root.method")

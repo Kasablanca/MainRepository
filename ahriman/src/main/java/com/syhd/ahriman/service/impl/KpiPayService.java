@@ -15,8 +15,6 @@ import javax.annotation.PostConstruct;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -58,7 +56,6 @@ public class KpiPayService {
 	 * @param param 查询参数
 	 * @return 包含汇总数据
 	 */
-	@Cacheable(sync=true)
 	public TableData getStatistic(RequestPayload param,PageAndSort pageAndSort) {
 		RequestPayload copy = RequestPayload.prepare(param,-7);
 		
@@ -94,19 +91,12 @@ public class KpiPayService {
 		Calendar now = Calendar.getInstance();
 		now.setTime(startDate);
 		now.add(Calendar.DAY_OF_MONTH, 1);
-		startDate = now.getTime();
 		Date endDate = now.getTime();
 		
 		kpiPayMapper.createTodayKpiPayTable();
 		for(AppServer server : serverList) {
 			doKpiPayTask(startDate,endDate,server,"t_today_kpi_pay");
 		}
-	}
-	
-	@CachePut
-	@Transactional
-	public int insert(KpiPay record) {
-		return kpiPayMapper.insert(record);
 	}
 	
 	@Cacheable(key="#root.method")
@@ -144,7 +134,7 @@ public class KpiPayService {
 	 * 启用事务
 	 */
 	@Transactional
-	@CacheEvict(allEntries=true)
+	//@CacheEvict(allEntries=true)
 	public void task() {
 		List<AppServer> serverList = appServerService.getAllServer();
 		for(AppServer server : serverList) {

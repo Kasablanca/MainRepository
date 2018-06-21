@@ -15,7 +15,6 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -56,7 +55,6 @@ public class KpiAppraiseRevenueService {
 	 * @param param 查询参数
 	 * @return 包含汇总数据
 	 */
-	@Cacheable(sync=true)
 	public Result getDailyRevenue(RequestPayload param) {
 		RequestPayload copy = RequestPayload.prepare(param,null);
 		
@@ -97,19 +95,12 @@ public class KpiAppraiseRevenueService {
 		Calendar now = Calendar.getInstance();
 		now.setTime(startDate);
 		now.add(Calendar.DAY_OF_MONTH, 1);
-		startDate = now.getTime();
 		Date endDate = now.getTime();
 		
 		dailyRevenueMapper.createTodayRevenueTable();
 		for(AppServer server : serverList) {
 			doRevenueTask(startDate,endDate,server,"t_today_revenue");
 		}
-	}
-	
-	@CachePut
-	@Transactional
-	public int insert(DailyRevenue record) {
-		return dailyRevenueMapper.insert(record);
 	}
 	
 	@Cacheable(key="#root.method")

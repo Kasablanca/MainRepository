@@ -15,7 +15,6 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -76,6 +75,7 @@ public class GeneralOnlineInfoService {
 		}
 		result.setData(list);
 		result.setCount(count);
+		result.setExtra(RequestPayload.unPrepare(copy));
 		
 		return result;
 	}
@@ -83,12 +83,6 @@ public class GeneralOnlineInfoService {
 	@Cacheable(key="#root.method")
 	public List<String> getAllPlatform() {
 		return generalOnlineInfoMapper.getAllPlatform();
-	}
-
-	@CachePut
-	@Transactional
-	public int insert(GeneralOnlineInfo record) {
-		return generalOnlineInfoMapper.insert(record);
 	}
 	
 	/*====================================分割线,以下方法非对外使用====================================*/

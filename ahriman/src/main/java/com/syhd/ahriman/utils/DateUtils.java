@@ -124,4 +124,36 @@ public class DateUtils {
 		return java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(time));
 	}
 	
+	/**
+	 * 日期加/减
+	 * @param date 原始日期
+	 * @param unit 日期单元，可以为天、周、月
+	 * @param offset 偏移量，可以为负数
+	 * @return 加/减后的新日期
+	 */
+	public static Date dateAdd(Date date,DateUnit unit,int offset) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		
+		switch(unit) {
+		case DAY:
+			cal.add(Calendar.DAY_OF_MONTH, offset);
+			break;
+		case WEEK:
+			cal.add(Calendar.WEEK_OF_MONTH, offset);
+			break;
+		case MONTH:
+			cal.add(Calendar.MONTH, offset);
+			break;
+		}
+		
+		return cal.getTime();
+	}
+	
+	public static enum DateUnit {
+		DAY,
+		WEEK,
+		MONTH;
+	}
+	
 }

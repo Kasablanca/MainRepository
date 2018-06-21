@@ -25,6 +25,10 @@ public interface PlayerRemainMapper {
     List<PlayerRemain> getStatistic(@Param("param")RequestPayload payload,@Param("pageAndSort")PageAndSort pageAndSort);
     
     Long getStatisticCount(@Param("param")RequestPayload payload,@Param("pageAndSort")PageAndSort pageAndSort);
+    
+    List<PlayerRemain> getMixinStatistic(@Param("param")RequestPayload payload,@Param("pageAndSort")PageAndSort pageAndSort);
+
+	Long getMixinStatisticCount(@Param("param")RequestPayload payload,@Param("pageAndSort")PageAndSort pageAndSort);
 
 	List<String> getAllPlatform();
 	
@@ -52,4 +56,7 @@ public interface PlayerRemainMapper {
 	 * @return 影响记录数
 	 */
 	int updateByUniqueKeySelective(PlayerRemain record);
+
+	void createTempTable();
+	
 }

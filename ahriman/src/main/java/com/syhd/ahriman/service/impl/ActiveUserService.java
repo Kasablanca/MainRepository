@@ -15,7 +15,6 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -52,7 +51,6 @@ public class ActiveUserService {
 	 * @param param 查询参数
 	 * @return 包含汇总数据
 	 */
-	@Cacheable(sync=true)
 	public Result getDailyActiveUser(RequestPayload param) {
 		RequestPayload copy = RequestPayload.prepare(param,null);
 		
@@ -85,19 +83,12 @@ public class ActiveUserService {
 		Calendar now = Calendar.getInstance();
 		now.setTime(startDate);
 		now.add(Calendar.DAY_OF_MONTH, 1);
-		startDate = now.getTime();
 		Date endDate = now.getTime();
 		
 		dailyActiveUserMapper.createTodayActiveuserTable();
 		for(AppServer server : serverList) {
 			doActiveUserTask(startDate,endDate,server,"t_today_activeuser");
 		}
-	}
-	
-	@CachePut
-	@Transactional
-	public int insert(DailyActiveUser record) {
-		return dailyActiveUserMapper.insert(record);
 	}
 	
 	@Cacheable(key="#root.method")

@@ -16,7 +16,6 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -87,14 +86,9 @@ public class BasicInfoService {
 		}
 		result.setData(list);
 		result.setCount(count);
+		result.setExtra(RequestPayload.unPrepare(copy));
 		
 		return result;
-	}
-	
-	@CachePut
-	@Transactional
-	public int insert(BasicInfo record) {
-		return basicInfoMapper.insert(record);
 	}
 	
 	@Cacheable(key="#root.method")

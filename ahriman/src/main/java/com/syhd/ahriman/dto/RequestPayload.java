@@ -162,15 +162,16 @@ public class RequestPayload implements Serializable,Cloneable {
 			// 若没给开始日期，则设置为上月同一天凌晨00:00:00
 			if(startOffset == null) {
 				copy.setStart(DateUtils.getOneMonthBeforeTime0());
+			} else {
+				Calendar now = Calendar.getInstance();
+				now.set(Calendar.AM_PM, Calendar.AM);
+				now.set(Calendar.HOUR_OF_DAY, 0);
+				now.set(Calendar.MINUTE, 0);
+				now.set(Calendar.SECOND, 0);
+				now.set(Calendar.MILLISECOND, 0);
+				now.add(Calendar.DAY_OF_MONTH, startOffset);
+				copy.setStart(now.getTime());
 			}
-			Calendar now = Calendar.getInstance();
-			now.set(Calendar.AM_PM, Calendar.AM);
-			now.set(Calendar.HOUR_OF_DAY, 0);
-			now.set(Calendar.MINUTE, 0);
-			now.set(Calendar.SECOND, 0);
-			now.set(Calendar.MILLISECOND, 0);
-			now.add(Calendar.DAY_OF_MONTH, startOffset);
-			copy.setStart(now.getTime());
 		}
 		if(StringUtils.isEmpty(copy.getEnd()))	{
 			// 若没给结束日期，则设置为今天凌晨00:00:00.000
