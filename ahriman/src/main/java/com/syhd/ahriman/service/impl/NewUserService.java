@@ -58,7 +58,7 @@ public class NewUserService {
 	 * @return 包含汇总数据
 	 */
 	public Result getStatistic(RequestPayload param) {
-		RequestPayload copy = RequestPayload.prepare(param,null);
+		RequestPayload copy = RequestPayload.prepare(param,null,null);
 		
 		Result result = Result.getSuccessResult();
 		Map<String,Object> response = new HashMap<>();

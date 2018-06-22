@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.syhd.ahriman.utils.ArrayUtils;
@@ -140,10 +139,11 @@ public class RequestPayload implements Serializable,Cloneable {
 	/**
 	 * 预处理查询参数
 	 * @param param 前台原始参数
-	 * @param startOffset 开始日期默认多少天以前,不给此参数则默认一个月以前
+	 * @param defaultStartOffset 开始日期默认多少天以前,可以为负数,为空则为一个月以前
+	 * @param defaultEndToday 结束日期默认今天0点还是明天0点，为空或true则为今天0点，否则明天0点
 	 * @return 处理后的参数
 	 */
-	public static RequestPayload prepare(RequestPayload param,Integer startOffset) {
+	public static RequestPayload prepare(RequestPayload param,Integer defaultStartOffset,Boolean defaultEndToday) {
 		RequestPayload copy = new RequestPayload(param);
 		
 		String[] platforms = copy.getPlatform();
@@ -158,9 +158,9 @@ public class RequestPayload implements Serializable,Cloneable {
 			copy.setServerId(null);
 		}
 		
-		if(StringUtils.isEmpty(copy.getStart())) {
+		if(copy.getStart() == null) {
 			// 若没给开始日期，则设置为上月同一天凌晨00:00:00
-			if(startOffset == null) {
+			if(defaultStartOffset == null) {
 				copy.setStart(DateUtils.getOneMonthBeforeTime0());
 			} else {
 				Calendar now = Calendar.getInstance();
@@ -169,13 +169,17 @@ public class RequestPayload implements Serializable,Cloneable {
 				now.set(Calendar.MINUTE, 0);
 				now.set(Calendar.SECOND, 0);
 				now.set(Calendar.MILLISECOND, 0);
-				now.add(Calendar.DAY_OF_MONTH, startOffset);
+				now.add(Calendar.DAY_OF_MONTH, defaultStartOffset);
 				copy.setStart(now.getTime());
 			}
 		}
-		if(StringUtils.isEmpty(copy.getEnd()))	{
-			// 若没给结束日期，则设置为今天凌晨00:00:00.000
-			copy.setEnd(DateUtils.getTodayTime0());
+		if(copy.getEnd() == null)	{
+			// 若没给结束日期
+			if(defaultEndToday == null || defaultEndToday == true) {
+				copy.setEnd(DateUtils.getTodayTime0());
+			} else {
+				copy.setEnd(DateUtils.getTommorowTime0());
+			}
 		} else {
 			// 若已给截止日期，则将截止日期设置为第二天凌晨
 			Calendar now = Calendar.getInstance();

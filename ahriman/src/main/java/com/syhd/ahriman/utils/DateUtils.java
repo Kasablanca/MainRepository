@@ -125,6 +125,15 @@ public class DateUtils {
 	}
 	
 	/**
+	 * 将日期从java.util.Date转换为java.sql.Timestamp，pattern为"yyyy-MM-dd HH:mm:ss"
+	 * @param time java.util.Date
+	 * @return java.sql.Date
+	 */
+	public static java.sql.Timestamp conver2SqlTimestamp(Date time){
+		return java.sql.Timestamp.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time));
+	}
+	
+	/**
 	 * 日期加/减
 	 * @param date 原始日期
 	 * @param unit 日期单元，可以为天、周、月

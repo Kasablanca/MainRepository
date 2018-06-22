@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhd.ahriman.dao.mapper.OnlineCountMapper">
+	<resultMap id="BaseResultMap"
+		type="com.syhd.ahriman.dao.model.OnlineCount">
+		<result column="server_id" jdbcType="INTEGER"
+			property="serverId" />
+		<result column="platform" jdbcType="VARCHAR"
+			property="platform" />
+		<result column="time" jdbcType="TIMESTAMP" property="time" />
+		<result column="count" jdbcType="INTEGER" property="count" />
+	</resultMap>
+	<insert id="insert"
+		parameterType="com.syhd.ahriman.dao.model.OnlineCount">
+		insert into t_online_count (server_id, platform, time,
+		count)
+		values (#{serverId,jdbcType=INTEGER}, #{platform,jdbcType=VARCHAR},
+		#{time,jdbcType=TIMESTAMP},
+		#{count,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.syhd.ahriman.dao.model.OnlineCount">
+		insert into t_online_count
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="serverId != null">
+				server_id,
+			</if>
+			<if test="platform != null">
+				platform,
+			</if>
+			<if test="time != null">
+				time,
+			</if>
+			<if test="count != null">
+				count,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="serverId != null">
+				#{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+				#{time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="count != null">
+				#{count,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<select id="getStatistic" resultType="com.syhd.ahriman.dao.model.OnlineCount">
+		select time,sum(count) count
+		from t_online_count
+		where time >= #{param.start} and time &lt; #{param.end}
+		<if test="param.platform != null and param.platform.length > 0">
+			and platform in
+			<trim prefix="(" suffixOverrides="," suffix=")">
+				<foreach collection="param.platform" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		<if test="param.serverId != null and param.serverId.length > 0">
+			and server_id in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.serverId" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		group by time
+		order by time
+	</select>
+	<select id="getAllPlatform" resultType="string">
+		select distinct platform from t_online_count order by platform
+	</select>
+	<select id="getLastCountDate" resultType="java.util.Date">
+		select max(time) from t_online_count where server_id = #{serverId}
+	</select>
+	<insert id="batchInsert">
+		insert into ${storedTable} (server_id, platform, time, count) values 
+		<trim suffixOverrides=",">
+			<foreach collection="records" item="record">
+				(#{record.serverId,jdbcType=INTEGER}, #{record.platform,jdbcType=VARCHAR},
+				#{record.time,jdbcType=TIMESTAMP}, #{record.count,jdbcType=INTEGER}),
+			</foreach>
+		</trim>
+	</insert>
+</mapper>

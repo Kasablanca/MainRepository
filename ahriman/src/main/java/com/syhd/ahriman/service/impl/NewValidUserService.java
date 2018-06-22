@@ -50,7 +50,7 @@ public class NewValidUserService implements DailyTask {
 	 * @return 包含汇总数据
 	 */
 	public TableData getStatistic(RequestPayload param,PageAndSort pageAndSort) {
-		RequestPayload copy = RequestPayload.prepare(param,null);
+		RequestPayload copy = RequestPayload.prepare(param,null,null);
 		
 		TableData result = new TableData();
 		result.setCode(0);

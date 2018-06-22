@@ -1,5 +1,11 @@
 package com.syhd.ahriman.service;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jboss.logging.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -18,6 +24,8 @@ import org.springframework.transaction.TransactionStatus;
 @Component
 public class TaskBeanPostProcessor implements BeanPostProcessor {
 
+	private static final Logger logger = Logger.getLogger(TaskBeanPostProcessor.class);
+	
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
 	
@@ -31,18 +39,66 @@ public class TaskBeanPostProcessor implements BeanPostProcessor {
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if(bean instanceof DailyTask) {
 			DailyTask task = (DailyTask) bean;
-			TaskWrapper taskWrapper = new TaskWrapper(task);
+			DailyTaskWrapper taskWrapper = new DailyTaskWrapper(task);
 			taskExecutor.execute(taskWrapper);
 			taskScheduler.schedule(taskWrapper, new CronTrigger("0 0 0 * * ?"));
 		}
+		
+		Map<Method,CronTask> map = getMethodAnnotatiion(bean,CronTask.class);
+		for(Map.Entry<Method,CronTask> entry : map.entrySet()) {
+			CronTaskWrapper taskWrapper = new CronTaskWrapper(bean,entry.getKey());
+			taskExecutor.execute(taskWrapper);
+			taskScheduler.schedule(taskWrapper, new CronTrigger(entry.getValue().value()));
+		}
+		
 		return bean;
 	}
 	
-	private class TaskWrapper implements Runnable {
+	private <T extends Annotation> Map<Method,T> getMethodAnnotatiion(Object target,Class<T> annotation) {
+		Method[] methods = target.getClass().getDeclaredMethods();
+		
+		Map<Method,T> map = new HashMap<>();
+		
+		for(Method method : methods) {
+			T[] array = method.getAnnotationsByType(annotation);
+			if(array.length == 1) {
+				map.put(method, array[0]);
+			}
+		}
+		
+		return map;
+	}
+	
+	private class CronTaskWrapper implements Runnable {
+		private Object object;
+		private Method method;
+		
+		public CronTaskWrapper(Object object,Method method) {
+			this.object = object;
+			this.method = method;
+		}
+
+		@Override
+		public void run() {
+			TransactionStatus transactionStatus = transactionManager.getTransaction(null);
+			try {
+				method.invoke(object);
+				try {
+					transactionManager.commit(transactionStatus);
+				} catch (RuntimeException ignored) {}
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("定时任务运行失败", e.getCause());
+				transactionManager.rollback(transactionStatus);
+			}
+		}
+	}
+	
+	private class DailyTaskWrapper implements Runnable {
 		
 		private DailyTask dailyTask;
 
-		public TaskWrapper(DailyTask dailyTask) {
+		public DailyTaskWrapper(DailyTask dailyTask) {
 			this.dailyTask = dailyTask;
 		}
 		
@@ -56,6 +112,7 @@ public class TaskBeanPostProcessor implements BeanPostProcessor {
 				} catch (RuntimeException ignored) {}
 			} catch (RuntimeException e) {
 				e.printStackTrace();
+				logger.error("定时任务运行失败", e.getCause());
 				transactionManager.rollback(transactionStatus);
 			}
 		}

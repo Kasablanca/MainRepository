@@ -57,7 +57,7 @@ private static final Logger logger = Logger.getLogger(KpiUserLTVService.class);
 	 * @return 包含汇总数据
 	 */
 	public TableData getStatistic(RequestPayload param,PageAndSort pageAndSort) {
-		RequestPayload copy = RequestPayload.prepare(param,null);
+		RequestPayload copy = RequestPayload.prepare(param,null,null);
 		
 		List<KpiUserLtv> list;
 		Long count;

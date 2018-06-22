@@ -68,7 +68,7 @@ public class BasicInfoService {
 	 */
 	@Cacheable(sync=true)
 	public TableData getStatistic(RequestPayload param,PageAndSort pageAndSort) {
-		RequestPayload copy = RequestPayload.prepare(param,null);
+		RequestPayload copy = RequestPayload.prepare(param,null,null);
 		
 		TableData result = new TableData();
 		result.setCode(0);

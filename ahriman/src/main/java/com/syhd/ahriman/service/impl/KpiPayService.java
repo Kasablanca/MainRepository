@@ -57,9 +57,9 @@ public class KpiPayService {
 	 * @return 包含汇总数据
 	 */
 	public TableData getStatistic(RequestPayload param,PageAndSort pageAndSort) {
-		RequestPayload copy = RequestPayload.prepare(param,-7);
+		RequestPayload copy = RequestPayload.prepare(param,-7,null);
 		
-		List<KpiPayVO> list = kpiPayMapper.getStatistic(copy,pageAndSort);
+		List<KpiPayVO> list;
 		Long count;
 		if(RequestPayload.containToday(copy)) {
 			//查询期限包含今天

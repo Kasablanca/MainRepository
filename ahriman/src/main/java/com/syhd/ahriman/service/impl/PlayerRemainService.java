@@ -50,7 +50,7 @@ public class PlayerRemainService implements DailyTask {
 	 * @return 包含汇总数据
 	 */
 	public TableData getStatistic(RequestPayload param,PageAndSort pageAndSort) {
-		RequestPayload copy = RequestPayload.prepare(param,-7);
+		RequestPayload copy = RequestPayload.prepare(param,-7,null);
 		
 		TableData result = new TableData();
 		result.setCode(0);
