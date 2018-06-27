@@ -213,4 +213,7 @@
 		) t 
 		GROUP BY date
 	</select>
+	<select id="getCountByDate" resultType="int">
+		select count(*) from user_info where regTime > #{startDate}
+	</select>
 </mapper>

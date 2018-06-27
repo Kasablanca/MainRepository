@@ -1,5 +1,6 @@
 package com.syhd.ahriman.dao.mapper;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -27,4 +28,11 @@ public interface UserInfoMapper {
      * @return 新增账户统计数据
      */
     List<KpiStatistic> getStatistic(@Param("param")RequestPayload param);
+    
+    /**
+     * 
+     * @param startDate 开始日期
+     * @return 记录数
+     */
+    int getCountByDate(Date startDate);
 }

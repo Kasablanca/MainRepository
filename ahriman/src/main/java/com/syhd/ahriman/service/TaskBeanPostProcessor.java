@@ -9,7 +9,6 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
@@ -27,9 +26,6 @@ public class TaskBeanPostProcessor implements BeanPostProcessor {
 	private static final Logger logger = Logger.getLogger(TaskBeanPostProcessor.class);
 	
 	@Autowired
-	private ThreadPoolTaskExecutor taskExecutor;
-	
-	@Autowired
 	private ThreadPoolTaskScheduler taskScheduler;
 	
 	@Autowired
@@ -40,21 +36,21 @@ public class TaskBeanPostProcessor implements BeanPostProcessor {
 		if(bean instanceof DailyTask) {
 			DailyTask task = (DailyTask) bean;
 			DailyTaskWrapper taskWrapper = new DailyTaskWrapper(task);
-			taskExecutor.execute(taskWrapper);
+			taskWrapper.run();
 			taskScheduler.schedule(taskWrapper, new CronTrigger("0 0 0 * * ?"));
 		}
 		
-		Map<Method,CronTask> map = getMethodAnnotatiion(bean,CronTask.class);
+		Map<Method,CronTask> map = getMethodAnnotation(bean,CronTask.class);
 		for(Map.Entry<Method,CronTask> entry : map.entrySet()) {
 			CronTaskWrapper taskWrapper = new CronTaskWrapper(bean,entry.getKey());
-			taskExecutor.execute(taskWrapper);
+			taskWrapper.run();
 			taskScheduler.schedule(taskWrapper, new CronTrigger(entry.getValue().value()));
 		}
 		
 		return bean;
 	}
 	
-	private <T extends Annotation> Map<Method,T> getMethodAnnotatiion(Object target,Class<T> annotation) {
+	private <T extends Annotation> Map<Method,T> getMethodAnnotation(Object target,Class<T> annotation) {
 		Method[] methods = target.getClass().getDeclaredMethods();
 		
 		Map<Method,T> map = new HashMap<>();
@@ -85,7 +81,10 @@ public class TaskBeanPostProcessor implements BeanPostProcessor {
 				method.invoke(object);
 				try {
 					transactionManager.commit(transactionStatus);
-				} catch (RuntimeException ignored) {}
+				} catch (RuntimeException ignored) {
+					ignored.printStackTrace();
+					logger.error("提交事务失败", ignored.getCause());
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				logger.error("定时任务运行失败", e.getCause());
@@ -109,7 +108,10 @@ public class TaskBeanPostProcessor implements BeanPostProcessor {
 				dailyTask.run();
 				try {
 					transactionManager.commit(transactionStatus);
-				} catch (RuntimeException ignored) {}
+				} catch (RuntimeException ignored) {
+					ignored.printStackTrace();
+					logger.error("提交事务失败", ignored.getCause());
+				}
 			} catch (RuntimeException e) {
 				e.printStackTrace();
 				logger.error("定时任务运行失败", e.getCause());

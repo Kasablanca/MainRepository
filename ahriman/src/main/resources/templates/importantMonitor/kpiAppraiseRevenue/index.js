@@ -43,89 +43,13 @@ $(function (){
 				data: []
 			}]
 	};
-	$.get("kpiAppraiseRevenue/getDailyRevenue",function (data){
-		if(data.code == 0){
-			// 说明获取数据成功
-			var header = [];
-			var value = [];
-			for(var v of data.data.response){
-				header.push(v.date);
-				value.push(v.count);
-			}
-			option.xAxis[0].data = header;
-			option.series[0].data = value;
-			myChart.setOption(option);
-			$('#start').val(data.data.request.start);
-			$('#end').val(data.data.request.end);
-		} else {
-			// 说明获取数据失败
-			layer.msg('获取图标数据失败：'+data.message, {icon: 5});
-		}
-	});
+	
+	ajax(myChart,null,option);
 
 	layui.form.on('submit(search)', function (data){
-		myChart.showLoading();
-		$.ajax({
-			url: 'kpiAppraiseRevenue/getDailyRevenue'
-			,data: $.param($('#searchForm').serializeArray())
-			,method: 'post'
-			,success: function (data){
-				myChart.hideLoading();
-				if(data.code == 0){
-					// 说明获取数据成功
-					var header = [];
-					var value = [];
-					for(var v of data.data.response){
-						header.push(v.date);
-						value.push(v.count);
-					}
-					option.xAxis[0].data = header;
-					option.series[0].data = value;
-					myChart.setOption(option);
-				} else {
-					// 说明获取数据失败
-					layer.msg('获取图表数据失败：'+data.message, {icon: 5});
-				}
-			}
-			,error: function (){
-				myChart.hideLoading();
-				// 说明连接服务器失败
-				layer.msg('连接服务器失败', {icon: 5});
-			}
-		});
-		return false;
+		ajax(myChart,$.param($('#searchForm').serializeArray()),option);
 	});
-/*	$('#searchBtn').click(function (){
-		myChart.showLoading();
-		$.ajax({
-			url: 'kpiAppraiseRevenue/getDailyRevenue'
-			,data: $.param($('#searchForm').serializeArray())
-			,method: 'post'
-			,success: function (data){
-				myChart.hideLoading();
-				if(data.code == 0){
-					// 说明获取数据成功
-					var header = [];
-					var value = [];
-					for(var v of data.data.response){
-						header.push(v.date);
-						value.push(v.count);
-					}
-					option.xAxis[0].data = header;
-					option.series[0].data = value;
-					myChart.setOption(option);
-				} else {
-					// 说明获取数据失败
-					layer.msg('获取图表数据失败：'+data.message, {icon: 5});
-				}
-			}
-			,error: function (){
-				myChart.hideLoading();
-				// 说明连接服务器失败
-				layer.msg('连接服务器失败', {icon: 5});
-			}
-		});
-	});*/
+	
 	$('#platform').change(function (target,trigger){
 		var platformArray = $('#platform').val();
 		if(platformArray && platformArray.length > 1){
@@ -173,3 +97,44 @@ $(function (){
 		}
 	});
 });
+
+function ajax(myChart,payload,option){
+	myChart.showLoading();
+	$.ajax({
+		url: 'kpiAppraiseRevenue/getDailyRevenue'
+		,data: payload
+		,dataType: 'json'
+		,method: 'post'
+		,success: function (data){
+			myChart.hideLoading();
+			if(data.code == 0){
+				// 说明获取数据成功
+				var header = [];
+				var value = [];
+				for(var v of data.data.response){
+					header.push(v.date);
+					value.push(v.count);
+				}
+				option.xAxis[0].data = header;
+				option.series[0].data = value;
+				myChart.setOption(option);
+				
+				if(!$('#start').val()){
+					$('#start').val(data.data.request.start);
+				}
+				if(!$('#end').val()){
+					$('#end').val(data.data.request.end);
+				}
+			} else {
+				// 说明获取数据失败
+				layer.msg('获取图表数据失败：'+data.message, {icon: 5});
+			}
+		}
+		,error: function (){
+			myChart.hideLoading();
+			// 说明连接服务器失败
+			layer.msg('连接服务器失败', {icon: 5});
+		}
+	});
+	return false;
+}

@@ -10,20 +10,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.syhd.ahriman.dao.mapper.BasicInfoMapper;
 import com.syhd.ahriman.dao.mapper.CommonMapper;
+import com.syhd.ahriman.dao.mapper.UserInfoMapper;
 import com.syhd.ahriman.dao.mapper.UserRegisteredMapper;
 import com.syhd.ahriman.dao.model.AppServer;
 import com.syhd.ahriman.dao.model.BasicInfo;
@@ -35,6 +31,7 @@ import com.syhd.ahriman.dto.RequestPayload;
 import com.syhd.ahriman.dto.Result;
 import com.syhd.ahriman.dto.TableData;
 import com.syhd.ahriman.properties.GamelogProperties;
+import com.syhd.ahriman.service.CronTask;
 import com.syhd.ahriman.utils.DateUtils;
 
 @Service
@@ -57,6 +54,9 @@ public class BasicInfoService {
 	
 	@Autowired
 	private UserRegisteredMapper userRegisteredMapper;
+	
+	@Autowired
+	private UserInfoMapper userInfoMapper;
 	
 	@Autowired
 	private CommonMapper commonMapper;
@@ -98,31 +98,7 @@ public class BasicInfoService {
 	
 /*====================================分割线,以下方法非对外使用====================================*/
 	
-	/**
-	 * 每次服务器启动时执行
-	 */
-	@PostConstruct
-	public void init() {
-		initTask();
-	}
-	
-	/**
-	 * 被异步执行，否则影响项目启动速度
-	 */
-	@Async
-	public void initTask() {
-		task();
-	}
-	
-	/**
-	 * 每天执行
-	 */
-	@Scheduled(cron="0 0 0 * * ?")
-	public void dailyTask() {
-		task();
-	}
-	
-	@Transactional
+	@CronTask("0 0 0 * * ?")
 	@CacheEvict(allEntries=true)
 	public void task() {
 		List<AppServer> serverList = appServerService.getAllServer();
@@ -141,6 +117,10 @@ public class BasicInfoService {
 		Date startDate = null;
 		Date endDate = DateUtils.getTodayTime0();
 		if(lastCountDate != null) {
+			int count = userInfoMapper.getCountByDate(lastCountDate);
+			if(count == 0)
+				//说明不需要统计
+				return;
 			Calendar now = Calendar.getInstance();
 			now.setTime(lastCountDate);
 			now.add(Calendar.DAY_OF_MONTH, 1);
@@ -205,6 +185,7 @@ public class BasicInfoService {
 			stmt.setBigDecimal(5, rate.getHkd());
 			
 			ResultSet resultSet = stmt.executeQuery();
+			resultSet.setFetchSize(100);
 			final int batchSize = 100; // 每次批量插入的阈值
 			List<BasicInfo> recordList = new ArrayList<>(batchSize*2);
 			while(resultSet.next()) {

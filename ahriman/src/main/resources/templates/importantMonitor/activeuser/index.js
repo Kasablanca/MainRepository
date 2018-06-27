@@ -43,85 +43,13 @@ $(function (){
 				data: []
 			}]
 	};
-	$.get("activeUser/getDailyActiveUser",function (data){
-		if(data.code == 0){
-			// 说明获取数据成功
-			var header = [];
-			var value = [];
-			for(var v of data.data.response){
-				header.push(v.date);
-				value.push(v.count);
-			}
-			option.xAxis[0].data = header;
-			option.series[0].data = value;
-			myChart.setOption(option);
-			$('#start').val(data.data.request.start);
-			$('#end').val(data.data.request.end);
-		} else {
-			// 说明获取数据失败
-			layer.msg('获取图表数据失败：'+data.message, {icon: 5});
-		}
-	});
-/*
-	layui.form.on('submit(search)', function (data){
-		$.ajax({
-			url: '/kpiAppraiseRevenue/getDailyRevenue'
-			,data: data.field
-			,method: 'post'
-			,success: function (data){
-				if(data.code == 0){
-					// 说明获取数据成功
-					var header = [];
-					var value = [];
-					for(var v of data.data){
-						header.push(v.date);
-						value.push(v.money);
-					}
-					option.xAxis.data = header;
-					option.series[0].data = value;
-					myChart.setOption(option);
-				} else {
-					// 说明获取数据失败
-					layer.msg('获取图标数据失败：'+data.msg, {icon: 5});
-				}
-			}
-			,error: function (){
-				// 说明连接服务器失败
-				layer.msg('连接服务器失败', {icon: 5});
-			}
-		});
-	});*/
+	
+	ajax(myChart,null,option);
+	
 	$('#searchBtn').click(function (){
-		myChart.showLoading();
-		$.ajax({
-			url: 'activeUser/getDailyActiveUser'
-			,data: $.param($('#searchForm').serializeArray())
-			,method: 'post'
-			,success: function (data){
-				myChart.hideLoading();
-				if(data.code == 0){
-					// 说明获取数据成功
-					var header = [];
-					var value = [];
-					for(var v of data.data.response){
-						header.push(v.date);
-						value.push(v.count);
-					}
-					option.xAxis[0].data = header;
-					option.series[0].data = value;
-					myChart.setOption(option);
-				} else {
-					// 说明获取数据失败
-					layer.msg('获取图表数据失败：'+data.message, {icon: 5});
-				}
-			}
-			,error: function (){
-				myChart.hideLoading();
-				// 说明连接服务器失败
-				layer.msg('连接服务器失败', {icon: 5});
-			}
-		});
+		ajax(myChart,$.param($('#searchForm').serializeArray()),option);
 	});
+	
 	$('#platform').change(function (target,trigger){
 		var platformArray = $('#platform').val();
 		if(platformArray && platformArray.length > 1){
@@ -169,3 +97,43 @@ $(function (){
 		}
 	});
 });
+
+function ajax(myChart,payload,option){
+	myChart.showLoading();
+	$.ajax({
+		url: 'activeUser/getDailyActiveUser'
+		,data: payload
+		,dataType: 'json'
+		,method: 'post'
+		,success: function (data){
+			myChart.hideLoading();
+			if(data.code == 0){
+				// 说明获取数据成功
+				var header = [];
+				var value = [];
+				for(var v of data.data.response){
+					header.push(v.date);
+					value.push(v.count);
+				}
+				option.xAxis[0].data = header;
+				option.series[0].data = value;
+				myChart.setOption(option);
+				
+				if(!$('#start').val()){
+					$('#start').val(data.data.request.start);
+				}
+				if(!$('#end').val()){
+					$('#end').val(data.data.request.end);
+				}
+			} else {
+				// 说明获取数据失败
+				layer.msg('获取图表数据失败：'+data.message, {icon: 5});
+			}
+		}
+		,error: function (){
+			myChart.hideLoading();
+			// 说明连接服务器失败
+			layer.msg('连接服务器失败', {icon: 5});
+		}
+	});
+}

@@ -88,4 +88,7 @@
 			</foreach>
 		</trim>
 	</insert>
+	<delete id="cleanUp">
+		delete from t_online_count where time &lt; #{critical} and minute(time) = 0 and second(time) = 0 and microsecond(time) = 0
+	</delete>
 </mapper>

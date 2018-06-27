@@ -8,17 +8,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.syhd.ahriman.dao.mapper.OnlineCountMapper;
 import com.syhd.ahriman.dao.model.AppServer;
@@ -27,6 +22,7 @@ import com.syhd.ahriman.dto.RequestPayload;
 import com.syhd.ahriman.dto.Result;
 import com.syhd.ahriman.dto.StatisticPayload;
 import com.syhd.ahriman.properties.GamelogProperties;
+import com.syhd.ahriman.service.CronTask;
 import com.syhd.ahriman.utils.DateUtils;
 
 @Service
@@ -68,40 +64,22 @@ public class RealtimeOnlineChartService {
 	
 /*====================================分割线,以下方法非对外使用====================================*/
 	
-	/**
-	 * 每次服务器启动时执行
-	 */
-	@PostConstruct
-	public void init() {
-		initTask();
-	}
-	
-	/**
-	 * 被异步执行，否则影响项目启动速度
-	 */
-	@Async
-	public void initTask() {
-		task();
-	}
-	
-	/**
-	 * 每5分钟执行一次
-	 */
-	@Scheduled(cron="0 0/5 * * * ?")
-	public void minute5Task() {
-		task();
-	}
-	
-	/**
-	 * 启用事务
-	 */
-	@Transactional
+	@CronTask("0 0/5 * * * ?")
 	@CacheEvict(allEntries=true)
 	public void task() {
 		List<AppServer> serverList = appServerService.getAllServer();
 		for(AppServer server : serverList) {
 			internalTask(server);
 		}
+	}
+	
+	@CronTask("0 0 0 * * ?")
+	@CacheEvict
+	/**
+	 * 每天定时清除一个月以前的非整点数据
+	 */
+	public void dailTask() {
+		onlineCountMapper.cleanUp(DateUtils.getOneMonthBeforeTime0());
 	}
 	
 	/**

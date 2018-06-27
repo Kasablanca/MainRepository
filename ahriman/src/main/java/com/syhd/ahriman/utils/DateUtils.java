@@ -159,6 +159,20 @@ public class DateUtils {
 		return cal.getTime();
 	}
 	
+	/**
+	 * 判断是否整点
+	 * @param target 被检查的日期
+	 * @return true是正则，否则不是
+	 */
+	public static boolean isIntegralPoint(Date target) {
+		Calendar now = Calendar.getInstance();
+		now.setTime(target);
+		if(now.get(Calendar.MINUTE) == 0 && now.get(Calendar.SECOND) == 0 && now.get(Calendar.MILLISECOND) == 0) {
+			return true;
+		}
+		return false;
+	}
+	
 	public static enum DateUnit {
 		DAY,
 		WEEK,

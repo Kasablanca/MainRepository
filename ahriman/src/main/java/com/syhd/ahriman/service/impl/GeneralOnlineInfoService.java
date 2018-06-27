@@ -9,17 +9,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.syhd.ahriman.dao.mapper.CommonMapper;
 import com.syhd.ahriman.dao.mapper.GeneralOnlineInfoMapper;
@@ -30,6 +25,7 @@ import com.syhd.ahriman.dto.PageAndSort;
 import com.syhd.ahriman.dto.RequestPayload;
 import com.syhd.ahriman.dto.TableData;
 import com.syhd.ahriman.properties.GamelogProperties;
+import com.syhd.ahriman.service.CronTask;
 import com.syhd.ahriman.utils.DateUtils;
 
 @Service
@@ -73,6 +69,9 @@ public class GeneralOnlineInfoService {
 			list = generalOnlineInfoMapper.getStatistic(copy,pageAndSort);
 			count = generalOnlineInfoMapper.getStatisticCount(copy, pageAndSort);
 		}
+		
+		list = GeneralOnlineInfoVO.fill(list, copy.getStart(), copy.getEnd());
+		
 		result.setData(list);
 		result.setCount(count);
 		result.setExtra(RequestPayload.unPrepare(copy));
@@ -87,34 +86,7 @@ public class GeneralOnlineInfoService {
 	
 	/*====================================分割线,以下方法非对外使用====================================*/
 	
-	/**
-	 * 每次服务器启动时执行
-	 */
-	@PostConstruct
-	public void init() {
-		initTask();
-	}
-	
-	/**
-	 * 被异步执行，否则影响项目启动速度
-	 */
-	@Async
-	public void initTask() {
-		task();
-	}
-	
-	/**
-	 * 每天0点执行
-	 */
-	@Scheduled(cron="0 0 0 * * ?")
-	public void dailyTask() {
-		task();
-	}
-	
-	/**
-	 * 启用事务
-	 */
-	@Transactional
+	@CronTask("0 0 0 * * ?")
 	@CacheEvict(allEntries=true)
 	public void task() {
 		List<AppServer> serverList = appServerService.getAllServer();
@@ -158,6 +130,7 @@ public class GeneralOnlineInfoService {
 			stmt.setDate(2, DateUtils.conver2SqlDate(endDate));
 			
 			ResultSet resultSet = stmt.executeQuery();
+			resultSet.setFetchSize(100);
 			final int batchSize = 100; // 每次批量插入的阈值
 			List<GeneralOnlineInfo> recordList = new ArrayList<>(batchSize*2);
 			while(resultSet.next()) {

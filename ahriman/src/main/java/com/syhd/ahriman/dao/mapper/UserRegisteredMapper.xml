@@ -102,10 +102,9 @@
 			FROM
 				user_info 
 			WHERE
-				user_info.regTime &lt;= DATE_ADD( t.date, INTERVAL 1 DAY ) 
+				user_info.regTime &lt; DATE_ADD( t.date, INTERVAL 1 DAY ) 
 				AND user_info.regType = t.platform 
-			) totalRegistered
-		,
+			) totalRegistered,
 			(
 			SELECT
 				count( uid ) 
@@ -123,8 +122,7 @@
 		</if>
 	</select>
 	<insert id="batchInsert">
-		insert into t_user_registered (date, platform,
-		total_registered) values 
+		insert into t_user_registered (date, platform, total_registered, daily_registered) values 
 		<trim suffixOverrides=",">
 			<foreach collection="list" item="item">
 				(#{item.date,jdbcType=DATE},

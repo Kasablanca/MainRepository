@@ -75,6 +75,7 @@ public class KpiPayVO implements Serializable {
 		this.payRateNew = BigDecimal.ZERO;
 		this.payRateOld = BigDecimal.ZERO;
 		this.payUserNumber = 0;
+		this.revenue = BigDecimal.ZERO;
 	}
 
 	public Date getDate() {
@@ -251,12 +252,29 @@ public class KpiPayVO implements Serializable {
 			}
 			cal.add(Calendar.DAY_OF_MONTH, 1);
 		}
-		while((temp=list.get(list.size()-1).date).before(end)) {
-			cal.setTime(temp);
-			cal.add(Calendar.DAY_OF_MONTH, 1);
-			list.add(new KpiPayVO(cal.getTime()));
+		
+		if(list.size()==0 && start.before(end)) {
+			list.add(new KpiPayVO(start));
+		}
+		
+		if(list.size()>0) {
+			while((temp=dateAdd(cal,list.get(list.size()-1).date)).before(end)) {
+				list.add(new KpiPayVO(temp));
+			}
 		}
 		
 		return list;
+	}
+	
+	/**
+	 * 将日期增加一天
+	 * @param cal 日历
+	 * @param target 目标日期
+	 * @return 结果日期
+	 */
+	public static Date dateAdd(Calendar cal, Date target) {
+		cal.setTime(target);
+		cal.add(Calendar.DAY_OF_MONTH, 1);
+		return cal.getTime();
 	}
 }

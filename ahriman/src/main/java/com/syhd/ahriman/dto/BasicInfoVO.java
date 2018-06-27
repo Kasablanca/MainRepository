@@ -29,17 +29,17 @@ public class BasicInfoVO implements Serializable {
     
     private Integer liveUserOld; //老玩家活跃数
 
-    private Integer retentionDay2; //次日留存
+    private BigDecimal retentionDay2; //次日留存
 
-    private Integer retentionDay3; //3日留存
+    private BigDecimal retentionDay3; //3日留存
 
-    private Integer retentionDay5; //5日留存
+    private BigDecimal retentionDay5; //5日留存
 
-    private Integer retentionDay7; //7日留存
+    private BigDecimal retentionDay7; //7日留存
 
-    private Integer retentionDay15; //15日留存
+    private BigDecimal retentionDay15; //15日留存
 
-    private Integer retentionDay30; //30留存
+    private BigDecimal retentionDay30; //30留存
 
     private Integer payUser; //充值用户数
 
@@ -129,51 +129,51 @@ public class BasicInfoVO implements Serializable {
 		this.liveUserOld = liveUserOld;
 	}
 
-	public Integer getRetentionDay2() {
+	public BigDecimal getRetentionDay2() {
 		return retentionDay2;
 	}
 
-	public void setRetentionDay2(Integer retentionDay2) {
+	public void setRetentionDay2(BigDecimal retentionDay2) {
 		this.retentionDay2 = retentionDay2;
 	}
 
-	public Integer getRetentionDay3() {
+	public BigDecimal getRetentionDay3() {
 		return retentionDay3;
 	}
 
-	public void setRetentionDay3(Integer retentionDay3) {
+	public void setRetentionDay3(BigDecimal retentionDay3) {
 		this.retentionDay3 = retentionDay3;
 	}
 
-	public Integer getRetentionDay5() {
+	public BigDecimal getRetentionDay5() {
 		return retentionDay5;
 	}
 
-	public void setRetentionDay5(Integer retentionDay5) {
+	public void setRetentionDay5(BigDecimal retentionDay5) {
 		this.retentionDay5 = retentionDay5;
 	}
 
-	public Integer getRetentionDay7() {
+	public BigDecimal getRetentionDay7() {
 		return retentionDay7;
 	}
 
-	public void setRetentionDay7(Integer retentionDay7) {
+	public void setRetentionDay7(BigDecimal retentionDay7) {
 		this.retentionDay7 = retentionDay7;
 	}
 
-	public Integer getRetentionDay15() {
+	public BigDecimal getRetentionDay15() {
 		return retentionDay15;
 	}
 
-	public void setRetentionDay15(Integer retentionDay15) {
+	public void setRetentionDay15(BigDecimal retentionDay15) {
 		this.retentionDay15 = retentionDay15;
 	}
 
-	public Integer getRetentionDay30() {
+	public BigDecimal getRetentionDay30() {
 		return retentionDay30;
 	}
 
-	public void setRetentionDay30(Integer retentionDay30) {
+	public void setRetentionDay30(BigDecimal retentionDay30) {
 		this.retentionDay30 = retentionDay30;
 	}
 

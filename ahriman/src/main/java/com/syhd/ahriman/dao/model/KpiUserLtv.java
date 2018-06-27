@@ -2,7 +2,9 @@ package com.syhd.ahriman.dao.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -82,7 +84,48 @@ public class KpiUserLtv implements Serializable {
     private BigDecimal day29;
 
     private BigDecimal day30;
+    
+    public KpiUserLtv() {
+    	//default
+    }
 
+    public KpiUserLtv(Date date) {
+    	this.date = date;
+    	this.day1 = BigDecimal.ZERO;
+    	this.day2 = BigDecimal.ZERO;
+    	this.day3 = BigDecimal.ZERO;
+    	this.day4 = BigDecimal.ZERO;
+    	this.day5 = BigDecimal.ZERO;
+    	this.day6 = BigDecimal.ZERO;
+    	this.day7 = BigDecimal.ZERO;
+    	this.day8 = BigDecimal.ZERO;
+    	this.day9 = BigDecimal.ZERO;
+    	this.day10 = BigDecimal.ZERO;
+    	this.day11 = BigDecimal.ZERO;
+    	this.day12 = BigDecimal.ZERO;
+    	this.day13 = BigDecimal.ZERO;
+    	this.day14 = BigDecimal.ZERO;
+    	this.day15 = BigDecimal.ZERO;
+    	this.day16 = BigDecimal.ZERO;
+    	this.day17 = BigDecimal.ZERO;
+    	this.day18 = BigDecimal.ZERO;
+    	this.day19 = BigDecimal.ZERO;
+    	this.day20 = BigDecimal.ZERO;
+    	this.day20 = BigDecimal.ZERO;
+    	this.day21 = BigDecimal.ZERO;
+    	this.day22 = BigDecimal.ZERO;
+    	this.day23 = BigDecimal.ZERO;
+    	this.day24 = BigDecimal.ZERO;
+    	this.day25 = BigDecimal.ZERO;
+    	this.day26 = BigDecimal.ZERO;
+    	this.day27 = BigDecimal.ZERO;
+    	this.day28 = BigDecimal.ZERO;
+    	this.day29 = BigDecimal.ZERO;
+    	this.day30 = BigDecimal.ZERO;
+    	this.newUserNumber = 0;
+    	this.totalMoney = BigDecimal.ZERO;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -370,4 +413,52 @@ public class KpiUserLtv implements Serializable {
     public void setDay30(BigDecimal day30) {
         this.day30 = day30;
     }
+    
+    /**
+	 * 填满日期，以0填充
+	 * @param list 需要填满的列表
+	 * @param start 开始日期
+	 * @param end 结束日期
+	 * @return 填满后的列表
+	 */
+	public static List<KpiUserLtv> fill(List<KpiUserLtv> list,Date start,Date end) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(start);
+		
+		Date temp;
+		
+		for(int i = 0; i < list.size(); i++) {
+			KpiUserLtv elem = list.get(i);
+			
+			while((temp=cal.getTime()).before(elem.date)) {
+				list.add(i++, new KpiUserLtv(temp));
+				cal.add(Calendar.DAY_OF_MONTH, 1);
+			}
+			cal.add(Calendar.DAY_OF_MONTH, 1);
+		}
+		
+		if(list.size()==0 && start.before(end)) {
+			list.add(new KpiUserLtv(start));
+		}
+		
+		if(list.size()>0) {
+			while((temp=dateAdd(cal,list.get(list.size()-1).date)).before(end)) {
+				list.add(new KpiUserLtv(temp));
+			}
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * 将日期增加一天
+	 * @param cal 日历
+	 * @param target 目标日期
+	 * @return 结果日期
+	 */
+	public static Date dateAdd(Calendar cal, Date target) {
+		cal.setTime(target);
+		cal.add(Calendar.DAY_OF_MONTH, 1);
+		return cal.getTime();
+	}
 }

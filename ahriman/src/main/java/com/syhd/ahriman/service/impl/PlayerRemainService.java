@@ -25,13 +25,13 @@ import com.syhd.ahriman.dto.PageAndSort;
 import com.syhd.ahriman.dto.RequestPayload;
 import com.syhd.ahriman.dto.TableData;
 import com.syhd.ahriman.properties.GamelogProperties;
-import com.syhd.ahriman.service.DailyTask;
+import com.syhd.ahriman.service.CronTask;
 import com.syhd.ahriman.utils.DateUtils;
 import com.syhd.ahriman.web.controller.kpimonitor.PlayerRemainController;
 
 @Service
 @CacheConfig(cacheNames="playerRemain")
-public class PlayerRemainService implements DailyTask {
+public class PlayerRemainService {
 
 	private static final Logger logger = Logger.getLogger(PlayerRemainController.class);
 	
@@ -75,9 +75,11 @@ public class PlayerRemainService implements DailyTask {
 			count = playerRemainMapper.getStatisticCount(copy, pageAndSort);
 		}
 		
+		list = PlayerRemain.fill(list, copy.getStart(), copy.getEnd());
+		copy = RequestPayload.unPrepare(copy);
 		result.setData(list);
 		result.setCount(count);
-		result.setExtra(RequestPayload.unPrepare(copy));
+		result.setExtra(copy);
 		
 		return result;
 	}
@@ -97,7 +99,7 @@ public class PlayerRemainService implements DailyTask {
 		
 		playerRemainMapper.createTempTable();
 		for(AppServer server : serverList) {
-			doTask(startDate,endDate,server,"t_today_player_remain");
+			doInternalTask(startDate,endDate,server,"t_today_player_remain");
 		}
 	}
 	
@@ -108,12 +110,12 @@ public class PlayerRemainService implements DailyTask {
 	
 	/*====================================分割线,以下方法非对外使用====================================*/
 	
-	@Override
+	@CronTask("0 0 0 * * ?")
 	@CacheEvict(allEntries=true)
-	public void run() {
+	public void task() {
 		List<AppServer> serverList = appServerService.getAllServer();
 		for(AppServer server : serverList) {
-			task(server);
+			internalTask(server);
 		}
 	}
 	
@@ -121,7 +123,7 @@ public class PlayerRemainService implements DailyTask {
 	 * 抓取每个日志服务器的玩家留存信息
 	 * @param server 游戏日志服务器信息
 	 */
-	public void task(AppServer server) {
+	public void internalTask(AppServer server) {
 		Date startDate = null;
 		Date endDate = DateUtils.getTodayTime0();
 		
@@ -135,10 +137,10 @@ public class PlayerRemainService implements DailyTask {
 			startDate = now.getTime();
 		}
 		
-		doTask(startDate, endDate, server, "t_player_remain");
+		doInternalTask(startDate, endDate, server, "t_player_remain");
 	}
 	
-	private void doTask(Date startDate, Date endDate, AppServer server, String storedTable) {
+	private void doInternalTask(Date startDate, Date endDate, AppServer server, String storedTable) {
 		if(!startDate.before(endDate)) {
 			// 如果开始日期没在结束日期之前，则不用处理
 			return;
@@ -153,10 +155,12 @@ public class PlayerRemainService implements DailyTask {
 			stmt.setDate(2, DateUtils.conver2SqlDate(endDate));
 			
 			ResultSet resultSet = stmt.executeQuery();
+			resultSet.setFetchSize(100);
 			final int batchSize = 100; // 每次批量插入的阈值
 			List<PlayerRemain> recordList = new ArrayList<>(batchSize*2);
 			while(resultSet.next()) {
 				PlayerRemain record = resultMap(resultSet);
+				record.setServerId(server.getServerid());
 				recordList.add(record);
 				
 				if(recordList.size() == batchSize) {

@@ -25,13 +25,13 @@ import com.syhd.ahriman.dto.PageAndSort;
 import com.syhd.ahriman.dto.RequestPayload;
 import com.syhd.ahriman.dto.TableData;
 import com.syhd.ahriman.properties.GamelogProperties;
-import com.syhd.ahriman.service.DailyTask;
+import com.syhd.ahriman.service.CronTask;
 import com.syhd.ahriman.utils.DateUtils;
 import com.syhd.ahriman.utils.DateUtils.DateUnit;
 
 @Service
 @CacheConfig(cacheNames="newValidUser")
-public class NewValidUserService implements DailyTask {
+public class NewValidUserService {
 
 	private static final Logger logger = Logger.getLogger(NewValidUserService.class);
 	
@@ -78,6 +78,8 @@ public class NewValidUserService implements DailyTask {
 			count = newValidUserMapper.getStatisticCount(copy, pageAndSort);
 		}
 		
+		list = NewValidUserVO.fill(list, copy.getStart(), copy.getEnd());
+		
 		result.setData(list);
 		result.setCount(count);
 		result.setExtra(RequestPayload.unPrepare(copy));
@@ -104,7 +106,7 @@ public class NewValidUserService implements DailyTask {
 		
 		newValidUserMapper.createTempTable();
 		for(AppServer server : serverList) {
-			doTask(startDate,endDate,server,"t_today_new_valid_user");
+			doInternalTask(startDate,endDate,server,"t_today_new_valid_user");
 		}
 	}
 	
@@ -115,12 +117,12 @@ public class NewValidUserService implements DailyTask {
 	
 	/*====================================分割线,以下方法非对外使用====================================*/
 	
-	@Override
+	@CronTask("0 0 0 * * ?")
 	@CacheEvict(allEntries=true)
-	public void run() {
+	public void task() {
 		List<AppServer> serverList = appServerService.getAllServer();
 		for(AppServer server : serverList) {
-			task(server);
+			internalTask(server);
 		}
 	}
 	
@@ -128,7 +130,7 @@ public class NewValidUserService implements DailyTask {
 	 * 抓取每个日志服务器的新增有效用户数据
 	 * @param server 游戏日志服务器信息
 	 */
-	public void task(AppServer server) {
+	public void internalTask(AppServer server) {
 		Date startDate = null;
 		Date endDate = DateUtils.getTodayTime0();
 		Date lastCountDate = newValidUserMapper.getLastCountDate(server.getServerid());
@@ -141,10 +143,10 @@ public class NewValidUserService implements DailyTask {
 			startDate = now.getTime();
 		}
 		
-		doTask(startDate, endDate, server, "t_new_valid_user");
+		doInternalTask(startDate, endDate, server, "t_new_valid_user");
 	}
 	
-	private void doTask(Date startDate, Date endDate, AppServer server, String storedTable) {
+	private void doInternalTask(Date startDate, Date endDate, AppServer server, String storedTable) {
 		if(!startDate.before(endDate)) {
 			// 如果开始日期没在结束日期之前，则不用处理
 			return;
@@ -159,6 +161,7 @@ public class NewValidUserService implements DailyTask {
 			stmt.setDate(2, DateUtils.conver2SqlDate(endDate));
 			
 			ResultSet resultSet = stmt.executeQuery();
+			resultSet.setFetchSize(100);
 			final int batchSize = 100; // 每次批量插入的阈值
 			List<NewValidUser> recordList = new ArrayList<>(batchSize*2);
 			while(resultSet.next()) {

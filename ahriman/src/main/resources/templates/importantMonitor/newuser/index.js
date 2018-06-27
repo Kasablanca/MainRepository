@@ -23,18 +23,13 @@ $(function (){
 				data: ['新增角色','新增账户']
 			},
 			calculable : true,
-			xAxis: [{
+			xAxis: {
 				boundaryGap : true,
 				data: []
-			},{
-				boundaryGap : true,
-				data: []
-			}],
-			yAxis: [{
+			},
+			yAxis: {
 				type: 'value'
-			},{
-				type: 'value'
-			}],
+			},
 			series: [{
 				name: '新增角色',
 				type: 'bar',
@@ -78,9 +73,9 @@ $(function (){
 				account.header.push(v.date);
 				account.value.push(v.count);
 			}
-			option.xAxis[0].data = role.header;
+			option.xAxis.data = role.header;
 			option.series[0].data = role.value;
-			option.xAxis[1].data = account.header;
+			//option.xAxis[1].data = account.header;
 			option.series[1].data = account.value;
 			myChart.setOption(option);
 			$('#start').val(data.data.request.start);
@@ -145,9 +140,9 @@ $(function (){
 						account.header.push(v.date);
 						account.value.push(v.count);
 					}
-					option.xAxis[0].data = role.header;
+					option.xAxis.data = role.header;
 					option.series[0].data = role.value;
-					option.xAxis[1].data = account.header;
+					//option.xAxis[1].data = account.header;
 					option.series[1].data = account.value;
 					myChart.setOption(option);
 				} else {

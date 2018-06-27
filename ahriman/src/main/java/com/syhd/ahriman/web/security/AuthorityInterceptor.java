@@ -103,7 +103,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 				return false;
 			} else {
 				// 已经认证，判断是否有权限
-				return doAuthorize(request,response,(User) session.getAttribute(USER_IN_SESSION));
+				return doAuthorize(request,requestURI,response,(User) session.getAttribute(USER_IN_SESSION));
 			}
 		}
 	}
@@ -111,12 +111,12 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 	/**
 	 * 用户授权
 	 * @param request HTTP请求
+	 * @param requestURI HTTP请求URI
 	 * @param response HTTP响应
 	 * @param target 用户信息
 	 * @return true说明通过，false说明没通过
 	 */
-	private boolean doAuthorize(HttpServletRequest request, HttpServletResponse response, User target) {
-		String requestURI = request.getRequestURI();
+	private boolean doAuthorize(HttpServletRequest request, String requestURI, HttpServletResponse response, User target) {
 		List<String> haveAuthorities = userService.getAuthoritiesUri(target.getId());
 		if(haveAuthorities.contains(requestURI)) {
 			// 说明有权限

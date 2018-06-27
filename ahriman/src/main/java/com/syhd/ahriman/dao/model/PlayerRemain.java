@@ -168,7 +168,7 @@ public class PlayerRemain implements Serializable {
 	 * @param end 结束日期
 	 * @return 填满后的列表
 	 */
-	public static List<PlayerRemain> fill(List<PlayerRemain> list, Date start, Date end) {
+	public static List<PlayerRemain> fill(List<PlayerRemain> list,Date start,Date end) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(start);
 		
@@ -183,14 +183,29 @@ public class PlayerRemain implements Serializable {
 			}
 			cal.add(Calendar.DAY_OF_MONTH, 1);
 		}
+		
+		if(list.size()==0 && start.before(end)) {
+			list.add(new PlayerRemain(start));
+		}
+		
 		if(list.size()>0) {
-			while((temp=list.get(list.size()-1).date).before(end)) {
-				cal.setTime(temp);
-				cal.add(Calendar.DAY_OF_MONTH, 1);
-				list.add(new PlayerRemain(cal.getTime()));
+			while((temp=dateAdd(cal,list.get(list.size()-1).date)).before(end)) {
+				list.add(new PlayerRemain(temp));
 			}
 		}
 		
 		return list;
+	}
+	
+	/**
+	 * 将日期增加一天
+	 * @param cal 日历
+	 * @param target 目标日期
+	 * @return 结果日期
+	 */
+	public static Date dateAdd(Calendar cal, Date target) {
+		cal.setTime(target);
+		cal.add(Calendar.DAY_OF_MONTH, 1);
+		return cal.getTime();
 	}
 }

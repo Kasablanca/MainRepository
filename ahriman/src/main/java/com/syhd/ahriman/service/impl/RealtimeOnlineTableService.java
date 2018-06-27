@@ -1,10 +1,13 @@
 package com.syhd.ahriman.service.impl;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -13,11 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 
-import com.syhd.ahriman.dao.mapper.OnlineCountMapper;
+import com.syhd.ahriman.dao.mapper.OnlineTableMapper;
 import com.syhd.ahriman.dao.model.AppServer;
-import com.syhd.ahriman.dao.model.OnlineCount;
+import com.syhd.ahriman.dao.model.OnlineTable;
+import com.syhd.ahriman.dto.PageAndSort;
 import com.syhd.ahriman.dto.RequestPayload;
 import com.syhd.ahriman.dto.Result;
 import com.syhd.ahriman.dto.StatisticPayload;
@@ -25,7 +28,7 @@ import com.syhd.ahriman.properties.GamelogProperties;
 import com.syhd.ahriman.service.CronTask;
 import com.syhd.ahriman.utils.DateUtils;
 
-@Service
+//@Service
 @CacheConfig(cacheNames="realTimeOnlineTable")
 public class RealtimeOnlineTableService {
 
@@ -38,17 +41,18 @@ public class RealtimeOnlineTableService {
 	private GamelogProperties gamelogProperties;
 	
 	@Autowired
-	private OnlineCountMapper onlineCountMapper;
+	private OnlineTableMapper onlineTableMapper;
 	
 	/**
 	 * 获取实时在线图数据
 	 * @param param 查询参数
+	 * @param pageAndSort 分页参数
 	 * @return 包含汇总数据
 	 */
-	public Result getStatistic(RequestPayload param) {
+	public Result getStatistic(RequestPayload param,PageAndSort pageAndSort) {
 		RequestPayload copy = RequestPayload.prepare(param,0,false);
 		
-		List<OnlineCount> list = onlineCountMapper.getStatistic(copy);
+		List<OnlineTable> list = onlineTableMapper.getStatistic(copy,pageAndSort);
 		
 		Result result = Result.getSuccessResult();
 		StatisticPayload data = new StatisticPayload(list, RequestPayload.unPrepare(copy));
@@ -59,7 +63,7 @@ public class RealtimeOnlineTableService {
 	
 	@Cacheable(key="#root.method")
 	public List<String> getAllPlatform() {
-		return onlineCountMapper.getAllPlatform();
+		return onlineTableMapper.getAllPlatform();
 	}
 	
 /*====================================分割线,以下方法非对外使用====================================*/
@@ -74,62 +78,131 @@ public class RealtimeOnlineTableService {
 	}
 	
 	/**
-	 * 抓取每个日志服务器的实时在线图数据
+	 * 抓取每个日志服务器的实时在线表数据
 	 * @param server 游戏日志服务器信息
 	 */
 	public void internalTask(AppServer server) {
-		Date startDate = onlineCountMapper.getLastCountDate(server.getServerid());
+		Date startDate = onlineTableMapper.getLastCountDate(server.getServerid());
 		if(startDate == null) {
 			startDate = new Date(0);
+		} else {
+			Calendar now = Calendar.getInstance();
+			now.setTime(startDate);
+			now.add(Calendar.DAY_OF_MONTH, 1);
+			startDate = now.getTime();
 		}
 		Date endDate = DateUtils.getTommorowTime0();
 		
-		doInternalTask(startDate, endDate, server, "t_online_count");
+		doInternalTask(startDate, endDate, server, "t_online_table");
 	}
 	
 	private void doInternalTask(Date startDate, Date endDate, AppServer server, String storedTable) {
-		if(!startDate.before(endDate)) {
-			// 如果开始日期没在结束日期之前，则不用处理
-			return;
-		}
-		
 		String url = appServerService.getLogDbUrl(server.getLogDb());
 		String user = gamelogProperties.getUsername();
 		String password = gamelogProperties.getPassword();
 		try(Connection conn = DriverManager.getConnection(url, user, password)) {	
-			PreparedStatement stmt = conn.prepareStatement("select date,platform,person from t_onlinepersonlog where date > ?", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			stmt.setTimestamp(1, DateUtils.conver2SqlTimestamp(startDate));
-			//stmt.setDate(2, DateUtils.conver2SqlDate(endDate));
-			
-			ResultSet resultSet = stmt.executeQuery();
-			final int batchSize = 100; // 每次批量插入的阈值
-			List<OnlineCount> recordList = new ArrayList<>(batchSize);
-			while(resultSet.next()) {
-				Date date = resultSet.getTimestamp(1);
-				String platform = resultSet.getString(2);
-				Integer count = resultSet.getInt(3);
-
-				OnlineCount record = new OnlineCount();
-				record.setCount(count);
-				record.setPlatform(platform);
-				record.setServerId(server.getServerid());
-				record.setTime(date);
+			CallableStatement stmt = null;
+			if(startDate.before(endDate)) {
+				stmt = conn.prepareCall("call proc_get_realtime_online_table(?,?)", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+				stmt.setTimestamp(1, DateUtils.conver2SqlTimestamp(startDate));
+				stmt.setDate(2, DateUtils.conver2SqlDate(endDate));
 				
-				recordList.add(record);
-				
-				if(recordList.size() == batchSize) {
-					onlineCountMapper.batchInsert(recordList,storedTable);
-					recordList.clear();
+				ResultSet resultSet = stmt.executeQuery();
+				final int batchSize = 100; // 每次批量插入的阈值
+				List<OnlineTable> recordList = new ArrayList<>(batchSize);
+				while(resultSet.next()) {
+					OnlineTable record = resultMap(resultSet);
+					record.setServerId(server.getServerid());
+					
+					recordList.add(record);
+					
+					if(recordList.size() == batchSize) {
+						onlineTableMapper.batchInsert(recordList,storedTable);
+						recordList.clear();
+					}
+				}
+				if(recordList.size() > 0) {
+					onlineTableMapper.batchInsert(recordList,storedTable);
 				}
 			}
-			if(recordList.size() > 0) {
-				onlineCountMapper.batchInsert(recordList,storedTable);
-			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("实时在线图数据查询失败", e.getCause());
-			throw new RuntimeException("实时在线图数据查询失败"); // 需要回滚事务
+			logger.error("实时在线表数据查询失败", e.getCause());
+			throw new RuntimeException("实时在线表数据查询失败"); // 需要回滚事务
 		}
+	}
+	
+	private OnlineTable resultMap(ResultSet resultSet) throws SQLException {
+		Date date = resultSet.getDate(1);
+		String platform = resultSet.getString(2);
+		Timestamp time = resultSet.getTimestamp(3);
+		Integer liveCount = resultSet.getInt(4);
+
+		OnlineTable result = new OnlineTable();
+		result.setDate(date);
+		result.setPlatform(platform);
+		result.setLiveCount(liveCount);
+		
+		if(DateUtils.isIntegralPoint(time)) {
+			Calendar now = Calendar.getInstance();
+			now.setTime(time);
+			int hour = now.get(Calendar.HOUR_OF_DAY);
+			switch(hour) {
+			case 0:
+				result.setH0(liveCount);
+			case 1:
+				result.setH1(liveCount);
+			case 2:
+				result.setH2(liveCount);
+			case 3:
+				result.setH3(liveCount);
+			case 4:
+				result.setH4(liveCount);
+			case 5:
+				result.setH5(liveCount);
+			case 6:
+				result.setH6(liveCount);
+			case 7:
+				result.setH7(liveCount);
+			case 8:
+				result.setH8(liveCount);
+			case 9:
+				result.setH9(liveCount);
+			case 10:
+				result.setH10(liveCount);
+			case 11:
+				result.setH11(liveCount);
+			case 12:
+				result.setH12(liveCount);
+			case 13:
+				result.setH13(liveCount);
+			case 14:
+				result.setH14(liveCount);
+			case 15:
+				result.setH15(liveCount);
+			case 16:
+				result.setH16(liveCount);
+			case 17:
+				result.setH17(liveCount);
+			case 18:
+				result.setH18(liveCount);
+			case 19:
+				result.setH19(liveCount);
+			case 20:
+				result.setH20(liveCount);
+			case 21:
+				result.setH21(liveCount);
+			case 22:
+				result.setH22(liveCount);
+			case 23:
+				result.setH23(liveCount);
+			default:
+				//throw new IllegalArgumentException("无效的时间：");
+			}
+		}
+		
+		return result;
 	}
 	
 }

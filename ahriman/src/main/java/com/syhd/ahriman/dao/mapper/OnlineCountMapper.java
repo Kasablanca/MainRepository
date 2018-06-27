@@ -20,4 +20,11 @@ public interface OnlineCountMapper {
 	Date getLastCountDate(Integer serverid);
 
 	void batchInsert(@Param("records")List<OnlineCount> recordList, @Param("storedTable")String storedTable);
+	
+	/**
+	 * 清除在线表的一个月以前的非整点数据
+	 * @param critical 时间点
+	 * @return 
+	 */
+	int cleanUp(Date critical);
 }

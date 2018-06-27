@@ -14,13 +14,13 @@ $(function (){
 	// 指定图表的配置项和数据
 	var option = {
 			title: {
-				text: '活跃用户'
+				text: '实时在线'
 			},
 			tooltip: {
 				trigger: 'axis'
 			},
 			legend: {
-				data: ['活跃用户']
+				data: ['实时在线']
 			},
 			calculable : true,
 			xAxis: [{
@@ -31,7 +31,7 @@ $(function (){
 				type: 'value'
 			}],
 			series: [{
-				name: '活跃用户',
+				name: '实时在线',
 				type: 'line',
 				itemStyle: { 
 					normal: {
@@ -59,6 +59,10 @@ $(function (){
 			$('#end').val(data.data.request.end);
 			
 			autoRefresh(data.data.request.end);
+			
+			if(value.length == 0){
+				layer.msg('暂无数据');
+			}
 		} else {
 			// 说明获取数据失败
 			layer.msg('获取图表数据失败：'+data.message, {icon: 5});
@@ -85,6 +89,10 @@ $(function (){
 					myChart.setOption(option);
 					
 					autoRefresh(data.data.request.end);
+					
+					if(value.length == 0){
+						layer.msg('暂无数据');
+					}
 				} else {
 					// 说明获取数据失败
 					layer.msg('获取图表数据失败：'+data.message, {icon: 5});
@@ -160,6 +168,6 @@ function autoRefresh(end){
 		}
 		window.timedTask = setTimeout(function (){
 			$('#searchBtn').trigger('click');
-		},5000);
+		},300000);
 	}
 }

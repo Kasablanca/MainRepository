@@ -6,3 +6,4 @@
 .factorypath
 system.*
 workspace*/
+src/main/resources/application-remote.properties

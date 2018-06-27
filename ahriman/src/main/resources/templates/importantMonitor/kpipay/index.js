@@ -10,7 +10,7 @@ $(function (){
 	});
 	
 	var table = layui.table;
-	
+/*	
 	table.render({
 		elem: '#main'
 		,height: 450
@@ -74,7 +74,7 @@ $(function (){
 			$('#start').val(response.extra.start);
 			$('#end').val(response.extra.end);
 		}
-	});
+	});*/
 
 	table.on('sort(main)', function(obj){
 		table.reload('main', {
