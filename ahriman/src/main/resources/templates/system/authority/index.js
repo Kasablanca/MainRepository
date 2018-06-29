@@ -24,10 +24,10 @@ $(function (){
 			onRightClick: function (event,treeId,treeNode){
 				if (!treeNode && event.target.tagName.toLowerCase() != "button" && $(event.target).parents("a").length == 0) {
 					zTree.cancelSelectedNode();
-					showRMenu(3, event.clientX, event.clientY);
+					showRMenu(3, event.pageX, event.pageY);
 				} else if (treeNode) {
 					zTree.selectNode(treeNode);
-					showRMenu(treeNode.type, event.clientX, event.clientY);
+					showRMenu(treeNode.type, event.pageX, event.pageY);
 				}
 			}
 		},

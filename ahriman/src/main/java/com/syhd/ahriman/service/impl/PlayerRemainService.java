@@ -11,7 +11,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -33,7 +34,7 @@ import com.syhd.ahriman.web.controller.kpimonitor.PlayerRemainController;
 @CacheConfig(cacheNames="playerRemain")
 public class PlayerRemainService {
 
-	private static final Logger logger = Logger.getLogger(PlayerRemainController.class);
+	private static final Logger logger = LoggerFactory.getLogger(PlayerRemainController.class);
 	
 	@Autowired
 	private AppServerService appServerService;
@@ -189,7 +190,6 @@ public class PlayerRemainService {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("角色留存数据查询失败", e.getCause());
 			throw new RuntimeException("角色留存数据查询失败"); // 需要回滚事务
 		}

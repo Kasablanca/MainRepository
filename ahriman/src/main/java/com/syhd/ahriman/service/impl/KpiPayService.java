@@ -10,7 +10,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -34,7 +35,7 @@ import com.syhd.ahriman.utils.DateUtils;
 @CacheConfig(cacheNames="kpiPay")
 public class KpiPayService {
 
-	private static final Logger logger = Logger.getLogger(KpiPayService.class);
+	private static final Logger logger = LoggerFactory.getLogger(KpiPayService.class);
 	
 	@Autowired
 	private AppServerService appServerService;
@@ -57,16 +58,16 @@ public class KpiPayService {
 		RequestPayload copy = RequestPayload.prepare(param,-7,null);
 		
 		List<KpiPayVO> list;
-		Long count;
+		//Long count;
 		if(RequestPayload.containToday(copy)) {
 			//查询期限包含今天
 			doRealtimeStatistic();
 			list = kpiPayMapper.getMixinStatistic(copy,pageAndSort);
-			count = kpiPayMapper.getMixinStatisticCount(copy, pageAndSort);
+			//count = kpiPayMapper.getMixinStatisticCount(copy, pageAndSort);
 		} else {
 			//查询期限不包含今天
 			list = kpiPayMapper.getStatistic(copy,pageAndSort);
-			count = kpiPayMapper.getStatisticCount(copy, pageAndSort);
+			//count = kpiPayMapper.getStatisticCount(copy, pageAndSort);
 		}
 		
 		list = KpiPayVO.fill(list, copy.getStart(), copy.getEnd());
@@ -74,7 +75,7 @@ public class KpiPayService {
 		TableData result = new TableData();
 		result.setCode(0);
 		result.setData(list);
-		result.setCount(count);
+		//result.setCount(count);
 		result.setExtra(RequestPayload.unPrepare(copy));
 		
 		return result;
@@ -151,12 +152,10 @@ public class KpiPayService {
 		String user = gamelogProperties.getUsername();
 		String password = gamelogProperties.getPassword();
 		try(Connection conn = DriverManager.getConnection(url, user, password)) {	
-			CallableStatement stmt = conn.prepareCall("call proc_get_pay_kpi(?,?,?,?,?)", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			CallableStatement stmt = conn.prepareCall("call proc_get_pay_kpi(?,?,?)", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 			stmt.setDate(1, DateUtils.conver2SqlDate(startDate));
 			stmt.setDate(2, DateUtils.conver2SqlDate(endDate));
-			stmt.setBigDecimal(3, rate.getUsd());
-			stmt.setBigDecimal(4, rate.getTwd());
-			stmt.setBigDecimal(5, rate.getHkd());
+			stmt.setString(3, rate.toString());
 			
 			ResultSet resultSet = stmt.executeQuery();
 			resultSet.setFetchSize(100);
@@ -202,7 +201,6 @@ public class KpiPayService {
 				kpiPayMapper.batchInsert(recordList,storedTable);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("玩家付费数据查询失败", e.getCause());
 			throw new RuntimeException("玩家付费数据查询失败"); // 需要回滚事务
 		}

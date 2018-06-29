@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -34,7 +35,7 @@ import com.syhd.ahriman.utils.DateUtils;
 @CacheConfig(cacheNames="newuser")
 public class NewUserService {
 	
-	private static Logger logger = Logger.getLogger(NewUserService.class);
+	private static Logger logger = LoggerFactory.getLogger(NewUserService.class);
 	
 	@Autowired
 	private GamelogProperties gamelogProperties;
@@ -58,7 +59,11 @@ public class NewUserService {
 		
 		Result result = Result.getSuccessResult();
 		Map<String,Object> response = new HashMap<>();
-		response.put("newAccount", KpiStatistic.fill(userInfoMapper.getStatistic(copy), copy.getStart(), copy.getEnd()));
+		
+		if(copy.getServerId() == null || copy.getServerId().length == 0) {
+			//没筛选服务器时才显示新增账号
+			response.put("newAccount", KpiStatistic.fill(userInfoMapper.getStatistic(copy), copy.getStart(), copy.getEnd()));
+		}
 		
 		if(RequestPayload.containToday(copy)) {
 			//查询期限包含今天
@@ -171,7 +176,6 @@ public class NewUserService {
 				dailyNewRoleMapper.batchInsert(recordList,storedTable);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("日新增用户数据查询失败", e.getCause());
 			throw new RuntimeException("日新增用户数据查询失败"); // 需要回滚事务
 		}

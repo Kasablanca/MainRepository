@@ -1,4 +1,4 @@
-/** layui-v2.3.0-rc1 MIT License By https://www.layui.com */
+/** layui-v2.3.0 MIT License By https://www.layui.com */
 .layui-inline, img {
 	display: inline-block;
 	vertical-align: middle
@@ -176,12 +176,11 @@ a cite {
 
 @font-face {
 	font-family: layui-icon;
-	src: url(../font/iconfont.eot?v=230-rc1);
-	src: url(../font/iconfont.eot?v=230-rc1#iefix)
-		format('embedded-opentype'),
-		url(../font/iconfont.svg?v=230-rc1#iconfont) format('svg'),
-		url(../font/iconfont.woff?v=230-rc1) format('woff'),
-		url(../font/iconfont.ttf?v=230-rc1) format('truetype')
+	src: url(../font/iconfont.eot?v=230);
+	src: url(../font/iconfont.eot?v=230#iefix) format('embedded-opentype'),
+		url(../font/iconfont.svg?v=230#iconfont) format('svg'),
+		url(../font/iconfont.woff?v=230) format('woff'),
+		url(../font/iconfont.ttf?v=230) format('truetype')
 }
 
 .layui-icon {
@@ -762,6 +761,14 @@ a cite {
 
 .layui-icon-cellphone:before {
 	content: "\e678"
+}
+
+.layui-icon-screen-full:before {
+	content: "\e622"
+}
+
+.layui-icon-screen-restore:before {
+	content: "\e758"
 }
 
 .layui-main {
@@ -2791,7 +2798,7 @@ a cite {
 
 .layui-table-box, .layui-table-view {
 	position: relative;
-	overflow: auto
+	overflow: hidden
 }
 
 .layui-table-view .layui-table {
@@ -2829,7 +2836,7 @@ a cite {
 
 .layui-table-header {
 	border-width: 0 0 1px;
-	/* overflow: hidden */
+	overflow: hidden
 }
 
 .layui-table-sort {
@@ -2912,7 +2919,7 @@ a cite {
 
 .layui-table-body {
 	position: relative;
-	/* overflow: auto; */
+	overflow: auto;
 	margin-right: -1px
 }
 

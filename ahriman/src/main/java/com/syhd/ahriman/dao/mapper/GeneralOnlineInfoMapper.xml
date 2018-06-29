@@ -260,7 +260,7 @@
 				FROM (
 					SELECT t1.date,t2.platform,max(t2.daily_registered) dailyRegistered 
 					FROM t_date t1
-					LEFT JOIN t_user_registered t2 ON t2.date &lt; t1.date
+					LEFT JOIN t_user_registered t2 ON t2.date = t1.date
 					WHERE 1 = 1
 					<if test="param.platform != null and param.platform.length &gt; 0">
 						AND platform in

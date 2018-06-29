@@ -8,11 +8,12 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
@@ -22,19 +23,19 @@ import com.syhd.ahriman.dto.JuHeResponse;
 import com.syhd.ahriman.dto.Result;
 import com.syhd.ahriman.enums.CurrencyCoinEnum;
 import com.syhd.ahriman.properties.ExchangeRateProperties;
+import com.syhd.ahriman.service.CronTask;
 
 @Service
 @CacheConfig(cacheNames="exchangeRate")
 public class ExchangeRateService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ExchangeRateService.class);
 
 	@Autowired
 	private ExchangeRateProperties exchangeRateConfig;
 	
 	@Autowired
 	private ObjectMapper jackson;
-	
-	@Autowired
-	private CacheManager cacheManager;
 	
 	
 	/**
@@ -45,13 +46,9 @@ public class ExchangeRateService {
 	public Result getExchangeRate() {
 		Result result = Result.getSuccessResult();
 		
-		if(StringUtils.isEmpty(exchangeRateConfig.getUrl())) {
+		if(StringUtils.isEmpty(exchangeRateConfig.getWebservice().getUrl())) {
 			//使用模拟数据
-			ExchangeRate rate = new ExchangeRate();
-			rate.setUsd(new BigDecimal("6"));
-			rate.setHkd(new BigDecimal("0.8"));
-			rate.setTwd(new BigDecimal("0.2"));
-			result.setData(rate);
+			result.setData(exchangeRateConfig.map(ExchangeRate.getDefaultRate()));
 			return result;
 		}
 		
@@ -95,11 +92,11 @@ public class ExchangeRateService {
 		Result result = Result.getErrorResult();
 		try {
 			StringBuilder builder = new StringBuilder();
-			builder.append(exchangeRateConfig.getProtocol())
+			builder.append(exchangeRateConfig.getWebservice().getProtocol())
 				.append("://")
-				.append(exchangeRateConfig.getUrl())
+				.append(exchangeRateConfig.getWebservice().getUrl())
 				.append("?")
-				.append(exchangeRateConfig.getBasequerystring())
+				.append(exchangeRateConfig.getWebservice().getBasequerystring())
 				.append("&from=")
 				.append(coin.code)
 				.append("&to=")
@@ -143,14 +140,15 @@ public class ExchangeRateService {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("获取汇率信息时发生错误", e.getCause());
 			result.setMessage("读取汇率信息时发生错误");
 			return result;
 		}
 	}
 	
-	@Scheduled(cron="0 0 0 * * ?")
+	@CronTask("0 0 0 * * ?")
+	@CacheEvict(allEntries=true)
 	public void dailyTask() {
-		cacheManager.getCache("exchangeRate").clear(); // 手动清除缓存
+		// nothing to do
 	}
 }

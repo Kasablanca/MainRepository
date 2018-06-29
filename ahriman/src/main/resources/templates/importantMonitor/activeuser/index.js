@@ -14,13 +14,17 @@ $(function (){
 	// 指定图表的配置项和数据
 	var option = {
 			title: {
-				text: '活跃用户'
+				text: '活跃用户',
+				left: 'center',
+				top: '10'
 			},
 			tooltip: {
 				trigger: 'axis'
 			},
 			legend: {
-				data: ['活跃用户']
+				data: ['活跃用户'],
+				left: 'center',
+				bottom: '10'
 			},
 			calculable : true,
 			xAxis: [{
@@ -50,52 +54,8 @@ $(function (){
 		ajax(myChart,$.param($('#searchForm').serializeArray()),option);
 	});
 	
-	$('#platform').change(function (target,trigger){
-		var platformArray = $('#platform').val();
-		if(platformArray && platformArray.length > 1){
-			if(trigger.selected=='-1'){
-				var options = $('#platform')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value != "-1"){
-						options[i].selected = false;
-					}
-				}
-				$('#platform').trigger('chosen:updated');
-			} else { // 点击的其他渠道
-				var options = $('#platform')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value == "-1" && options[i].selected == true){
-						options[i].selected = false;
-						break;
-					}
-				}
-				$('#platform').trigger('chosen:updated');
-			}
-		}
-	});
-	$('#serverId').change(function (target,trigger){
-		var serverIdArray = $('#serverId').val();
-		if(serverIdArray && serverIdArray.length > 1){
-			if(trigger.selected=='-1'){
-				var options = $('#serverId')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value != "-1"){
-						options[i].selected = false;
-					}
-				}
-				$('#serverId').trigger('chosen:updated');
-			} else { // 点击的其他渠道
-				var options = $('#serverId')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value == "-1" && options[i].selected == true){
-						options[i].selected = false;
-						break;
-					}
-				}
-				$('#serverId').trigger('chosen:updated');
-			}
-		}
-	});
+	$('#platform').change(dropdownListCallback);
+	$('#serverId').change(dropdownListCallback);
 });
 
 function ajax(myChart,payload,option){

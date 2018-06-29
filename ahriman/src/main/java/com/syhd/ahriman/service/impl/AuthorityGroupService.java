@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -25,6 +27,8 @@ import com.syhd.ahriman.dto.TableData;
 @Service
 @CacheConfig(cacheNames="authorityGroups")
 public class AuthorityGroupService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 	
 	@Autowired
 	private AuthorityGroupMapper authorityGroupMapper;
@@ -70,7 +74,7 @@ public class AuthorityGroupService {
 					authorityGroupMapper.batchInsertAuthorities(list);
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.trace("反序列化失败", e.getCause());
 				result.setMessage("操作失败");
 				return result;
 			}
@@ -158,7 +162,7 @@ public class AuthorityGroupService {
 					authorityGroupMapper.batchInsertAuthorities(list);
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.trace("反序列化失败", e.getCause());
 				result.setMessage("操作失败");
 				return result;
 			}

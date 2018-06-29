@@ -9,7 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -31,7 +32,7 @@ import com.syhd.ahriman.utils.DateUtils;
 @CacheConfig(cacheNames="activeuser")
 public class ActiveUserService {
 	
-	private static Logger logger = Logger.getLogger(ActiveUserService.class);
+	private static Logger logger = LoggerFactory.getLogger(ActiveUserService.class);
 	
 	@Autowired
 	private GamelogProperties gamelogProperties;
@@ -166,7 +167,6 @@ public class ActiveUserService {
 				dailyActiveUserMapper.batchInsert(recordList,storedTable);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("活跃用户数据查询失败", e.getCause());
 			throw new RuntimeException("活跃用户数据查询失败"); // 需要回滚事务
 		}

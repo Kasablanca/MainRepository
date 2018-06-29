@@ -10,7 +10,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -38,7 +39,7 @@ import com.syhd.ahriman.utils.DateUtils;
 @CacheConfig(cacheNames="basicInfo")
 public class BasicInfoService {
 
-	private static final Logger logger = Logger.getLogger(BasicInfoService.class);
+	private static final Logger logger = LoggerFactory.getLogger(BasicInfoService.class);
 	
 	@Autowired
 	private AppServerService appServerService;
@@ -177,12 +178,10 @@ public class BasicInfoService {
 		String user = gamelogProperties.getUsername();
 		String password = gamelogProperties.getPassword();
 		try(Connection conn = DriverManager.getConnection(url, user, password)) {	
-			CallableStatement stmt = conn.prepareCall("call proc_get_general_info(?,?,?,?,?)", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+			CallableStatement stmt = conn.prepareCall("call proc_get_general_info(?,?,?)", ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
 			stmt.setDate(1, DateUtils.conver2SqlDate(startDate));
 			stmt.setDate(2, DateUtils.conver2SqlDate(endDate));
-			stmt.setBigDecimal(3, rate.getUsd());
-			stmt.setBigDecimal(4, rate.getTwd());
-			stmt.setBigDecimal(5, rate.getHkd());
+			stmt.setString(3, rate.toString());
 			
 			ResultSet resultSet = stmt.executeQuery();
 			resultSet.setFetchSize(100);
@@ -234,7 +233,6 @@ public class BasicInfoService {
 				basicInfoMapper.batchInsert(recordList,storedTable);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("综合数据-基础数据初始查询失败", e.getCause());
 			throw new RuntimeException("综合数据-基础数据初始查询失败"); // 需要回滚事务
 		}

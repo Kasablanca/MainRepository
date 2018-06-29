@@ -74,31 +74,7 @@
 			</div>
 		</div>
 		<div class="layui-card" style="background-color: rgba(0,0,0,0);">
-			<!-- <div id="main" lay-filter="main"></div> -->
-			<table id="main" class="layui-table" lay-data="{height: 450,url: 'kpiPay/getKpiPay',page: true,limit: 30,loading: true,text: {none: '暂无相关数据'},where: {field:'date',sord:'asc'},done: function (response){$('#start').val(response.extra.start);$('#end').val(response.extra.end);}}" lay-filter="main">
-				<thead>
-					<tr>
-						<th lay-data="{field: 'date', width:120, sort: false}">日期</th>
-						<th lay-data="{field: 'activeUserNumber', width:120, sort: false}">活跃用户</th>
-						<th lay-data="{field: 'revenue', width:120, sort: false,templet: function formatRate(value){ return value.revenue.toFixed(0);}}">每日收入</th>
-						<th lay-data="{field: 'payUserNumber', width:130, sort: false}">付费用户数</th>
-						<th lay-data="{field: 'payArppu', width:120, sort: false,templet: function formatRate(value){ return value.payArppu.toFixed(2);}}">付费ARPPU</th>
-						<th lay-data="{field: 'payRate', width:120, sort: false,templet: function formatRate(value){ return (value.payRate*100).toFixed(2)+'%';}}">付费率</th>
-						<th lay-data="{field: 'activeArpu', width:120, sort: false,templet: function formatRate(value){return value.activeArpu.toFixed(2);}}">活跃ARPU</th>
-						<th lay-data="{field: 'oldPlayerNumber', width:120, sort: false}">老玩家数量</th>
-						<th lay-data="{field: 'oldPayRevenue', width:140, sort: false,templet: function formatRate(value){return value.oldPayRevenue.toFixed(2);}}">老玩家付费额</th>
-						<th lay-data="{field: 'payArppuOld', width:140, sort: false,templet: function formatRate(value){return value.payArppuOld.toFixed(2);}}">老玩家ARPPU</th>
-						<th lay-data="{field: 'payRateOld', width:140, sort: false,templet: function formatRate(value){return (value.payRateOld*100).toFixed(2)+'%';}}">老玩家付费率</th>
-						<th lay-data="{field: 'activeArpuOld', width:140, sort: false,templet: function formatRate(value){return value.activeArpuOld.toFixed(2);}}">老玩家ARPU</th>
-						<th lay-data="{field: 'newPlayerNumber', width:130, sort: false}">新增角色数</th>
-						<th lay-data="{field: 'newPayRevenue', width:140, sort: false,templet: function formatRate(value){return value.newPayRevenue.toFixed(2);}}">新增付费额</th>
-						<th lay-data="{field: 'newPayNumber', width:140, sort: false}">新增付费人数</th>
-						<th lay-data="{field: 'payArppuNew', width:130, sort: false,templet: function formatRate(value){return value.payArppuNew.toFixed(2);}}">新增ARPPU</th>
-						<th lay-data="{field: 'payRateNew', width:150, sort: false,templet: function formatRate(value){return (value.payRateNew*100).toFixed(2)+'%';}}">首日付费转化率</th>
-						<th lay-data="{field: 'activeArpuNew', width:120, sort: false,templet: function formatRate(value){return value.activeArpuNew.toFixed(2);}}">新增ARPU</th>
-					</tr>
-				</thead>
-			</table>
+			<div id="main" lay-filter="main"></div>
 		</div>
 	</div>
 

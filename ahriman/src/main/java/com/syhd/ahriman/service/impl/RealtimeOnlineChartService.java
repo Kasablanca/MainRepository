@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -29,7 +30,7 @@ import com.syhd.ahriman.utils.DateUtils;
 @CacheConfig(cacheNames="realTimeOnlineChart")
 public class RealtimeOnlineChartService {
 
-	private static final Logger logger = Logger.getLogger(RealtimeOnlineChartService.class);
+	private static final Logger logger = LoggerFactory.getLogger(RealtimeOnlineChartService.class);
 	
 	@Autowired
 	private AppServerService appServerService;
@@ -135,7 +136,6 @@ public class RealtimeOnlineChartService {
 				onlineCountMapper.batchInsert(recordList,storedTable);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("实时在线图数据查询失败", e.getCause());
 			throw new RuntimeException("实时在线图数据查询失败"); // 需要回滚事务
 		}

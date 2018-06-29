@@ -15,17 +15,17 @@ public enum CurrencyCoinEnum {
 		/**台湾*/
 		,TAIWAN("TAIWAN","TWD")
 		/**澳门*/
-		,MACAU("MACAU","")
+		,MACAU("MACAU","MOP")
 		/**韩国*/
 		,KOREA("KOREA","KRW")
 		/**日本*/
 		,JAPAN("JAPAN","JPY");
 	
 	/**国家/地区英文名*/
-	public String name;
+	public final String name;
 	
 	/**代码*/
-	public String code;
+	public final String code;
 	
 	private CurrencyCoinEnum(String name,String code) {
 		this.name = name;

@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -21,6 +23,8 @@ import com.syhd.ahriman.service.impl.UserService;
 
 @Component
 public class AuthorityInterceptor implements HandlerInterceptor {
+	
+	private static Logger logger = LoggerFactory.getLogger(AuthorityInterceptor.class);
 
 	public static final String USER_IN_SESSION = "user_in_session";
 	
@@ -46,7 +50,6 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		String contextPath = request.getContextPath();
 		String requestURI = request.getRequestURI().substring(contextPath.length());
-		System.out.println("requestURI:"+requestURI);
 		String requestMethod = request.getMethod();
 		
 		String requestSuffix = getSuffix(requestURI);
@@ -144,8 +147,8 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 		try {
 			response.sendRedirect(location);
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new IllegalStateException("重定向时发生IO错误");
+			logger.trace("请求重定向时发生IO错误", e.getCause());
+			throw new IllegalStateException("请求重定向时发生IO错误");
 		}
 	}
 	
@@ -159,7 +162,8 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 		try {
 			request.getRequestDispatcher(location).forward(request, response);
 		} catch (ServletException | IOException e) {
-			e.printStackTrace();
+			logger.trace("请求转发时发生IO错误", e.getCause());
+			throw new IllegalStateException("请求重定向时发生IO错误");
 		}
 	}
 	

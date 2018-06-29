@@ -54,9 +54,9 @@ public class AuthorityGroupController {
 	
 	@RequestMapping("insert")
 	public Result insert(@Validated AuthorityGroup record,BindingResult error,String authorityIds) {
-		Integer addAccId = HttpUtils.getUserIdInSession(httpSession);
-		record.setAddAccId(addAccId);
-		record.setUpdAccId(addAccId);
+		Integer optAccId = HttpUtils.getUserIdInSession(httpSession);
+		record.setAddAccId(optAccId);
+		record.setUpdAccId(optAccId);
 		
 		return ValidationUtils.determineResult(error, authorityGroupService.insert(record,authorityIds));
 	}
@@ -75,8 +75,8 @@ public class AuthorityGroupController {
 	
 	@RequestMapping("update")
 	public Result update(@Validated AuthorityGroup record,BindingResult error,String authorityIds) {
-		Integer addAccId = HttpUtils.getUserIdInSession(httpSession);
-		record.setUpdAccId(addAccId);
+		Integer optAccId = HttpUtils.getUserIdInSession(httpSession);
+		record.setUpdAccId(optAccId);
 		return ValidationUtils.determineResult(error, authorityGroupService.update(record,authorityIds));
 	}
 	

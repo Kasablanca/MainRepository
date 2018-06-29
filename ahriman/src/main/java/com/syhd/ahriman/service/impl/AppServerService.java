@@ -2,12 +2,8 @@ package com.syhd.ahriman.service.impl;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.syhd.ahriman.dao.mapper.AppServerMapper;
@@ -24,10 +20,7 @@ public class AppServerService {
 	@Autowired
 	private GamelogProperties gamelogProperties;
 	
-	@Autowired
-	private CacheManager cacheManager;
-	
-	@Cacheable("#root.method")
+	//@Cacheable("#root.method")
 	public List<AppServer> getAllServer(){
 		return appServerMapper.getAllServer();
 	}
@@ -53,11 +46,6 @@ public class AppServerService {
 			e.printStackTrace();
 			throw new IllegalArgumentException("无效的log_db值："+logdb);
 		}
-	}
-	
-	@PostConstruct
-	private void init() {
-		cacheManager.getCache("appServer").clear(); //每次启动时清除缓存
 	}
 	
 }

@@ -9,7 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -32,7 +33,7 @@ import com.syhd.ahriman.utils.DateUtils;
 @CacheConfig(cacheNames="generalOnlineInfo")
 public class GeneralOnlineInfoService {
 
-	private static final Logger logger = Logger.getLogger(GeneralOnlineInfoService.class);
+	private static final Logger logger = LoggerFactory.getLogger(GeneralOnlineInfoService.class);
 	
 	@Autowired
 	private AppServerService appServerService;
@@ -167,7 +168,6 @@ public class GeneralOnlineInfoService {
 				generalOnlineInfoMapper.batchInsert(recordList,storedTable);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("综合数据-综合在线数据初始查询失败", e.getCause());
 			throw new RuntimeException("综合数据-综合在线数据初始查询失败"); // 需要回滚事务
 		}

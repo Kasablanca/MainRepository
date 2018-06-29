@@ -10,7 +10,7 @@ $(function (){
 	});
 	
 	var table = layui.table;
-/*	
+	
 	table.render({
 		elem: '#main'
 		,height: 450
@@ -25,17 +25,20 @@ $(function (){
 			field: "date",
 			sord: "asc"
 		}
+		,headers: {
+			accept: 'application/json'
+		}
 		,cols: [[//一级表头
-				{title: '时间',sort: false,align: 'center'},
-				{title: '注册',sort: false,align: 'center'},
-				{title: '收入金额(美元)',colspan: 4,sort: false,align: 'center'},
-				{title: '用户',colspan: 3,sort: false,align: 'center'},
-				{title: '留存率(%)',colspan: 6,sort: false,align: 'center'},
-				{title: '美元',colspan: 2,sort: false,align: 'center'},
-				{title: '充值用户数',colspan: 3,sort: false,align: 'center'},
-				{title: '付费率(%)',colspan: 3,sort: false,align: 'center'}
-			],
-			[ //二级表头
+			{title: '日期',field: 'date', width:120, align: 'center',sort: false,rowspan: 2},
+			{title: '安装注册',align: 'center',colspan: 3},
+			{title: '总收入',align: 'center',colspan: 4},
+			{title: '活跃用户',align: 'center',colspan: 3},
+			{title: '次日',align: 'center',colspan: 6},
+			{title: '美元',align: 'center',colspan: 2},
+			{title: '充值用户数',align: 'center',colspan: 3},
+			{title: '付费率',align: 'center',colspan: 3}
+		],
+		[ //二级表头
 			{field: 'date', title: '日期', width:120, sort: false,align: 'center'}
 			,{field: 'totalInstalled', title: '总安装', width:120, sort: false,align: 'center',templet: function (value){
 				return 0;
@@ -50,16 +53,16 @@ $(function (){
 				return '--';
 			},align: 'center'}
 			,{field: 'totalRevenue', title: '总收入', width:130, sort: false,templet: function (value){
-				return value.totalRevenue.toFixed(2);
+				return value.totalRevenue.toFixed(0);
 			},align: 'center'}
 			,{field: 'dailyRevenue', title: '日收入', width:120, sort: false,templet: function (value){
-				return value.dailyRevenue.toFixed(2);
+				return value.dailyRevenue.toFixed(0);
 			},align: 'center'}
 			,{field: 'dailyRevenueNew', title: '新用户', width:120, sort: false,templet: function (value){
-				return value.dailyRevenueNew.toFixed(2);
+				return value.dailyRevenueNew.toFixed(0);
 			},align: 'center'}
 			,{field: 'dailyRevenueOld', title: '老用户', width:120, sort: false,templet: function (value){
-				return value.dailyRevenueOld.toFixed(2);
+				return value.dailyRevenueOld.toFixed(0);
 			},align: 'center'}
 			,{field: 'liveUser', title: '活跃用户', width:120, sort: false,align: 'center'}
 			,{field: 'liveUserNew', title: '活跃老用户', width:120, sort: false,align: 'center'}
@@ -111,7 +114,7 @@ $(function (){
 			$('#start').val(response.extra.start);
 			$('#end').val(response.extra.end);
 		}
-	});*/
+	});
 
 	table.on('sort(main)', function(obj){
 		table.reload('main', {
@@ -128,50 +131,6 @@ $(function (){
 		});
 	});
 	
-	$('#platform').change(function (target,trigger){
-		var platformArray = $('#platform').val();
-		if(platformArray && platformArray.length > 1){
-			if(trigger.selected=='-1'){
-				var options = $('#platform')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value != "-1"){
-						options[i].selected = false;
-					}
-				}
-				$('#platform').trigger('chosen:updated');
-			} else { // 点击的其他渠道
-				var options = $('#platform')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value == "-1" && options[i].selected == true){
-						options[i].selected = false;
-						break;
-					}
-				}
-				$('#platform').trigger('chosen:updated');
-			}
-		}
-	});
-	$('#serverId').change(function (target,trigger){
-		var serverIdArray = $('#serverId').val();
-		if(serverIdArray && serverIdArray.length > 1){
-			if(trigger.selected=='-1'){
-				var options = $('#serverId')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value != "-1"){
-						options[i].selected = false;
-					}
-				}
-				$('#serverId').trigger('chosen:updated');
-			} else { // 点击的其他渠道
-				var options = $('#serverId')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value == "-1" && options[i].selected == true){
-						options[i].selected = false;
-						break;
-					}
-				}
-				$('#serverId').trigger('chosen:updated');
-			}
-		}
-	});
+	$('#platform').change(dropdownListCallback);
+	$('#serverId').change(dropdownListCallback);
 });

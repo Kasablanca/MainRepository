@@ -25,6 +25,9 @@ $(function (){
 			field: "date",
 			sord: "asc"
 		}
+		,headers: {
+			accept: 'application/json'
+		}
 		,cols: [[ //二级表头
 			{field: 'date', title: '日期', sort: true,align: 'center'}
 			,{field: 'newUserCount', title: '新增用户数', sort: false,align: 'center'}
@@ -62,50 +65,6 @@ $(function (){
 		});
 	});
 	
-	$('#platform').change(function (target,trigger){
-		var platformArray = $('#platform').val();
-		if(platformArray && platformArray.length > 1){
-			if(trigger.selected=='-1'){
-				var options = $('#platform')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value != "-1"){
-						options[i].selected = false;
-					}
-				}
-				$('#platform').trigger('chosen:updated');
-			} else { // 点击的其他渠道
-				var options = $('#platform')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value == "-1" && options[i].selected == true){
-						options[i].selected = false;
-						break;
-					}
-				}
-				$('#platform').trigger('chosen:updated');
-			}
-		}
-	});
-	$('#serverId').change(function (target,trigger){
-		var serverIdArray = $('#serverId').val();
-		if(serverIdArray && serverIdArray.length > 1){
-			if(trigger.selected=='-1'){
-				var options = $('#serverId')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value != "-1"){
-						options[i].selected = false;
-					}
-				}
-				$('#serverId').trigger('chosen:updated');
-			} else { // 点击的其他渠道
-				var options = $('#serverId')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value == "-1" && options[i].selected == true){
-						options[i].selected = false;
-						break;
-					}
-				}
-				$('#serverId').trigger('chosen:updated');
-			}
-		}
-	});
+	$('#platform').change(dropdownListCallback);
+	$('#serverId').change(dropdownListCallback);
 });

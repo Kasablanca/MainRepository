@@ -76,8 +76,8 @@
 		</div>
 		<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 		<div class="layui-card" style="background-color: rgba(0,0,0,0);">
-			<!-- <div id="main" lay-filter="main"> --></div><!-- style="height: 400px;width: 100%;" class="layui-col-lg12" -->
-			<table id="main" class="layui-table" lay-data="{height: 450,url: 'generalInfo/basicInfo/getBasicInfo',page: true,limit: 30,loading: true,text: {none: '暂无相关数据'},where: {field:'date',sord:'asc'},done: function (response){$('#start').val(response.extra.start);$('#end').val(response.extra.end);}}" lay-filter="main">
+			<div id="main" lay-filter="main"></div> <!-- style="height: 400px;width: 100%;" class="layui-col-lg12" -->
+			<!-- <table id="main" class="layui-table" lay-data="{height: 450,url: 'generalInfo/basicInfo/getBasicInfo',page: true,limit: 30,loading: true,text: {none: '暂无相关数据'},where: {field:'date',sord:'asc'},done: function (response){$('#start').val(response.extra.start);$('#end').val(response.extra.end);}}" lay-filter="main">
 				<thead>
 					<tr>
 						<th lay-data="{field: 'date', width:120, align: 'center',sort: false}" rowspan="2" >日期</th>
@@ -85,7 +85,7 @@
 						<th lay-data="{align: 'center'}" colspan="4">总收入</th>
 						<th lay-data="{align: 'center'}" colspan="3">活跃用户</th>
 						<th lay-data="{align: 'center'}" colspan="6">次日</th>
-						<th lay-data="{align: 'center'}" colspan="2">ARPU</th>
+						<th lay-data="{align: 'center'}" colspan="2">美元</th>
 						<th lay-data="{align: 'center'}" colspan="3">充值用户数</th>
 						<th lay-data="{align: 'center'}" colspan="3">付费率</th>
 					</tr>
@@ -94,10 +94,10 @@
 						<th lay-data="{field: 'totalInstalled', width:120, sort: false,align: 'center',templet: function (value){return 0;}}">总安装</th>
 						<th lay-data="{field: 'newInstalled', width:120, sort: false,align: 'center',templet: function (value){return 0;}}">新安装</th>
 						<th lay-data="{field: 'totalRegistered', width:120, sort: false,templet: function (value){if(value.totalRegistered != undefined){return value.totalRegistered;} return '--';},align: 'center'}">总注册</th>
-						<th lay-data="{field: 'totalRevenue', width:130, sort: false,templet: function (value){return value.totalRevenue.toFixed(2);},align: 'center'}">总收入</th>
-						<th lay-data="{field: 'dailyRevenue', width:120, sort: false,templet: function (value){return value.dailyRevenue.toFixed(2);},align: 'center'}">日收入</th>
-						<th lay-data="{field: 'dailyRevenueNew', width:120, sort: false,templet: function (value){return value.dailyRevenueNew.toFixed(2);},align: 'center'}">新用户</th>
-						<th lay-data="{field: 'dailyRevenueOld', width:120, sort: false,templet: function (value){return value.dailyRevenueOld.toFixed(2);},align: 'center'}">老用户</th>
+						<th lay-data="{field: 'totalRevenue', width:130, sort: false,templet: function (value){return value.totalRevenue.toFixed(0);},align: 'center'}">总收入</th>
+						<th lay-data="{field: 'dailyRevenue', width:120, sort: false,templet: function (value){return value.dailyRevenue.toFixed(0);},align: 'center'}">日收入</th>
+						<th lay-data="{field: 'dailyRevenueNew', width:120, sort: false,templet: function (value){return value.dailyRevenueNew.toFixed(0);},align: 'center'}">新用户</th>
+						<th lay-data="{field: 'dailyRevenueOld', width:120, sort: false,templet: function (value){return value.dailyRevenueOld.toFixed(0);},align: 'center'}">老用户</th>
 						<th lay-data="{field: 'liveUser', width:120, sort: false,align: 'center'}">活跃用户</th>
 						<th lay-data="{field: 'liveUserOld', width:120, sort: false,align: 'center'}">活跃老用户</th>
 						<th lay-data="{field: 'liveUserNew', width:120, sort: false,align: 'center'}">新增用户</th>
@@ -117,7 +117,7 @@
 						<th lay-data="{field: 'payRateOld', width:130, sort: false,templet: function (value){return (value.payRateOld*100).toFixed(2)+'%';},align: 'center'}">老用户</th>
 					</tr>
 				</thead>
-			</table>
+			</table> -->
 		</div>
 	</div>
 

@@ -189,6 +189,6 @@
 		where serverID = #{serverid,jdbcType=INTEGER}
 	</update>
 	<select id="getAllServer" resultType="com.syhd.ahriman.dao.model.AppServer" >
-		select serverID,servername,log_db logDb from app_server order by servername
+		select serverID,servername,log_db logDb from app_server order by serverID
 	</select>
 </mapper>

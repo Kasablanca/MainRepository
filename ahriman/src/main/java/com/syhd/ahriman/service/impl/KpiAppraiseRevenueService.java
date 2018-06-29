@@ -9,7 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -32,7 +33,7 @@ import com.syhd.ahriman.utils.DateUtils;
 @CacheConfig(cacheNames="KpiAppraiseRevenue")
 public class KpiAppraiseRevenueService {
 	
-	private static Logger logger = Logger.getLogger(KpiAppraiseRevenueService.class);
+	private static Logger logger = LoggerFactory.getLogger(KpiAppraiseRevenueService.class);
 	
 	@Autowired
 	private GamelogProperties gamelogProperties;
@@ -152,7 +153,7 @@ public class KpiAppraiseRevenueService {
 		try(Connection conn = DriverManager.getConnection(url, user, password)) {	
 			PreparedStatement stmt = conn.prepareStatement(
 					"select date,platform,moneyType,sum(money) money from " + 
-					"(select date(date) date,platform,rmb money,lv moneyType from t_rechargelog where date >= ? and date < ?) t "+
+					"(select date(date) date,platform,rmb money,vip moneyType from t_rechargelog where date >= ? and date < ?) t "+
 					"group by date,platform,moneyType");
 			stmt.setDate(1, DateUtils.conver2SqlDate(startDate));
 			stmt.setDate(2, DateUtils.conver2SqlDate(endDate));
@@ -184,7 +185,6 @@ public class KpiAppraiseRevenueService {
 				dailyRevenueMapper.batchInsert(revenueList,storedTable);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("日收入数据查询失败", e.getCause());
 			throw new RuntimeException("日收入数据查询失败"); // 需要回滚事务
 		}

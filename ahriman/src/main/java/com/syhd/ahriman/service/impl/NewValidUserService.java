@@ -10,7 +10,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -33,7 +34,7 @@ import com.syhd.ahriman.utils.DateUtils.DateUnit;
 @CacheConfig(cacheNames="newValidUser")
 public class NewValidUserService {
 
-	private static final Logger logger = Logger.getLogger(NewValidUserService.class);
+	private static final Logger logger = LoggerFactory.getLogger(NewValidUserService.class);
 	
 	@Autowired
 	private AppServerService appServerService;
@@ -197,7 +198,6 @@ public class NewValidUserService {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("新增有效用户数据查询失败", e.getCause());
 			throw new RuntimeException("新增有效用户数据查询失败"); // 需要回滚事务
 		}

@@ -14,13 +14,17 @@ $(function (){
 	// 指定图表的配置项和数据
 	var option = {
 			title: {
-				text: '实时在线'
+				text: '实时在线',
+				left: 'center',
+				top: '10'
 			},
 			tooltip: {
 				trigger: 'axis'
 			},
 			legend: {
-				data: ['实时在线']
+				data: ['实时在线'],
+				left: 'center',
+				bottom: '10'
 			},
 			calculable : true,
 			xAxis: [{
@@ -43,114 +47,14 @@ $(function (){
 				data: []
 			}]
 	};
-	$.get("generalInfo/realTimeOnlineChart/getRealTimeOnline",function (data){
-		if(data.code == 0){
-			// 说明获取数据成功
-			var header = [];
-			var value = [];
-			for(var v of data.data.response){
-				header.push(v.time);
-				value.push(v.count);
-			}
-			option.xAxis[0].data = header;
-			option.series[0].data = value;
-			myChart.setOption(option);
-			$('#start').val(data.data.request.start);
-			$('#end').val(data.data.request.end);
-			
-			autoRefresh(data.data.request.end);
-			
-			if(value.length == 0){
-				layer.msg('暂无数据');
-			}
-		} else {
-			// 说明获取数据失败
-			layer.msg('获取图表数据失败：'+data.message, {icon: 5});
-		}
-	});
+	
+	thisAjax(myChart,option,null);
 	$('#searchBtn').click(function (){
-		myChart.showLoading();
-		$.ajax({
-			url: 'generalInfo/realTimeOnlineChart/getRealTimeOnline'
-			,data: $.param($('#searchForm').serializeArray())
-			,method: 'post'
-			,success: function (data){
-				myChart.hideLoading();
-				if(data.code == 0){
-					// 说明获取数据成功
-					var header = [];
-					var value = [];
-					for(var v of data.data.response){
-						header.push(v.time);
-						value.push(v.count);
-					}
-					option.xAxis[0].data = header;
-					option.series[0].data = value;
-					myChart.setOption(option);
-					
-					autoRefresh(data.data.request.end);
-					
-					if(value.length == 0){
-						layer.msg('暂无数据');
-					}
-				} else {
-					// 说明获取数据失败
-					layer.msg('获取图表数据失败：'+data.message, {icon: 5});
-				}
-			}
-			,error: function (){
-				myChart.hideLoading();
-				// 说明连接服务器失败
-				layer.msg('连接服务器失败', {icon: 5});
-			}
-		});
+		thisAjax(myChart,option,$.param($('#searchForm').serializeArray()));
 	});
-	$('#platform').change(function (target,trigger){
-		var platformArray = $('#platform').val();
-		if(platformArray && platformArray.length > 1){
-			if(trigger.selected=='-1'){
-				var options = $('#platform')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value != "-1"){
-						options[i].selected = false;
-					}
-				}
-				$('#platform').trigger('chosen:updated');
-			} else { // 点击的其他渠道
-				var options = $('#platform')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value == "-1" && options[i].selected == true){
-						options[i].selected = false;
-						break;
-					}
-				}
-				$('#platform').trigger('chosen:updated');
-			}
-		}
-	});
-	$('#serverId').change(function (target,trigger){
-		var serverIdArray = $('#serverId').val();
-		if(serverIdArray && serverIdArray.length > 1){
-			if(trigger.selected=='-1'){
-				var options = $('#serverId')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value != "-1"){
-						options[i].selected = false;
-					}
-				}
-				$('#serverId').trigger('chosen:updated');
-			} else { // 点击的其他渠道
-				var options = $('#serverId')[0].options;
-				for(var i=0;i<options.length;i++){
-					if(options[i].value == "-1" && options[i].selected == true){
-						options[i].selected = false;
-						break;
-					}
-				}
-				$('#serverId').trigger('chosen:updated');
-			}
-		}
-	});
+	
+	$('#platform').change(dropdownListCallback);
+	$('#serverId').change(dropdownListCallback);
 });
 
 /**
@@ -170,4 +74,36 @@ function autoRefresh(end){
 			$('#searchBtn').trigger('click');
 		},300000);
 	}
+}
+
+function thisAjax(chart,option,data){
+	echartsAjax({
+		chart: chart,
+		url: 'generalInfo/realTimeOnlineChart/getRealTimeOnline',
+		data: data,
+		success: function (data){
+			chart.hideLoading();
+			if(data.code == 0){
+				// 说明获取数据成功
+				var header = [];
+				var value = [];
+				for(var v of data.data.response){
+					header.push(v.time);
+					value.push(v.count);
+				}
+				option.xAxis[0].data = header;
+				option.series[0].data = value;
+				chart.setOption(option);
+				
+				autoRefresh(data.data.request.end);
+				
+				if(value.length == 0){
+					layer.msg('暂无数据');
+				}
+			} else {
+				// 说明获取数据失败
+				layer.msg('获取图表数据失败：'+data.message, {icon: 5});
+			}
+		}
+	});
 }

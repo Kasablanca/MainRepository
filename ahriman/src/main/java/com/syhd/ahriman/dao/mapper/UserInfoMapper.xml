@@ -202,14 +202,6 @@
 					</foreach>
 				</trim>
 			</if>
-			<if test="param.serverId != null and param.serverId.length > 0">
-				and lastLoginServerID in
-				<trim prefix="(" suffix=")" suffixOverrides=",">
-					<foreach collection="param.serverId" item="item">
-						#{item},
-					</foreach>
-				</trim>
-			</if>
 		) t 
 		GROUP BY date
 	</select>

@@ -247,7 +247,7 @@
 		</if>
 		group by date
 		order by ${pageAndSort.field} ${pageAndSort.sord}
-		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
+		<!-- limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit} -->
 	</select>
 	<select id="getStatisticCount" resultType="long">
 		select count(distinct date)
@@ -364,7 +364,7 @@
 		)t
 		group by date
 		order by ${pageAndSort.field} ${pageAndSort.sord}
-		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
+		<!-- limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit} -->
 	</select>
 	<select id="getMixinStatisticCount" resultType="long">
 		select IFNUll(count(date),0) from (
