@@ -1,17 +1,16 @@
 package com.min.springbootdemo.service;
 
-import javax.annotation.PostConstruct;
+import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.min.springbootdemo.dao.mapper.UserMapper;
 import com.min.springbootdemo.dao.model.User;
@@ -19,13 +18,14 @@ import com.min.springbootdemo.dao.model.User;
 @Service
 @CacheConfig(cacheNames="user")
 public class UserService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	@Autowired
 	private UserMapper userMapper;
 	
 	@Cacheable
 	public User findById(Integer id) {
-		System.out.println(Thread.currentThread().getId());
 		return userMapper.selectByPrimaryKey(id);
 	}
 	
@@ -40,26 +40,9 @@ public class UserService {
 		return user;
 	}
 	
-	@PostConstruct
-	public void init() {
-		initTask();
-		System.out.println("thread id: "+Thread.currentThread().getId());
-	}
-	
-	@Async
-	public void initTask() {
-		task();
-	}
-	
 	@Scheduled(cron="1/10 * * * * ?")
 	public void scheduledTask() {
-		task();
-	}
-	
-	@Transactional
-	public void task() {
-		System.out.println("thread id: "+Thread.currentThread().getId());
-		System.out.println("isNewTransaction: "+TransactionAspectSupport.currentTransactionStatus().isNewTransaction());
+		logger.info("scheduledTask,Random = "+new Random());
 	}
 	
 }

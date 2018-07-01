@@ -71,6 +71,7 @@ public class AuthorityService {
 
 	public Result delete(Authority target) {
 		Result result = Result.newErrorInstance();
+		
 		Authority temp = authorityMapper.selectByPrimaryKey(target.getId());
 		if(temp == null) {
 			result.setMessage("目标资源不存在或已被删除");
@@ -80,12 +81,14 @@ public class AuthorityService {
 			result.setMessage("版本号错误，请重新刷新页面");
 			return result;
 		}
+		
 		result.setData(authorityMapper.deleteByPrimaryKey(target.getId()));
 		return result;
 	}
 
 	public Result insert(Authority target) {
 		Result result = Result.newErrorInstance();
+		
 		if(target.getParentId() != null) {
 			Authority parent = authorityMapper.selectByPrimaryKey(target.getParentId());
 			if(parent == null) {

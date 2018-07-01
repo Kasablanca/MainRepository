@@ -26,7 +26,7 @@
 			<maxHistory>${LOG_FILE_MAX_HISTORY:-0}</maxHistory>
 		</rollingPolicy>
 	</appender>
-<!-- 	
+	
 	<appender name="TASK_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<encoder>
 			<pattern>${FILE_LOG_PATTERN}</pattern>
@@ -37,14 +37,14 @@
 			<maxFileSize>${LOG_FILE_MAX_SIZE:-10MB}</maxFileSize>
 			<maxHistory>${LOG_FILE_MAX_HISTORY:-0}</maxHistory>
 		</rollingPolicy>
-	</appender> -->
+	</appender>
 	
 	<root level="INFO">
 		<appender-ref ref="FILE" />
 	</root>
-<!-- 	
+	
 	<logger name="com.syhd.ahriman.service.TaskBeanPostProcessor" level="TRACE" additivity="false">
 		<appender-ref ref="TASK_LOG_FILE" />
-	</logger> -->
+	</logger>
 	
 </configuration>
