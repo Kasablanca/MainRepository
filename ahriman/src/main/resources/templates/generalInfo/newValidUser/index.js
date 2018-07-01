@@ -13,10 +13,10 @@ $(function (){
 	
 	table.render({
 		elem: '#main'
-		,height: 450
+		//,height: 450
 		,url: 'generalInfo/newValidUser/getNewValidUser'
-		,page: true //开启分页
-		,limit: 30
+		,page: false //开启分页
+		//,limit: 30
 		,loading: true
 		,text: {
 			none: '暂无相关数据'
