@@ -37,13 +37,13 @@
 		delete from t_authority
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
-	<insert id="insert"
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
 		parameterType="com.min.someapp.dao.model.Authority">
-		insert into t_authority (id, add_acc_id, add_time,
+		insert into t_authority (add_acc_id, add_time,
 		upd_acc_id, upd_time, parent_id,
 		ver_no, name, url, type,
 		status)
-		values (#{id,jdbcType=INTEGER}, #{addAccId,jdbcType=INTEGER},
+		values (#{addAccId,jdbcType=INTEGER},
 		#{addTime,jdbcType=TIMESTAMP},
 		#{updAccId,jdbcType=INTEGER}, #{updTime,jdbcType=TIMESTAMP}, #{parentId,jdbcType=INTEGER},
 		#{verNo,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},

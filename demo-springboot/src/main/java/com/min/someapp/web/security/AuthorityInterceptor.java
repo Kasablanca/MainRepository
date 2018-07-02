@@ -40,6 +40,9 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 		if(root == null) {
 			// 启动项目时检查数据库是否有ROOT用户，若没ROOT用户，则使用配置文件生成默认的ROOT用户
 			root = new User();
+			root.setAddAccId(-1);
+			root.setUpdAccId(-1);
+			root.setAccName(securityProperties.getRootName());
 			root.setUsername(securityProperties.getRootName());
 			root.setPassword(securityProperties.getRootPassword());
 			userService.insert(root,null);
@@ -120,6 +123,11 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 	 * @return true说明通过，false说明没通过
 	 */
 	private boolean doAuthorize(HttpServletRequest request, String requestURI, HttpServletResponse response, User target) {
+		if(target.getAccName().equals(securityProperties.getRootName())) {
+			//说明为系统初始用户，直接通过
+			return true;
+		}
+		
 		List<String> haveAuthorities = userService.getAuthoritiesUri(target.getId());
 		if(haveAuthorities.contains(requestURI)) {
 			// 说明有权限

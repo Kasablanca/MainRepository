@@ -178,7 +178,7 @@
 		status = #{status,jdbcType=TINYINT}
 		where id = #{id,jdbcType=INTEGER}
 	</update>
-	<select id="getByAccName" resultType="com.min.someapp.dao.model.User" >
+	<select id="getByAccName" resultMap="BaseResultMap" >
 		select * from t_user where acc_name = #{accName}
 	</select>
 	<select id="getUserList" resultType="com.min.someapp.dao.model.User">

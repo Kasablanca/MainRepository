@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class SecurityProperties {
 	
 	private static final String DEFAULT_ROOT_NAME = "admin";
-	private static final String DEFAULT_ROOT_PASSWORD = "123456";
+	private static final String DEFAULT_ROOT_PASSWORD = "e10adc3949ba59abbe56e057f20f883e";
 
 	/**默认root用户名, 默认admin*/
 	private String rootName;

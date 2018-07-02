@@ -72,11 +72,12 @@
 		</connectionSource>
 	</appender>
 	
-	<root level="info">
-		<appender-ref ref="DB" />
+	<root level="INFO">
+		<!-- <appender-ref ref="DB" /> -->
+		<appender-ref ref="FILE" />
 	</root>
 	
-	<logger name="com.min.springbootdemo.aspect.ControllerLogAspect" level="TRACE" additivity="false">
+	<logger name="com.min.someapp.aspect.ControllerLogAspect" level="TRACE" additivity="false">
 		<appender-ref ref="ACCESS_LOG_FILE" />
 	</logger>
 	

@@ -28,7 +28,7 @@ import org.springframework.transaction.aspectj.AnnotationTransactionAspect;
 @EnableAsync(mode=AdviceMode.ASPECTJ)
 @EnableCaching(mode=AdviceMode.ASPECTJ)
 @EnableTransactionManagement(mode=AdviceMode.ASPECTJ)
-@MapperScan("com.min.springbootdemo.dao.mapper")
+@MapperScan("com.min.someapp.dao.mapper")
 public class Application extends SpringBootServletInitializer {
 	
 	@Autowired
