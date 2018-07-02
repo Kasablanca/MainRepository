@@ -73,12 +73,13 @@
 	</appender>
 	
 	<root level="INFO">
-		<!-- <appender-ref ref="DB" /> -->
 		<appender-ref ref="FILE" />
+		<appender-ref ref="CONSOLE" />
 	</root>
 	
 	<logger name="com.min.someapp.aspect.ControllerLogAspect" level="TRACE" additivity="false">
-		<appender-ref ref="ACCESS_LOG_FILE" />
+		<!-- <appender-ref ref="ACCESS_LOG_FILE" /> -->
+		<appender-ref ref="DB" />
 	</logger>
 	
 </configuration>

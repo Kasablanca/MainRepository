@@ -12,30 +12,35 @@
 		</commentGenerator>
 		<!--数据库链接地址账号密码 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://localhost:3306/spring" userId="mr.right"
+			connectionURL="jdbc:mysql://localhost:3306/spring" userId="root"
 			password="9527">
 		</jdbcConnection>
 		<javaTypeResolver>
 			<property name="forceBigDecimals" value="false" />
 		</javaTypeResolver>
 		<!--生成Model类存放位置 -->
-		<javaModelGenerator targetPackage="com.min.springbootdemo.dao.model"
+		<javaModelGenerator targetPackage="com.min.someapp.dao.model"
 			targetProject="demo-springboot/src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 		<!--生成映射文件存放位置 -->
-		<sqlMapGenerator targetPackage="com.min.springbootdemo.dao.mapper"
+		<sqlMapGenerator targetPackage="com.min.someapp.dao.mapper"
 			targetProject="demo-springboot/src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 		<!-- 生成Dao类存放位置 -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="com.min.springbootdemo.dao.mapper" targetProject="demo-springboot/src/main/java">
+			targetPackage="com.min.someapp.dao.mapper" targetProject="demo-springboot/src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 		<!-- 生成对应表及类名 -->
-		<table tableName="t_authority" domainObjectName="Authority"
+		<table tableName="logging_event_exception" domainObjectName="LoggingEventException"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+		<table tableName="logging_event_property" domainObjectName="LoggingEventProperty"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">

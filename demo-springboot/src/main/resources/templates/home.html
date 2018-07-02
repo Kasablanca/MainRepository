@@ -180,6 +180,12 @@
 								<cite>权限管理</cite
 							></a>
 						</li>
+						<li>
+							<a _href="/log/index" th:_href="@{/log/index}">
+								<i class="iconfont">&#xe602;</i>
+								<cite>日志管理</cite
+							></a>
+						</li>
 					</ul>
 				</li>
 			</ul>
@@ -202,17 +208,18 @@
 		<div class="copyright">Copyright © 2018 首游互动 Inc. 保留所有权利。</div>
 	</div>
 	
-	<th:block th:replace="base:: common_javascript(~{})" />
-	<script>
-		function openUserInfo(id){
-			layer.open({
-				type: 2,
-				content: 'user/updatePage?id='+id,
-				id: 'user-updatePage',
-				area: ['800px','600px'],
-				title: '修改用户'
-			});
-		}
-	</script>
+	<th:block th:replace="base:: common_javascript(~{::script})" >
+		<script>
+			function openUserInfo(id){
+				layer.open({
+					type: 2,
+					content: 'user/updatePage?id='+id,
+					id: 'user-updatePage',
+					area: ['800px','600px'],
+					title: '修改用户'
+				});
+			}
+		</script>
+	</th:block>
 </body>
 </html>

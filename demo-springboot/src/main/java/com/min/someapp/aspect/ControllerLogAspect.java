@@ -19,7 +19,7 @@ public class ControllerLogAspect {
 		// controller layer pointcut
 	}
 	
-	@Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
+	@Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping) && execution(public * *(..))")
 	public void requestMappingMethod() {
 		
 	}

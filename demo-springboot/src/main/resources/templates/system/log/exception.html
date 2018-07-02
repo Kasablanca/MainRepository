@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::common_header(~{::title},~{::link})">
+	<title>日志管理</title>
+	<link rel="stylesheet" href="/css/chosen.css" th:href="@{/css/chosen.css}">
+	<link rel="stylesheet" href="/css/style.css" th:href="@{/css/style.css}">
+  	<link rel="stylesheet" href="/css/prism.css" th:href="@{/css/prism.css}">
+</head>
+<body>
+	<table id="main" lay-filter="main"></table>
+	
+	<th:block th:replace="base:: common_javascript(~{::script})">
+		<script src="./index.js" th:src="@{/system/log/exception.js}"></script>
+	</th:block>
+</body>
+</html>
