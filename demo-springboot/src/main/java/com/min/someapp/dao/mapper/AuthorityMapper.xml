@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.someapp.dao.mapper.AuthorityMapper">
+	<resultMap id="BaseResultMap"
+		type="com.min.someapp.dao.model.Authority">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="add_acc_id" jdbcType="INTEGER"
+			property="addAccId" />
+		<result column="add_time" jdbcType="TIMESTAMP"
+			property="addTime" />
+		<result column="upd_acc_id" jdbcType="INTEGER"
+			property="updAccId" />
+		<result column="upd_time" jdbcType="TIMESTAMP"
+			property="updTime" />
+		<result column="parent_id" jdbcType="INTEGER"
+			property="parentId" />
+		<result column="ver_no" jdbcType="INTEGER" property="verNo" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="type" jdbcType="TINYINT" property="type" />
+		<result column="status" jdbcType="TINYINT" property="status" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, add_acc_id, add_time, upd_acc_id, upd_time, parent_id, ver_no, name,
+		url, type,
+		status
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_authority
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_authority
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.min.someapp.dao.model.Authority">
+		insert into t_authority (id, add_acc_id, add_time,
+		upd_acc_id, upd_time, parent_id,
+		ver_no, name, url, type,
+		status)
+		values (#{id,jdbcType=INTEGER}, #{addAccId,jdbcType=INTEGER},
+		#{addTime,jdbcType=TIMESTAMP},
+		#{updAccId,jdbcType=INTEGER}, #{updTime,jdbcType=TIMESTAMP}, #{parentId,jdbcType=INTEGER},
+		#{verNo,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT},
+		#{status,jdbcType=TINYINT})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.min.someapp.dao.model.Authority">
+		insert into t_authority
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="addAccId != null">
+				add_acc_id,
+			</if>
+			<if test="addTime != null">
+				add_time,
+			</if>
+			<if test="updAccId != null">
+				upd_acc_id,
+			</if>
+			<if test="updTime != null">
+				upd_time,
+			</if>
+			<if test="parentId != null">
+				parent_id,
+			</if>
+			<if test="verNo != null">
+				ver_no,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="addAccId != null">
+				#{addAccId,jdbcType=INTEGER},
+			</if>
+			<if test="addTime != null">
+				#{addTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updAccId != null">
+				#{updAccId,jdbcType=INTEGER},
+			</if>
+			<if test="updTime != null">
+				#{updTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="parentId != null">
+				#{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="verNo != null">
+				#{verNo,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=TINYINT},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.min.someapp.dao.model.Authority">
+		update t_authority
+		<set>
+			<if test="addAccId != null">
+				add_acc_id = #{addAccId,jdbcType=INTEGER},
+			</if>
+			<if test="addTime != null">
+				add_time = #{addTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updAccId != null">
+				upd_acc_id = #{updAccId,jdbcType=INTEGER},
+			</if>
+			<if test="updTime != null">
+				upd_time = #{updTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="parentId != null">
+				parent_id = #{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="verNo != null">
+				ver_no = #{verNo,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=TINYINT},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.min.someapp.dao.model.Authority">
+		update t_authority
+		set add_acc_id = #{addAccId,jdbcType=INTEGER},
+		add_time = #{addTime,jdbcType=TIMESTAMP},
+		upd_acc_id = #{updAccId,jdbcType=INTEGER},
+		upd_time = #{updTime,jdbcType=TIMESTAMP},
+		parent_id = #{parentId,jdbcType=INTEGER},
+		ver_no = #{verNo,jdbcType=INTEGER},
+		name = #{name,jdbcType=VARCHAR},
+		url = #{url,jdbcType=VARCHAR},
+		type = #{type,jdbcType=TINYINT},
+		status = #{status,jdbcType=TINYINT}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="getAllNodes" resultType="com.min.someapp.dto.ZTreeNode">
+		select id,name,url path,parent_id parentId,ver_no verNo,type from t_authority
+	</select>
+	<select id="selectCountByName" resultType="int">
+		select count(*) from t_authority where name = #{name}
+		<if test="id != null">
+			and id != #{id}
+		</if>
+		<choose>
+			<when test="parentId == null">
+				and parent_id is null
+			</when>
+			<otherwise>
+				and parent_id = #{parentId}
+			</otherwise>
+		</choose>
+	</select>
+</mapper>

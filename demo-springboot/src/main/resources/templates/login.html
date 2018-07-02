@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::common_header(~{::title},~{})">
+	<title>请登录</title>
+</head>
+<body class="login-bg">
+    <div class="login layui-anim layui-anim-up">
+        <div class="message">恶灵退散-后台管理登录</div>
+        <div id="darkbannerwrap"></div>
+        <div th:if="${error} != null and ${error} == true">
+        	<div style="color: red;">
+        		登录失败，请重试.
+        		<th:block th:if="${SPRING_SECURITY_LAST_EXCEPTION != null}" 
+        			th:text="${SPRING_SECURITY_LAST_EXCEPTION.message}">
+        		</th:block>
+        	</div>
+        </div>
+        <div th:if="${param.logout != null}">
+            <div>
+                You have been logged out.
+            </div>
+        </div>
+        <form id="mainForm" method="post" class="layui-form" action="/login" th:action="@{/login}" >
+            <input id="accName" name="accName" placeholder="账号" type="text" lay-verify="required" class="layui-input" value="trump" >
+            <hr class="hr15">
+            <input id="password" name="password" placeholder="密码" type="password" lay-verify="required" class="layui-input" value="12345">
+            <hr class="hr15">
+            <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+            <hr class="hr20" >
+        </form>
+    </div>
+	
+	<th:block th:replace="base:: common_javascript(~{::script})">
+		<script src="/js/md5.js" th:src="@{/js/md5.js}" ></script>
+	</th:block>
+	<script>
+		$('#mainForm').submit(function (){
+			$('#password').val(hex_md5($('#password').val()));
+		});
+	</script>
+</body>
+</html>

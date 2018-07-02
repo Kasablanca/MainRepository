@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::common_header(~{::title},~{::link})">
+	<title>基础数据表</title>
+	<link rel="stylesheet" href="/css/chosen.css" th:href="@{/css/chosen.css}">
+	<link rel="stylesheet" href="/css/style.css" th:href="@{/css/style.css}">
+  	<link rel="stylesheet" href="/css/prism.css" th:href="@{/css/prism.css}">
+</head>
+<body>
+	<div class="x-nav">
+		<span class="layui-breadcrumb">
+			<a href="javascript:;"><cite>首页</cite></a>
+			<a href="javascript:;"><cite>综合信息</cite></a>
+			<a href="javascript:;"><cite>综合在线数据</cite></a>
+		</span>
+	</div>
+	<div class="x-body">
+		<div class="layui-card">
+			<div class="layui-card-header">查询条件</div>
+			<div class="layui-card-body">
+				<form id="searchForm" class="layui-container x-so">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">开始日</label>
+							<div class="layui-input-inline" style="width: 100px;">
+								<input name="start" autocomplete="off" id="start"
+									class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">截止日</label>
+							<div class="layui-input-inline" style="width: 100px;">
+								<input name="end" autocomplete="off" id="end"
+									class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">渠道</label>
+							<div class="layui-input-inline">
+								<select id="platform" name="platform" multiple class="chosen-select">
+									<option value="-1" selected>全部渠道</option>
+									<option th:each="item : ${platform}" th:value="${item}" th:text="${item}"></option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">服务器</label>
+							<div class="layui-input-inline">
+								<select id="serverId" name="serverId" multiple class="chosen-select">
+									<option value="-1" selected>全部服务器</option>
+									<option th:each="server : ${serverList}" th:value="${server.serverid}" th:text="${server.servername}"></option>
+								</select>
+							</div>
+						</div>
+						<a class="layui-btn layui-btn-small" style="margin-left: 5px;float: right;" href="javascript:location.replace(location.href);" title="刷新">
+							<i class="layui-icon" >&#xe666;</i></a>
+						<button class="layui-btn" type="button" lay-submit lay-filter="export" style="float: right;margin-left: 5px;"><i class="layui-icon">&#xe601;</i></button>
+						<button id="searchBtn" class="layui-btn" type="button" lay-submit lay-filter="search" style="float: right;"><i class="layui-icon">&#xe615;</i></button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-header">数据说明</div>
+			<div class="layui-card-body">
+				1、平均在线：每日玩家游戏时间总和（分钟）/60/24（1个玩家在线24小时记为1个平均在线）<br>
+				2、最高在线：1天中同时在线最高的那个时刻的玩家数量<br>
+				3、活跃用户：每日登录过游戏用户数（去重）<br>
+				4、日登陆次数：每日玩家登录游戏次数的总和（不去重）<br>
+				5、平均登录次数：日登录次数/活跃用户<br>
+				6、日新增角色数：每日新注册角色且登录游戏的用户数<br>
+				7、回归用户：七日及以上未登录游戏的玩家再次登录游戏（不含首次登陆）<br>
+				8、平均在线时长：每日玩家游戏时间总和/活跃用户数<br>
+			</div>
+		</div>
+		<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+		<div class="layui-card" style="background-color: rgba(0,0,0,0);">
+			<div id="main" lay-filter="main"></div><!-- style="height: 400px;width: 100%;" class="layui-col-lg12" -->
+		</div>
+	</div>
+
+	<th:block th:replace="base:: common_javascript(~{::script})">
+		<script src="/js/chosen.jquery.js" th:src="@{/js/chosen.jquery.js}"></script>
+		<script src="/js/prism.js" th:src="@{/js/prism.js}"></script>
+  		<script src="/js/init.js" th:src="@{/js/init.js}"></script>
+  		<script src="./index.js" th:src="@{/generalInfo/generalOnlineInfo/index.js}"></script>
+	</th:block>
+</body>
+</html>

@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.min.springbootdemo.service.UserService;
+import com.min.someapp.Application;
+import com.min.someapp.service.system.UserService;
 
 @Transactional
 @SpringBootTest
@@ -21,7 +22,7 @@ public class TestCase {
 
 	@Test
 	public void query() {
-		userService.findById(36);
+		userService.getById(110);
 	}
 	
 }
