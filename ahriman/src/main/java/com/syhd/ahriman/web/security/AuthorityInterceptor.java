@@ -40,6 +40,9 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 		if(root == null) {
 			// 启动项目时检查数据库是否有ROOT用户，若没ROOT用户，则使用配置文件生成默认的ROOT用户
 			root = new User();
+			root.setAddAccId(-1);
+			root.setUpdAccId(-1);
+			root.setAccName(securityProperties.getRootName());
 			root.setUsername(securityProperties.getRootName());
 			root.setPassword(securityProperties.getRootPassword());
 			userService.insert(root,null);
