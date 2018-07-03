@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhd.ahriman.dao.mapper.OnlineTableMapper">
+	<resultMap id="BaseResultMap"
+		type="com.syhd.ahriman.dao.model.OnlineTable">
+		<result column="date" jdbcType="DATE" property="date" />
+		<result column="server_id" jdbcType="INTEGER"
+			property="serverId" />
+		<result column="platform" jdbcType="VARCHAR"
+			property="platform" />
+		<result column="live_count" jdbcType="INTEGER"
+			property="liveCount" />
+		<result column="h0" jdbcType="INTEGER" property="h0" />
+		<result column="h1" jdbcType="INTEGER" property="h1" />
+		<result column="h2" jdbcType="INTEGER" property="h2" />
+		<result column="h3" jdbcType="INTEGER" property="h3" />
+		<result column="h4" jdbcType="INTEGER" property="h4" />
+		<result column="h5" jdbcType="INTEGER" property="h5" />
+		<result column="h6" jdbcType="INTEGER" property="h6" />
+		<result column="h7" jdbcType="INTEGER" property="h7" />
+		<result column="h8" jdbcType="INTEGER" property="h8" />
+		<result column="h9" jdbcType="INTEGER" property="h9" />
+		<result column="h10" jdbcType="INTEGER" property="h10" />
+		<result column="h11" jdbcType="INTEGER" property="h11" />
+		<result column="h12" jdbcType="INTEGER" property="h12" />
+		<result column="h13" jdbcType="INTEGER" property="h13" />
+		<result column="h14" jdbcType="INTEGER" property="h14" />
+		<result column="h15" jdbcType="INTEGER" property="h15" />
+		<result column="h16" jdbcType="INTEGER" property="h16" />
+		<result column="h17" jdbcType="INTEGER" property="h17" />
+		<result column="h18" jdbcType="INTEGER" property="h18" />
+		<result column="h19" jdbcType="INTEGER" property="h19" />
+		<result column="h20" jdbcType="INTEGER" property="h20" />
+		<result column="h21" jdbcType="INTEGER" property="h21" />
+		<result column="h22" jdbcType="INTEGER" property="h22" />
+		<result column="h23" jdbcType="INTEGER" property="h23" />
+	</resultMap>
+	<insert id="insert"
+		parameterType="com.syhd.ahriman.dao.model.OnlineTable">
+		insert into t_online_table (date, server_id, platform,
+		live_count, h0, h1,
+		h2, h3, h4, h5,
+		h6, h7, h8, h9,
+		h10, h11, h12, h13,
+		h14, h15, h16, h17,
+		h18, h19, h20, h21,
+		h22, h23)
+		values (#{date,jdbcType=DATE}, #{serverId,jdbcType=INTEGER},
+		#{platform,jdbcType=VARCHAR},
+		#{liveCount,jdbcType=INTEGER}, #{h0,jdbcType=INTEGER}, #{h1,jdbcType=INTEGER},
+		#{h2,jdbcType=INTEGER}, #{h3,jdbcType=INTEGER},
+		#{h4,jdbcType=INTEGER}, #{h5,jdbcType=INTEGER},
+		#{h6,jdbcType=INTEGER}, #{h7,jdbcType=INTEGER},
+		#{h8,jdbcType=INTEGER}, #{h9,jdbcType=INTEGER},
+		#{h10,jdbcType=INTEGER}, #{h11,jdbcType=INTEGER},
+		#{h12,jdbcType=INTEGER}, #{h13,jdbcType=INTEGER},
+		#{h14,jdbcType=INTEGER}, #{h15,jdbcType=INTEGER},
+		#{h16,jdbcType=INTEGER}, #{h17,jdbcType=INTEGER},
+		#{h18,jdbcType=INTEGER}, #{h19,jdbcType=INTEGER},
+		#{h20,jdbcType=INTEGER}, #{h21,jdbcType=INTEGER},
+		#{h22,jdbcType=INTEGER}, #{h23,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.syhd.ahriman.dao.model.OnlineTable">
+		insert into t_online_table
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="date != null">
+				date,
+			</if>
+			<if test="serverId != null">
+				server_id,
+			</if>
+			<if test="platform != null">
+				platform,
+			</if>
+			<if test="liveCount != null">
+				live_count,
+			</if>
+			<if test="h0 != null">
+				h0,
+			</if>
+			<if test="h1 != null">
+				h1,
+			</if>
+			<if test="h2 != null">
+				h2,
+			</if>
+			<if test="h3 != null">
+				h3,
+			</if>
+			<if test="h4 != null">
+				h4,
+			</if>
+			<if test="h5 != null">
+				h5,
+			</if>
+			<if test="h6 != null">
+				h6,
+			</if>
+			<if test="h7 != null">
+				h7,
+			</if>
+			<if test="h8 != null">
+				h8,
+			</if>
+			<if test="h9 != null">
+				h9,
+			</if>
+			<if test="h10 != null">
+				h10,
+			</if>
+			<if test="h11 != null">
+				h11,
+			</if>
+			<if test="h12 != null">
+				h12,
+			</if>
+			<if test="h13 != null">
+				h13,
+			</if>
+			<if test="h14 != null">
+				h14,
+			</if>
+			<if test="h15 != null">
+				h15,
+			</if>
+			<if test="h16 != null">
+				h16,
+			</if>
+			<if test="h17 != null">
+				h17,
+			</if>
+			<if test="h18 != null">
+				h18,
+			</if>
+			<if test="h19 != null">
+				h19,
+			</if>
+			<if test="h20 != null">
+				h20,
+			</if>
+			<if test="h21 != null">
+				h21,
+			</if>
+			<if test="h22 != null">
+				h22,
+			</if>
+			<if test="h23 != null">
+				h23,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="date != null">
+				#{date,jdbcType=DATE},
+			</if>
+			<if test="serverId != null">
+				#{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="liveCount != null">
+				#{liveCount,jdbcType=INTEGER},
+			</if>
+			<if test="h0 != null">
+				#{h0,jdbcType=INTEGER},
+			</if>
+			<if test="h1 != null">
+				#{h1,jdbcType=INTEGER},
+			</if>
+			<if test="h2 != null">
+				#{h2,jdbcType=INTEGER},
+			</if>
+			<if test="h3 != null">
+				#{h3,jdbcType=INTEGER},
+			</if>
+			<if test="h4 != null">
+				#{h4,jdbcType=INTEGER},
+			</if>
+			<if test="h5 != null">
+				#{h5,jdbcType=INTEGER},
+			</if>
+			<if test="h6 != null">
+				#{h6,jdbcType=INTEGER},
+			</if>
+			<if test="h7 != null">
+				#{h7,jdbcType=INTEGER},
+			</if>
+			<if test="h8 != null">
+				#{h8,jdbcType=INTEGER},
+			</if>
+			<if test="h9 != null">
+				#{h9,jdbcType=INTEGER},
+			</if>
+			<if test="h10 != null">
+				#{h10,jdbcType=INTEGER},
+			</if>
+			<if test="h11 != null">
+				#{h11,jdbcType=INTEGER},
+			</if>
+			<if test="h12 != null">
+				#{h12,jdbcType=INTEGER},
+			</if>
+			<if test="h13 != null">
+				#{h13,jdbcType=INTEGER},
+			</if>
+			<if test="h14 != null">
+				#{h14,jdbcType=INTEGER},
+			</if>
+			<if test="h15 != null">
+				#{h15,jdbcType=INTEGER},
+			</if>
+			<if test="h16 != null">
+				#{h16,jdbcType=INTEGER},
+			</if>
+			<if test="h17 != null">
+				#{h17,jdbcType=INTEGER},
+			</if>
+			<if test="h18 != null">
+				#{h18,jdbcType=INTEGER},
+			</if>
+			<if test="h19 != null">
+				#{h19,jdbcType=INTEGER},
+			</if>
+			<if test="h20 != null">
+				#{h20,jdbcType=INTEGER},
+			</if>
+			<if test="h21 != null">
+				#{h21,jdbcType=INTEGER},
+			</if>
+			<if test="h22 != null">
+				#{h22,jdbcType=INTEGER},
+			</if>
+			<if test="h23 != null">
+				#{h23,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<select id="getStatistic" resultType="com.syhd.ahriman.dao.model.OnlineTable">
+		select 
+			date,
+			IFNULL(sum(live_count),0) liveCount,
+			IFNULL(sum(h0),0) h0,
+			IFNULL(sum(h1),0) h1,
+			IFNULL(sum(h2),0) h2,
+			IFNULL(sum(h3),0) h3,
+			IFNULL(sum(h4),0) h4,
+			IFNULL(sum(h5),0) h5,
+			IFNULL(sum(h6),0) h6,
+			IFNULL(sum(h7),0) h7,
+			IFNULL(sum(h8),0) h8,
+			IFNULL(sum(h9),0) h9,
+			IFNULL(sum(h10),0) h10,
+			IFNULL(sum(h11),0) h11,
+			IFNULL(sum(h12),0) h12,
+			IFNULL(sum(h13),0) h13,
+			IFNULL(sum(h14),0) h14,
+			IFNULL(sum(h15),0) h15,
+			IFNULL(sum(h16),0) h16,
+			IFNULL(sum(h17),0) h17,
+			IFNULL(sum(h18),0) h18,
+			IFNULL(sum(h19),0) h19,
+			IFNULL(sum(h20),0) h20,
+			IFNULL(sum(h21),0) h21,
+			IFNULL(sum(h22),0) h22,
+			IFNULL(sum(h23),0) h23
+		from t_online_table
+		where date &gt;= #{param.start} and date &lt; #{param.end}
+		<if test="param.platform != null and param.platform.length &gt; 0">
+			and platform in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.platform" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		<if test="param.serverId != null and param.serverId.length &gt; 0">
+			and server_id in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.serverId" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		group by date
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
+	</select>
+	<select id="getStatisticCount" resultType="long">
+		select count(distinct date)
+		from t_online_table
+		where date &gt;= #{param.start} and date &lt; #{param.end}
+		<if test="param.platform != null and param.platform.length &gt; 0">
+			and platform in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.platform" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		<if test="param.serverId != null and param.serverId.length &gt; 0">
+			and server_id in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.serverId" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+	</select>
+	<select id="getAllPlatform" resultType="string">
+		select distinct platform from t_online_table
+	</select>
+	<select id="getLastCountDate" resultType="java.util.Date" >
+		select max(date) from t_online_table
+		<if test="serverId != null">
+			where server_id = #{serverId}
+		</if>
+	</select>
+	<insert id="batchInsert">
+		insert into ${storedTable} (date, server_id, platform,
+		live_count, h0, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, 
+		h15, h16, h17, h18, h19, h20, h21, h22, h23) 
+		values <trim suffixOverrides=",">
+			<foreach collection="records" item="record">
+				(#{record.date,jdbcType=DATE}, #{record.serverId,jdbcType=INTEGER},
+				#{record.platform,jdbcType=VARCHAR},
+				#{record.liveCount,jdbcType=INTEGER}, #{record.h0,jdbcType=INTEGER}, #{record.h1,jdbcType=INTEGER},
+				#{record.h2,jdbcType=INTEGER}, #{record.h3,jdbcType=INTEGER},
+				#{record.h4,jdbcType=INTEGER}, #{record.h5,jdbcType=INTEGER},
+				#{record.h6,jdbcType=INTEGER}, #{record.h7,jdbcType=INTEGER},
+				#{record.h8,jdbcType=INTEGER}, #{record.h9,jdbcType=INTEGER},
+				#{record.h10,jdbcType=INTEGER}, #{record.h11,jdbcType=INTEGER},
+				#{record.h12,jdbcType=INTEGER}, #{record.h13,jdbcType=INTEGER},
+				#{record.h14,jdbcType=INTEGER}, #{record.h15,jdbcType=INTEGER},
+				#{record.h16,jdbcType=INTEGER}, #{record.h17,jdbcType=INTEGER},
+				#{record.h18,jdbcType=INTEGER}, #{record.h19,jdbcType=INTEGER},
+				#{record.h20,jdbcType=INTEGER}, #{record.h21,jdbcType=INTEGER},
+				#{record.h22,jdbcType=INTEGER}, #{record.h23,jdbcType=INTEGER}),
+			</foreach>
+		</trim>
+	</insert>
+	<update id="updateByUniqueKeySelective"
+		parameterType="com.syhd.ahriman.dao.model.NewValidUser">
+		update t_new_valid_user
+		<set>
+			<if test="disposableCount != null">
+				disposable_count = #{disposableCount,jdbcType=INTEGER},
+			</if>
+			<if test="commonlyCount != null">
+				commonly_count = #{commonlyCount,jdbcType=INTEGER},
+			</if>
+			<if test="loyaltyCount != null">
+				loyalty_count = #{loyaltyCount,jdbcType=INTEGER},
+			</if>
+		</set>
+		where server_id = #{serverId} and platform = #{platform} and date = #{date,jdbcType=DATE}
+	</update>
+</mapper>
