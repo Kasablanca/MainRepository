@@ -126,4 +126,29 @@ public class AppServer implements Serializable {
     public void setOpenTime(Date openTime) {
         this.openTime = openTime;
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((logDb == null) ? 0 : logDb.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AppServer other = (AppServer) obj;
+		if (logDb == null) {
+			if (other.logDb != null)
+				return false;
+		} else if (!logDb.equals(other.logDb))
+			return false;
+		return true;
+	}
 }

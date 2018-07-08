@@ -1,7 +1,5 @@
 package com.syhd.ahriman.service.impl;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -17,6 +15,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.syhd.ahriman.dao.ConnectionManager;
 import com.syhd.ahriman.dao.mapper.DailyActiveUserMapper;
 import com.syhd.ahriman.dao.model.AppServer;
 import com.syhd.ahriman.dao.model.DailyActiveUser;
@@ -24,7 +23,6 @@ import com.syhd.ahriman.dto.KpiStatistic;
 import com.syhd.ahriman.dto.RequestPayload;
 import com.syhd.ahriman.dto.Result;
 import com.syhd.ahriman.dto.StatisticPayload;
-import com.syhd.ahriman.properties.GamelogProperties;
 import com.syhd.ahriman.service.CronTask;
 import com.syhd.ahriman.utils.DateUtils;
 
@@ -35,13 +33,13 @@ public class ActiveUserService {
 	private static Logger logger = LoggerFactory.getLogger(ActiveUserService.class);
 	
 	@Autowired
-	private GamelogProperties gamelogProperties;
-	
-	@Autowired
 	private DailyActiveUserMapper dailyActiveUserMapper;
 	
 	@Autowired
 	private AppServerService appServerService;
+	
+	@Autowired
+	private ConnectionManager connectionManager;
 
 	/**
 	 * 获取KPI活跃用户
@@ -130,11 +128,8 @@ public class ActiveUserService {
 			return;
 		}
 		
-		String url = appServerService.getLogDbUrl(server.getLogDb());
-		String user = gamelogProperties.getUsername();
-		String password = gamelogProperties.getPassword();
-		try(Connection conn = DriverManager.getConnection(url, user, password)) {	
-			PreparedStatement stmt = conn.prepareStatement(
+		try {	
+			PreparedStatement stmt = connectionManager.getConnection(server).prepareStatement(
 					"select date,platform,count(pid) count from " + 
 					"(select distinct date(t1.date) date,t2.platform,t1.pid from t_loginlog t1 inner join t_createplayerlog t2 on t1.pid = t2.pid where t1.date >= ? and t1.date < ? and t1.flag = 1) t "+
 					"group by date,platform");
