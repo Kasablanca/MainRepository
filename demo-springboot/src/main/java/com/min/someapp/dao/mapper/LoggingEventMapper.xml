@@ -268,7 +268,7 @@
 					logger_name like '%${filter.loggerName}%'
 				</if>
 				<if test="filter.levelString !=null and filter.levelString != ''">
-					level_string like '%${filter.levelString}%'
+					level_string = #{filter.levelString}
 				</if>
 				<if test="filter.referenceFlag != null">
 					reference_flag = #{filter.referenceFlag}

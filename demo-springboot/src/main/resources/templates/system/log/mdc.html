@@ -10,6 +10,9 @@
 	<table id="main" lay-filter="main"></table>
 	
 	<th:block th:replace="base:: common_javascript(~{::script})">
+		<script th:inline="javascript">
+			var eventId = /*[[${eventId}]]*/ 1;
+		</script>
 		<script src="./index.js" th:src="@{/system/log/mdc.js}"></script>
 	</th:block>
 </body>

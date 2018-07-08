@@ -29,8 +29,8 @@ public class LoggerController {
 	}
 	
 	@RequestMapping("eventPropertyPage")
-	public ModelAndView eventPropertyPage() {
-		return new ModelAndView("system/log/mdc");
+	public ModelAndView eventPropertyPage(Long eventId) {
+		return new ModelAndView("system/log/mdc","eventId",eventId);
 	}
 	
 	@RequestMapping("eventPropertyList")
@@ -39,8 +39,8 @@ public class LoggerController {
 	}
 	
 	@RequestMapping("eventExceptionPage")
-	public ModelAndView eventExceptionPage() {
-		return new ModelAndView("system/log/exception");
+	public ModelAndView eventExceptionPage(Long eventId) {
+		return new ModelAndView("system/log/exception","eventId",eventId);
 	}
 	
 	@RequestMapping("eventExceptionList")

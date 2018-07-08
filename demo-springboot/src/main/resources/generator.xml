@@ -35,12 +35,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 		<!-- 生成对应表及类名 -->
-		<table tableName="logging_event_exception" domainObjectName="LoggingEventException"
-			enableCountByExample="false" enableUpdateByExample="false"
-			enableDeleteByExample="false" enableSelectByExample="false"
-			selectByExampleQueryId="false">
-		</table>
-		<table tableName="logging_event_property" domainObjectName="LoggingEventProperty"
+		<table tableName="t_server" domainObjectName="Server"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">

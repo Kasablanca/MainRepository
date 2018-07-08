@@ -13,7 +13,8 @@ $(function (){
 		}
 		,where: {
 			field: "mappedKey",
-			sord: "asc"
+			sord: "asc",
+			eventId: eventId
 		}
 		,cols: [[
 			{field: 'eventId', title: '事件ID', sort: true},

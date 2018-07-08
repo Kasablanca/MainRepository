@@ -26,7 +26,7 @@ public class ControllerLogAspect {
 	
 	@Before("controllerLayer() && requestMappingMethod()")
 	public void doLog(JoinPoint jp) {
-		logger.trace(jp.toShortString());
+		logger.info(jp.toShortString());
 	}
 	
 }

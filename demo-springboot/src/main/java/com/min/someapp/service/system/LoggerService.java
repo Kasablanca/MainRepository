@@ -28,6 +28,7 @@ public class LoggerService {
 	private LoggingEventExceptionMapper loggingEventExceptionMapper;
 	
 	public TableData getEventList(LoggingEvent filter,PageAndSort pageAndSort) {
+		//filter.setLoggerName(filter.getLoggerName().replaceAll("'", "\\\'"));
 		List<LoggingEvent> list = loggingEventMapper.getRecordList(filter,pageAndSort);
 		long count = loggingEventMapper.getRecordListCount(filter,pageAndSort);
 		

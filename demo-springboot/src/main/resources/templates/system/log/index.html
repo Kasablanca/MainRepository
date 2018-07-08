@@ -20,10 +20,17 @@
 			<div class="layui-card-body">
 				<form id="searchForm" class="layui-form"><!-- class="layui-form layui-col-md12 x-so" -->
 					<div class="layui-input-inline">
-						<input class="layui-input" id="accName" type="text" name="accName" placeholder="请输入账号" autocomplete="off">
+						<select id="levelString" name="levelString">
+							<option value="">请选择</option>
+							<option value="ERROR">ERROR</option>
+							<option value="WARN">WARN</option>
+							<option value="INFO">INFO</option>
+							<option value="TRACE">TRACE</option>
+							<option value="DEBUG">DEBUG</option>
+						</select>
 					</div>
 					<div class="layui-input-inline">
-						<input class="layui-input" id="username" type="text" name="username" placeholder="请输入用户名" autocomplete="off">
+						<input class="layui-input" id="loggerName" type="text" name="loggerName" placeholder="请输入记录器名" autocomplete="off">
 					</div>
 					<button type="button" id="searchBtn" class="layui-btn x-right"><i class="layui-icon">&#xe615;</i></button>
 				</form>

@@ -79,7 +79,7 @@
 		where event_id = #{eventId,jdbcType=BIGINT}
 		and mapped_key = #{mappedKey,jdbcType=VARCHAR}
 	</update>
-	<select id="getRecordList" resultMap="BaseResultMap">
+	<select id="getRecordList" resultType="com.min.someapp.dao.model.LoggingEventProperty">
 		select * from (
 			select event_id eventId,mapped_key mappedKey,mapped_value mappedValue 
 			from logging_event_property 

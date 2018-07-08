@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration>
-<configuration debug="true">
+<configuration>
 	
 	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
 	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
@@ -16,31 +16,14 @@
 	<logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>
 	<logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>
 
-	<springProfile name="test">
-		<!-- configuration to be enabled when the "staging" profile is active -->
-	</springProfile>
-
-	<springProfile name="dev">
-		<!-- configuration to be enabled when the "dev" or "staging" profiles are 
-			active -->
-	</springProfile>
-
-	<springProfile name="prod">
-		<!-- configuration to be enabled when the "production" profile is not active -->
-	</springProfile>
-	
-	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<append>false</append>
 		<encoder>
 			<pattern>${FILE_LOG_PATTERN}</pattern>
 		</encoder>
 		<file>d://Log/demo-springboot.log</file>
-		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-			<fileNamePattern>demo-springboot.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
-			<maxFileSize>${LOG_FILE_MAX_SIZE:-10MB}</maxFileSize>
-			<maxHistory>${LOG_FILE_MAX_HISTORY:-0}</maxHistory>
-		</rollingPolicy>
 	</appender>
-	
+<!-- 	
 	<appender name="ACCESS_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<encoder>
 			<pattern>${FILE_LOG_PATTERN}</pattern>
@@ -51,7 +34,7 @@
 			<maxFileSize>${LOG_FILE_MAX_SIZE:-10MB}</maxFileSize>
 			<maxHistory>${LOG_FILE_MAX_HISTORY:-0}</maxHistory>
 		</rollingPolicy>
-	</appender>
+	</appender> -->
 	
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
@@ -72,14 +55,33 @@
 		</connectionSource>
 	</appender>
 	
-	<root level="INFO">
-		<appender-ref ref="FILE" />
-		<appender-ref ref="CONSOLE" />
-	</root>
-	
-	<logger name="com.min.someapp.aspect.ControllerLogAspect" level="TRACE" additivity="false">
-		<!-- <appender-ref ref="ACCESS_LOG_FILE" /> -->
-		<appender-ref ref="DB" />
-	</logger>
+	<springProfile name="test">
+		<!-- configuration to be enabled when the "staging" profile is active -->
+	</springProfile>
+
+	<springProfile name="dev">
+		<!-- configuration to be enabled when the "dev" or "staging" profiles are active -->
+		<root level="INFO">
+			<appender-ref ref="DB" />
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+		</root>
+		<logger name="com.min.someapp.aspect.ControllerLogAspect" level="INFO" additivity="false">
+			<!-- <appender-ref ref="ACCESS_LOG_FILE" /> -->
+			<appender-ref ref="DB" />
+		</logger>
+	</springProfile>
+
+	<springProfile name="prod">
+		<!-- configuration to be enabled when the "production" profile is not active -->
+		<root level="WARN">
+			<appender-ref ref="DB" />
+			<appender-ref ref="FILE" />
+		</root>
+		<logger name="com.min.someapp.aspect.ControllerLogAspect" level="INFO" additivity="false">
+			<!-- <appender-ref ref="ACCESS_LOG_FILE" /> -->
+			<appender-ref ref="DB" />
+		</logger>
+	</springProfile>
 	
 </configuration>

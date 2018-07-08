@@ -70,12 +70,12 @@
 		where event_id = #{eventId,jdbcType=BIGINT}
 		and i = #{i,jdbcType=SMALLINT}
 	</update>
-	<select id="getRecordList" parameterType="com.min.someapp.dao.model.LoggingEventException">
+	<select id="getRecordList" resultType="com.min.someapp.dao.model.LoggingEventException">
 		select * from (
 			select event_id eventId,i,trace_line traceLine 
 			from logging_event_exception 
 			where event_id = #{eventId}
 		) t
-		order by ${sort.field} ${sort.sord}
+		order by i asc
 	</select>
 </mapper>

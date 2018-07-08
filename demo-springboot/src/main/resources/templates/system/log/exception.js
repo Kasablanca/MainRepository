@@ -13,12 +13,13 @@ $(function (){
 		}
 		,where: {
 			field: "i",
-			sord: "asc"
+			sord: "asc",
+			eventId: eventId
 		}
 		,cols: [[
 			{field: 'eventId', title: '事件ID', sort: true},
 			{field: 'i', title: '序号', sort: true},
-			{field: 'trace_line', title: '异常行', sort: true}
+			{field: 'traceLine', title: '异常行', sort: true}
 		]]
 	});
 
