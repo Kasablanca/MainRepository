@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhd.ahriman.dao.mapper.KpiUserLtvMapper">
+	<resultMap id="BaseResultMap"
+		type="com.syhd.ahriman.dao.model.KpiUserLtv">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="date" jdbcType="DATE" property="date" />
+		<result column="server_id" jdbcType="INTEGER"
+			property="serverId" />
+		<result column="platform" jdbcType="VARCHAR"
+			property="platform" />
+		<result column="new_user_number" jdbcType="INTEGER"
+			property="newUserNumber" />
+		<result column="total_money" jdbcType="DECIMAL"
+			property="totalMoney" />
+		<result column="day1" jdbcType="DECIMAL" property="day1" />
+		<result column="day2" jdbcType="DECIMAL" property="day2" />
+		<result column="day3" jdbcType="DECIMAL" property="day3" />
+		<result column="day4" jdbcType="DECIMAL" property="day4" />
+		<result column="day5" jdbcType="DECIMAL" property="day5" />
+		<result column="day6" jdbcType="DECIMAL" property="day6" />
+		<result column="day7" jdbcType="DECIMAL" property="day7" />
+		<result column="day8" jdbcType="DECIMAL" property="day8" />
+		<result column="day9" jdbcType="DECIMAL" property="day9" />
+		<result column="day10" jdbcType="DECIMAL" property="day10" />
+		<result column="day11" jdbcType="DECIMAL" property="day11" />
+		<result column="day12" jdbcType="DECIMAL" property="day12" />
+		<result column="day13" jdbcType="DECIMAL" property="day13" />
+		<result column="day14" jdbcType="DECIMAL" property="day14" />
+		<result column="day15" jdbcType="DECIMAL" property="day15" />
+		<result column="day16" jdbcType="DECIMAL" property="day16" />
+		<result column="day17" jdbcType="DECIMAL" property="day17" />
+		<result column="day18" jdbcType="DECIMAL" property="day18" />
+		<result column="day19" jdbcType="DECIMAL" property="day19" />
+		<result column="day20" jdbcType="DECIMAL" property="day20" />
+		<result column="day21" jdbcType="DECIMAL" property="day21" />
+		<result column="day22" jdbcType="DECIMAL" property="day22" />
+		<result column="day23" jdbcType="DECIMAL" property="day23" />
+		<result column="day24" jdbcType="DECIMAL" property="day24" />
+		<result column="day25" jdbcType="DECIMAL" property="day25" />
+		<result column="day26" jdbcType="DECIMAL" property="day26" />
+		<result column="day27" jdbcType="DECIMAL" property="day27" />
+		<result column="day28" jdbcType="DECIMAL" property="day28" />
+		<result column="day29" jdbcType="DECIMAL" property="day29" />
+		<result column="day30" jdbcType="DECIMAL" property="day30" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, date, server_id, platform, new_user_number, total_money, day1, day2,
+		day3, day4,
+		day5, day6, day7, day8, day9, day10, day11, day12, day13, day14, day15,
+		day16, day17,
+		day18, day19, day20, day21, day22, day23, day24, day25, day26, day27, day28,
+		day29,
+		day30
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_kpi_user_ltv
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from t_kpi_user_ltv
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" useGeneratedKeys="true" keyProperty=""
+		parameterType="com.syhd.ahriman.dao.model.KpiUserLtv">
+		insert into t_kpi_user_ltv (id, date, server_id,
+		platform, new_user_number, total_money,
+		day1, day2, day3, day4,
+		day5, day6, day7, day8,
+		day9, day10, day11,
+		day12, day13, day14,
+		day15, day16, day17,
+		day18, day19, day20,
+		day21, day22, day23,
+		day24, day25, day26,
+		day27, day28, day29,
+		day30)
+		values (#{id,jdbcType=BIGINT}, #{date,jdbcType=DATE},
+		#{serverId,jdbcType=INTEGER},
+		#{platform,jdbcType=VARCHAR}, #{newUserNumber,jdbcType=INTEGER}, #{totalMoney,jdbcType=DECIMAL},
+		#{day1,jdbcType=DECIMAL}, #{day2,jdbcType=DECIMAL},
+		#{day3,jdbcType=DECIMAL}, #{day4,jdbcType=DECIMAL},
+		#{day5,jdbcType=DECIMAL}, #{day6,jdbcType=DECIMAL},
+		#{day7,jdbcType=DECIMAL}, #{day8,jdbcType=DECIMAL},
+		#{day9,jdbcType=DECIMAL}, #{day10,jdbcType=DECIMAL},
+		#{day11,jdbcType=DECIMAL},
+		#{day12,jdbcType=DECIMAL}, #{day13,jdbcType=DECIMAL}, #{day14,jdbcType=DECIMAL},
+		#{day15,jdbcType=DECIMAL}, #{day16,jdbcType=DECIMAL},
+		#{day17,jdbcType=DECIMAL},
+		#{day18,jdbcType=DECIMAL}, #{day19,jdbcType=DECIMAL}, #{day20,jdbcType=DECIMAL},
+		#{day21,jdbcType=DECIMAL}, #{day22,jdbcType=DECIMAL},
+		#{day23,jdbcType=DECIMAL},
+		#{day24,jdbcType=DECIMAL}, #{day25,jdbcType=DECIMAL}, #{day26,jdbcType=DECIMAL},
+		#{day27,jdbcType=DECIMAL}, #{day28,jdbcType=DECIMAL},
+		#{day29,jdbcType=DECIMAL},
+		#{day30,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.syhd.ahriman.dao.model.KpiUserLtv">
+		insert into t_kpi_user_ltv
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="serverId != null">
+				server_id,
+			</if>
+			<if test="platform != null">
+				platform,
+			</if>
+			<if test="newUserNumber != null">
+				new_user_number,
+			</if>
+			<if test="totalMoney != null">
+				total_money,
+			</if>
+			<if test="day1 != null">
+				day1,
+			</if>
+			<if test="day2 != null">
+				day2,
+			</if>
+			<if test="day3 != null">
+				day3,
+			</if>
+			<if test="day4 != null">
+				day4,
+			</if>
+			<if test="day5 != null">
+				day5,
+			</if>
+			<if test="day6 != null">
+				day6,
+			</if>
+			<if test="day7 != null">
+				day7,
+			</if>
+			<if test="day8 != null">
+				day8,
+			</if>
+			<if test="day9 != null">
+				day9,
+			</if>
+			<if test="day10 != null">
+				day10,
+			</if>
+			<if test="day11 != null">
+				day11,
+			</if>
+			<if test="day12 != null">
+				day12,
+			</if>
+			<if test="day13 != null">
+				day13,
+			</if>
+			<if test="day14 != null">
+				day14,
+			</if>
+			<if test="day15 != null">
+				day15,
+			</if>
+			<if test="day16 != null">
+				day16,
+			</if>
+			<if test="day17 != null">
+				day17,
+			</if>
+			<if test="day18 != null">
+				day18,
+			</if>
+			<if test="day19 != null">
+				day19,
+			</if>
+			<if test="day20 != null">
+				day20,
+			</if>
+			<if test="day21 != null">
+				day21,
+			</if>
+			<if test="day22 != null">
+				day22,
+			</if>
+			<if test="day23 != null">
+				day23,
+			</if>
+			<if test="day24 != null">
+				day24,
+			</if>
+			<if test="day25 != null">
+				day25,
+			</if>
+			<if test="day26 != null">
+				day26,
+			</if>
+			<if test="day27 != null">
+				day27,
+			</if>
+			<if test="day28 != null">
+				day28,
+			</if>
+			<if test="day29 != null">
+				day29,
+			</if>
+			<if test="day30 != null">
+				day30,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=DATE},
+			</if>
+			<if test="serverId != null">
+				#{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="newUserNumber != null">
+				#{newUserNumber,jdbcType=INTEGER},
+			</if>
+			<if test="totalMoney != null">
+				#{totalMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="day1 != null">
+				#{day1,jdbcType=DECIMAL},
+			</if>
+			<if test="day2 != null">
+				#{day2,jdbcType=DECIMAL},
+			</if>
+			<if test="day3 != null">
+				#{day3,jdbcType=DECIMAL},
+			</if>
+			<if test="day4 != null">
+				#{day4,jdbcType=DECIMAL},
+			</if>
+			<if test="day5 != null">
+				#{day5,jdbcType=DECIMAL},
+			</if>
+			<if test="day6 != null">
+				#{day6,jdbcType=DECIMAL},
+			</if>
+			<if test="day7 != null">
+				#{day7,jdbcType=DECIMAL},
+			</if>
+			<if test="day8 != null">
+				#{day8,jdbcType=DECIMAL},
+			</if>
+			<if test="day9 != null">
+				#{day9,jdbcType=DECIMAL},
+			</if>
+			<if test="day10 != null">
+				#{day10,jdbcType=DECIMAL},
+			</if>
+			<if test="day11 != null">
+				#{day11,jdbcType=DECIMAL},
+			</if>
+			<if test="day12 != null">
+				#{day12,jdbcType=DECIMAL},
+			</if>
+			<if test="day13 != null">
+				#{day13,jdbcType=DECIMAL},
+			</if>
+			<if test="day14 != null">
+				#{day14,jdbcType=DECIMAL},
+			</if>
+			<if test="day15 != null">
+				#{day15,jdbcType=DECIMAL},
+			</if>
+			<if test="day16 != null">
+				#{day16,jdbcType=DECIMAL},
+			</if>
+			<if test="day17 != null">
+				#{day17,jdbcType=DECIMAL},
+			</if>
+			<if test="day18 != null">
+				#{day18,jdbcType=DECIMAL},
+			</if>
+			<if test="day19 != null">
+				#{day19,jdbcType=DECIMAL},
+			</if>
+			<if test="day20 != null">
+				#{day20,jdbcType=DECIMAL},
+			</if>
+			<if test="day21 != null">
+				#{day21,jdbcType=DECIMAL},
+			</if>
+			<if test="day22 != null">
+				#{day22,jdbcType=DECIMAL},
+			</if>
+			<if test="day23 != null">
+				#{day23,jdbcType=DECIMAL},
+			</if>
+			<if test="day24 != null">
+				#{day24,jdbcType=DECIMAL},
+			</if>
+			<if test="day25 != null">
+				#{day25,jdbcType=DECIMAL},
+			</if>
+			<if test="day26 != null">
+				#{day26,jdbcType=DECIMAL},
+			</if>
+			<if test="day27 != null">
+				#{day27,jdbcType=DECIMAL},
+			</if>
+			<if test="day28 != null">
+				#{day28,jdbcType=DECIMAL},
+			</if>
+			<if test="day29 != null">
+				#{day29,jdbcType=DECIMAL},
+			</if>
+			<if test="day30 != null">
+				#{day30,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.syhd.ahriman.dao.model.KpiUserLtv">
+		update t_kpi_user_ltv
+		<set>
+			<if test="date != null">
+				date = #{date,jdbcType=DATE},
+			</if>
+			<if test="serverId != null">
+				server_id = #{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="platform != null">
+				platform = #{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="newUserNumber != null">
+				new_user_number = #{newUserNumber,jdbcType=INTEGER},
+			</if>
+			<if test="totalMoney != null">
+				total_money = #{totalMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="day1 != null">
+				day1 = #{day1,jdbcType=DECIMAL},
+			</if>
+			<if test="day2 != null">
+				day2 = #{day2,jdbcType=DECIMAL},
+			</if>
+			<if test="day3 != null">
+				day3 = #{day3,jdbcType=DECIMAL},
+			</if>
+			<if test="day4 != null">
+				day4 = #{day4,jdbcType=DECIMAL},
+			</if>
+			<if test="day5 != null">
+				day5 = #{day5,jdbcType=DECIMAL},
+			</if>
+			<if test="day6 != null">
+				day6 = #{day6,jdbcType=DECIMAL},
+			</if>
+			<if test="day7 != null">
+				day7 = #{day7,jdbcType=DECIMAL},
+			</if>
+			<if test="day8 != null">
+				day8 = #{day8,jdbcType=DECIMAL},
+			</if>
+			<if test="day9 != null">
+				day9 = #{day9,jdbcType=DECIMAL},
+			</if>
+			<if test="day10 != null">
+				day10 = #{day10,jdbcType=DECIMAL},
+			</if>
+			<if test="day11 != null">
+				day11 = #{day11,jdbcType=DECIMAL},
+			</if>
+			<if test="day12 != null">
+				day12 = #{day12,jdbcType=DECIMAL},
+			</if>
+			<if test="day13 != null">
+				day13 = #{day13,jdbcType=DECIMAL},
+			</if>
+			<if test="day14 != null">
+				day14 = #{day14,jdbcType=DECIMAL},
+			</if>
+			<if test="day15 != null">
+				day15 = #{day15,jdbcType=DECIMAL},
+			</if>
+			<if test="day16 != null">
+				day16 = #{day16,jdbcType=DECIMAL},
+			</if>
+			<if test="day17 != null">
+				day17 = #{day17,jdbcType=DECIMAL},
+			</if>
+			<if test="day18 != null">
+				day18 = #{day18,jdbcType=DECIMAL},
+			</if>
+			<if test="day19 != null">
+				day19 = #{day19,jdbcType=DECIMAL},
+			</if>
+			<if test="day20 != null">
+				day20 = #{day20,jdbcType=DECIMAL},
+			</if>
+			<if test="day21 != null">
+				day21 = #{day21,jdbcType=DECIMAL},
+			</if>
+			<if test="day22 != null">
+				day22 = #{day22,jdbcType=DECIMAL},
+			</if>
+			<if test="day23 != null">
+				day23 = #{day23,jdbcType=DECIMAL},
+			</if>
+			<if test="day24 != null">
+				day24 = #{day24,jdbcType=DECIMAL},
+			</if>
+			<if test="day25 != null">
+				day25 = #{day25,jdbcType=DECIMAL},
+			</if>
+			<if test="day26 != null">
+				day26 = #{day26,jdbcType=DECIMAL},
+			</if>
+			<if test="day27 != null">
+				day27 = #{day27,jdbcType=DECIMAL},
+			</if>
+			<if test="day28 != null">
+				day28 = #{day28,jdbcType=DECIMAL},
+			</if>
+			<if test="day29 != null">
+				day29 = #{day29,jdbcType=DECIMAL},
+			</if>
+			<if test="day30 != null">
+				day30 = #{day30,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.syhd.ahriman.dao.model.KpiUserLtv">
+		update t_kpi_user_ltv
+		set date = #{date,jdbcType=DATE},
+		server_id = #{serverId,jdbcType=INTEGER},
+		platform = #{platform,jdbcType=VARCHAR},
+		new_user_number = #{newUserNumber,jdbcType=INTEGER},
+		total_money = #{totalMoney,jdbcType=DECIMAL},
+		day1 = #{day1,jdbcType=DECIMAL},
+		day2 = #{day2,jdbcType=DECIMAL},
+		day3 = #{day3,jdbcType=DECIMAL},
+		day4 = #{day4,jdbcType=DECIMAL},
+		day5 = #{day5,jdbcType=DECIMAL},
+		day6 = #{day6,jdbcType=DECIMAL},
+		day7 = #{day7,jdbcType=DECIMAL},
+		day8 = #{day8,jdbcType=DECIMAL},
+		day9 = #{day9,jdbcType=DECIMAL},
+		day10 = #{day10,jdbcType=DECIMAL},
+		day11 = #{day11,jdbcType=DECIMAL},
+		day12 = #{day12,jdbcType=DECIMAL},
+		day13 = #{day13,jdbcType=DECIMAL},
+		day14 = #{day14,jdbcType=DECIMAL},
+		day15 = #{day15,jdbcType=DECIMAL},
+		day16 = #{day16,jdbcType=DECIMAL},
+		day17 = #{day17,jdbcType=DECIMAL},
+		day18 = #{day18,jdbcType=DECIMAL},
+		day19 = #{day19,jdbcType=DECIMAL},
+		day20 = #{day20,jdbcType=DECIMAL},
+		day21 = #{day21,jdbcType=DECIMAL},
+		day22 = #{day22,jdbcType=DECIMAL},
+		day23 = #{day23,jdbcType=DECIMAL},
+		day24 = #{day24,jdbcType=DECIMAL},
+		day25 = #{day25,jdbcType=DECIMAL},
+		day26 = #{day26,jdbcType=DECIMAL},
+		day27 = #{day27,jdbcType=DECIMAL},
+		day28 = #{day28,jdbcType=DECIMAL},
+		day29 = #{day29,jdbcType=DECIMAL},
+		day30 = #{day30,jdbcType=DECIMAL}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<select id="getStatistic" resultType="com.syhd.ahriman.dao.model.KpiUserLtv">
+		select 
+			date,
+			IFNULL(sum(new_user_number),0) newUserNumber,
+			IFNULL(sum(total_money),0) totalMoney,
+			sum(day1)/sum(new_user_number) day1,
+			sum(day2)/sum(new_user_number) day2,
+			sum(day3)/sum(new_user_number) day3,
+			sum(day4)/sum(new_user_number) day4,
+			sum(day5)/sum(new_user_number) day5,
+			sum(day6)/sum(new_user_number) day6,
+			sum(day7)/sum(new_user_number) day7,
+			sum(day8)/sum(new_user_number) day8,
+			sum(day9)/sum(new_user_number) day9,
+			sum(day10)/sum(new_user_number) day10,
+			sum(day11)/sum(new_user_number) day11,
+			sum(day12)/sum(new_user_number) day12,
+			sum(day13)/sum(new_user_number) day13,
+			sum(day14)/sum(new_user_number) day14,
+			sum(day15)/sum(new_user_number) day15,
+			sum(day16)/sum(new_user_number) day16,
+			sum(day17)/sum(new_user_number) day17,
+			sum(day18)/sum(new_user_number) day18,
+			sum(day19)/sum(new_user_number) day19,
+			sum(day20)/sum(new_user_number) day20,
+			sum(day21)/sum(new_user_number) day21,
+			sum(day22)/sum(new_user_number) day22,
+			sum(day23)/sum(new_user_number) day23,
+			sum(day24)/sum(new_user_number) day24,
+			sum(day25)/sum(new_user_number) day25,
+			sum(day26)/sum(new_user_number) day26,
+			sum(day27)/sum(new_user_number) day27,
+			sum(day28)/sum(new_user_number) day28,
+			sum(day29)/sum(new_user_number) day29,
+			sum(day30)/sum(new_user_number) day30
+		from t_kpi_user_ltv
+		where date &gt;= #{param.start} and date &lt; #{param.end}
+		<if test="param.platform != null and param.platform.length &gt; 0">
+			and platform in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.platform" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		<if test="param.serverId != null and param.serverId.length &gt; 0">
+			and server_id in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.serverId" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		group by date
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
+	</select>
+	<select id="getStatisticCount" resultType="long">
+		select count(distinct date)
+		from t_kpi_user_ltv
+		where date &gt;= #{param.start} and date &lt; #{param.end}
+		<if test="param.platform != null and param.platform.length &gt; 0">
+			and platform in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.platform" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		<if test="param.serverId != null and param.serverId.length &gt; 0">
+			and server_id in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.serverId" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+	</select>
+	<select id="getAllPlatform" resultType="string">
+		select distinct platform from t_kpi_user_ltv
+	</select>
+	<select id="getLastCountDate" resultType="java.util.Date" >
+		select max(date) from t_kpi_user_ltv where server_id = #{serverId}
+	</select>
+	<insert id="batchInsert">
+		insert into ${storedTable} (date, server_id, platform, new_user_number, total_money, day1, day2, day3, day4,
+		day5, day6, day7, day8, day9, day10, day11, day12, day13, day14, day15, day16, day17,
+		day18, day19, day20, day21, day22, day23, day24, day25, day26, day27, day28,day29, day30) 
+		values <trim suffixOverrides=",">
+			<foreach collection="records" item="record">
+				(#{record.date,jdbcType=DATE},
+				#{record.serverId,jdbcType=INTEGER},
+				#{record.platform,jdbcType=VARCHAR}, #{record.newUserNumber,jdbcType=INTEGER}, #{record.totalMoney,jdbcType=DECIMAL},
+				#{record.day1,jdbcType=DECIMAL}, #{record.day2,jdbcType=DECIMAL},
+				#{record.day3,jdbcType=DECIMAL}, #{record.day4,jdbcType=DECIMAL},
+				#{record.day5,jdbcType=DECIMAL}, #{record.day6,jdbcType=DECIMAL},
+				#{record.day7,jdbcType=DECIMAL}, #{record.day8,jdbcType=DECIMAL},
+				#{record.day9,jdbcType=DECIMAL}, #{record.day10,jdbcType=DECIMAL}, #{record.day11,jdbcType=DECIMAL},
+				#{record.day12,jdbcType=DECIMAL}, #{record.day13,jdbcType=DECIMAL}, #{record.day14,jdbcType=DECIMAL},
+				#{record.day15,jdbcType=DECIMAL}, #{record.day16,jdbcType=DECIMAL}, #{record.day17,jdbcType=DECIMAL},
+				#{record.day18,jdbcType=DECIMAL}, #{record.day19,jdbcType=DECIMAL}, #{record.day20,jdbcType=DECIMAL},
+				#{record.day21,jdbcType=DECIMAL}, #{record.day22,jdbcType=DECIMAL},
+				#{record.day23,jdbcType=DECIMAL},
+				#{record.day24,jdbcType=DECIMAL}, #{record.day25,jdbcType=DECIMAL}, #{record.day26,jdbcType=DECIMAL},
+				#{record.day27,jdbcType=DECIMAL}, #{record.day28,jdbcType=DECIMAL},
+				#{record.day29,jdbcType=DECIMAL}, #{record.day30,jdbcType=DECIMAL}),
+			</foreach>
+		</trim>
+	</insert>
+	<update id="createTodayKpiUserLtvTable" statementType="CALLABLE">
+		{call create_temp_kpi_userltv_table()}
+	</update>
+	<select id="getMixinStatistic" resultType="com.syhd.ahriman.dao.model.KpiUserLtv">
+		select
+			date,
+			IFNULL(sum(new_user_number),0) newUserNumber,
+			IFNULL(sum(total_money),0) totalMoney,
+			sum(day1)/sum(new_user_number) day1,
+			sum(day2)/sum(new_user_number) day2,
+			sum(day3)/sum(new_user_number) day3,
+			sum(day4)/sum(new_user_number) day4,
+			sum(day5)/sum(new_user_number) day5,
+			sum(day6)/sum(new_user_number) day6,
+			sum(day7)/sum(new_user_number) day7,
+			sum(day8)/sum(new_user_number) day8,
+			sum(day9)/sum(new_user_number) day9,
+			sum(day10)/sum(new_user_number) day10,
+			sum(day11)/sum(new_user_number) day11,
+			sum(day12)/sum(new_user_number) day12,
+			sum(day13)/sum(new_user_number) day13,
+			sum(day14)/sum(new_user_number) day14,
+			sum(day15)/sum(new_user_number) day15,
+			sum(day16)/sum(new_user_number) day16,
+			sum(day17)/sum(new_user_number) day17,
+			sum(day18)/sum(new_user_number) day18,
+			sum(day19)/sum(new_user_number) day19,
+			sum(day20)/sum(new_user_number) day20,
+			sum(day21)/sum(new_user_number) day21,
+			sum(day22)/sum(new_user_number) day22,
+			sum(day23)/sum(new_user_number) day23,
+			sum(day24)/sum(new_user_number) day24,
+			sum(day25)/sum(new_user_number) day25,
+			sum(day26)/sum(new_user_number) day26,
+			sum(day27)/sum(new_user_number) day27,
+			sum(day28)/sum(new_user_number) day28,
+			sum(day29)/sum(new_user_number) day29,
+			sum(day30)/sum(new_user_number) day30
+		from (
+			select 
+				date, new_user_number, total_money, day1, day2, day3, day4,
+				day5, day6, day7, day8, day9, day10, day11, day12, day13, day14, day15, day16, day17,
+				day18, day19, day20, day21, day22, day23, day24, day25, day26, day27, day28, day29, day30
+			from t_kpi_user_ltv
+			where date &gt;= #{param.start}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			union all
+			select 
+				date, new_user_number, total_money, day1, day2, day3, day4,
+				day5, day6, day7, day8, day9, day10, day11, day12, day13, day14, day15, day16, day17,
+				day18, day19, day20, day21, day22, day23, day24, day25, day26, day27, day28, day29, day30
+			from t_today_kpi_user_ltv
+			where date &gt;= #{param.start}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+		)t
+		group by date
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
+	</select>
+	<select id="getMixinStatisticCount" resultType="long">
+		select IFNUll(count(date),0) from (
+			select distinct date
+			from t_kpi_user_ltv
+			where date &gt;= #{param.start}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			union all
+			select distinct date
+			from t_today_kpi_user_ltv
+			where date &gt;= #{param.start}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+		)t
+	</select>
+</mapper>

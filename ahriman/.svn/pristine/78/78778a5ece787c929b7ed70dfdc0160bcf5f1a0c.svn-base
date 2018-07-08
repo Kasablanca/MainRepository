@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.syhd.ahriman.dao.mapper.BasicInfoMapper">
+	<resultMap id="BaseResultMap"
+		type="com.syhd.ahriman.dao.model.BasicInfo">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="date" jdbcType="DATE" property="date" />
+		<result column="server_id" jdbcType="INTEGER"
+			property="serverId" />
+		<result column="platform" jdbcType="VARCHAR"
+			property="platform" />
+		<result column="total_revenue" jdbcType="DECIMAL"
+			property="totalRevenue" />
+		<result column="daily_revenue" jdbcType="DECIMAL"
+			property="dailyRevenue" />
+		<result column="daily_revenue_new" jdbcType="DECIMAL"
+			property="dailyRevenueNew" />
+		<result column="live_user" jdbcType="INTEGER"
+			property="liveUser" />
+		<result column="live_user_new" jdbcType="INTEGER"
+			property="liveUserNew" />
+		<result column="retention_day2" jdbcType="INTEGER"
+			property="retentionDay2" />
+		<result column="retention_day3" jdbcType="INTEGER"
+			property="retentionDay3" />
+		<result column="retention_day5" jdbcType="INTEGER"
+			property="retentionDay5" />
+		<result column="retention_day7" jdbcType="INTEGER"
+			property="retentionDay7" />
+		<result column="retention_day15" jdbcType="INTEGER"
+			property="retentionDay15" />
+		<result column="retention_day30" jdbcType="INTEGER"
+			property="retentionDay30" />
+		<result column="pay_user" jdbcType="INTEGER" property="payUser" />
+		<result column="pay_user_new" jdbcType="INTEGER"
+			property="payUserNew" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, date, server_id, platform, total_revenue, daily_revenue,
+		daily_revenue_new, live_user,
+		live_user_new, retention_day2, retention_day3, retention_day5, retention_day7,
+		retention_day15,
+		retention_day30, pay_user, pay_user_new
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_basic_info
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from t_basic_info
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.syhd.ahriman.dao.model.BasicInfo">
+		insert into t_basic_info (id, date, server_id,
+		platform, total_revenue, daily_revenue,
+		daily_revenue_new, live_user, live_user_new,
+		retention_day2, retention_day3, retention_day5,
+		retention_day7, retention_day15, retention_day30,
+		pay_user, pay_user_new)
+		values (#{id,jdbcType=BIGINT}, #{date,jdbcType=DATE},
+		#{serverId,jdbcType=INTEGER},
+		#{platform,jdbcType=VARCHAR}, #{totalRevenue,jdbcType=DECIMAL}, #{dailyRevenue,jdbcType=DECIMAL},
+		#{dailyRevenueNew,jdbcType=DECIMAL}, #{liveUser,jdbcType=INTEGER},
+		#{liveUserNew,jdbcType=INTEGER},
+		#{retentionDay2,jdbcType=INTEGER}, #{retentionDay3,jdbcType=INTEGER}, #{retentionDay5,jdbcType=INTEGER},
+		#{retentionDay7,jdbcType=INTEGER}, #{retentionDay15,jdbcType=INTEGER},
+		#{retentionDay30,jdbcType=INTEGER},
+		#{payUser,jdbcType=INTEGER}, #{payUserNew,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.syhd.ahriman.dao.model.BasicInfo">
+		insert into t_basic_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="serverId != null">
+				server_id,
+			</if>
+			<if test="platform != null">
+				platform,
+			</if>
+			<if test="totalRevenue != null">
+				total_revenue,
+			</if>
+			<if test="dailyRevenue != null">
+				daily_revenue,
+			</if>
+			<if test="dailyRevenueNew != null">
+				daily_revenue_new,
+			</if>
+			<if test="liveUser != null">
+				live_user,
+			</if>
+			<if test="liveUserNew != null">
+				live_user_new,
+			</if>
+			<if test="retentionDay2 != null">
+				retention_day2,
+			</if>
+			<if test="retentionDay3 != null">
+				retention_day3,
+			</if>
+			<if test="retentionDay5 != null">
+				retention_day5,
+			</if>
+			<if test="retentionDay7 != null">
+				retention_day7,
+			</if>
+			<if test="retentionDay15 != null">
+				retention_day15,
+			</if>
+			<if test="retentionDay30 != null">
+				retention_day30,
+			</if>
+			<if test="payUser != null">
+				pay_user,
+			</if>
+			<if test="payUserNew != null">
+				pay_user_new,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=DATE},
+			</if>
+			<if test="serverId != null">
+				#{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="totalRevenue != null">
+				#{totalRevenue,jdbcType=DECIMAL},
+			</if>
+			<if test="dailyRevenue != null">
+				#{dailyRevenue,jdbcType=DECIMAL},
+			</if>
+			<if test="dailyRevenueNew != null">
+				#{dailyRevenueNew,jdbcType=DECIMAL},
+			</if>
+			<if test="liveUser != null">
+				#{liveUser,jdbcType=INTEGER},
+			</if>
+			<if test="liveUserNew != null">
+				#{liveUserNew,jdbcType=INTEGER},
+			</if>
+			<if test="retentionDay2 != null">
+				#{retentionDay2,jdbcType=INTEGER},
+			</if>
+			<if test="retentionDay3 != null">
+				#{retentionDay3,jdbcType=INTEGER},
+			</if>
+			<if test="retentionDay5 != null">
+				#{retentionDay5,jdbcType=INTEGER},
+			</if>
+			<if test="retentionDay7 != null">
+				#{retentionDay7,jdbcType=INTEGER},
+			</if>
+			<if test="retentionDay15 != null">
+				#{retentionDay15,jdbcType=INTEGER},
+			</if>
+			<if test="retentionDay30 != null">
+				#{retentionDay30,jdbcType=INTEGER},
+			</if>
+			<if test="payUser != null">
+				#{payUser,jdbcType=INTEGER},
+			</if>
+			<if test="payUserNew != null">
+				#{payUserNew,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.syhd.ahriman.dao.model.BasicInfo">
+		update t_basic_info
+		<set>
+			<if test="date != null">
+				date = #{date,jdbcType=DATE},
+			</if>
+			<if test="serverId != null">
+				server_id = #{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="platform != null">
+				platform = #{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="totalRevenue != null">
+				total_revenue = #{totalRevenue,jdbcType=DECIMAL},
+			</if>
+			<if test="dailyRevenue != null">
+				daily_revenue = #{dailyRevenue,jdbcType=DECIMAL},
+			</if>
+			<if test="dailyRevenueNew != null">
+				daily_revenue_new = #{dailyRevenueNew,jdbcType=DECIMAL},
+			</if>
+			<if test="liveUser != null">
+				live_user = #{liveUser,jdbcType=INTEGER},
+			</if>
+			<if test="liveUserNew != null">
+				live_user_new = #{liveUserNew,jdbcType=INTEGER},
+			</if>
+			<if test="retentionDay2 != null">
+				retention_day2 = #{retentionDay2,jdbcType=INTEGER},
+			</if>
+			<if test="retentionDay3 != null">
+				retention_day3 = #{retentionDay3,jdbcType=INTEGER},
+			</if>
+			<if test="retentionDay5 != null">
+				retention_day5 = #{retentionDay5,jdbcType=INTEGER},
+			</if>
+			<if test="retentionDay7 != null">
+				retention_day7 = #{retentionDay7,jdbcType=INTEGER},
+			</if>
+			<if test="retentionDay15 != null">
+				retention_day15 = #{retentionDay15,jdbcType=INTEGER},
+			</if>
+			<if test="retentionDay30 != null">
+				retention_day30 = #{retentionDay30,jdbcType=INTEGER},
+			</if>
+			<if test="payUser != null">
+				pay_user = #{payUser,jdbcType=INTEGER},
+			</if>
+			<if test="payUserNew != null">
+				pay_user_new = #{payUserNew,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.syhd.ahriman.dao.model.BasicInfo">
+		update t_basic_info
+		set date = #{date,jdbcType=DATE},
+		server_id = #{serverId,jdbcType=INTEGER},
+		platform = #{platform,jdbcType=VARCHAR},
+		total_revenue = #{totalRevenue,jdbcType=DECIMAL},
+		daily_revenue = #{dailyRevenue,jdbcType=DECIMAL},
+		daily_revenue_new = #{dailyRevenueNew,jdbcType=DECIMAL},
+		live_user = #{liveUser,jdbcType=INTEGER},
+		live_user_new = #{liveUserNew,jdbcType=INTEGER},
+		retention_day2 = #{retentionDay2,jdbcType=INTEGER},
+		retention_day3 = #{retentionDay3,jdbcType=INTEGER},
+		retention_day5 = #{retentionDay5,jdbcType=INTEGER},
+		retention_day7 = #{retentionDay7,jdbcType=INTEGER},
+		retention_day15 = #{retentionDay15,jdbcType=INTEGER},
+		retention_day30 = #{retentionDay30,jdbcType=INTEGER},
+		pay_user = #{payUser,jdbcType=INTEGER},
+		pay_user_new = #{payUserNew,jdbcType=INTEGER}
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	<select id="getStatistic" resultType="com.syhd.ahriman.dto.BasicInfoVO">
+		SELECT * FROM (
+			SELECT 
+				t1.date,
+				IFNULL(t1.total_revenue,0) totalRevenue,
+				IFNULL(t2.dailyRevenue,0) dailyRevenue,
+				IFNULL(t2.dailyRevenueNew,0) dailyRevenueNew,
+				IFNULL(t2.dailyRevenueOld,0) dailyRevenueOld,
+				IFNULL(t2.liveUser,0) liveUser,
+				IFNULL(t2.liveUserNew,0) liveUserNew,
+				IFNULL(t2.liveUserOld,0) liveUserOld,
+				IFNULL(t2.retentionDay2,0) retentionDay2,
+				IFNULL(t2.retentionDay3,0) retentionDay3,
+				IFNULL(t2.retentionDay5,0) retentionDay5,
+				IFNULL(t2.retentionDay7,0) retentionDay7,
+				IFNULL(t2.retentionDay15,0) retentionDay15,
+				IFNULL(t2.retentionDay30,0) retentionDay30,
+				IFNULL(t2.payUser,0) payUser,
+				IFNULL(t2.payUserNew,0) payUserNew,
+				IFNULL(t2.payUserOld,0) payUserOld,
+				IFNULL(t2.payRate,0) payRate,
+				IFNULL(t2.payRateNew,0) payRateNew,
+				IFNULL(t2.payRateOld,0) payRateOld,
+				IFNULL(t2.arpu,0) arpu,
+				IFNULL(t2.arppu,0) arppu
+			FROM (
+				SELECT date,sum(total_revenue) total_revenue FROM (
+					SELECT
+						t1.date,
+						t2.server_id,
+						t2.platform,
+						max( t2.total_revenue ) total_revenue 
+					FROM t_date t1
+					LEFT JOIN t_basic_info t2 ON t2.date &lt;= t1.date
+					WHERE 1 = 1
+					<if test="param.platform != null and param.platform.length &gt; 0">
+						and t2.platform in
+						<trim prefix="(" suffix=")" suffixOverrides=",">
+							<foreach collection="param.platform" item="item">
+								#{item},
+							</foreach>
+						</trim>
+					</if>
+					<if test="param.serverId != null and param.serverId.length &gt; 0">
+						and t2.server_id in
+						<trim prefix="(" suffix=")" suffixOverrides=",">
+							<foreach collection="param.serverId" item="item">
+								#{item},
+							</foreach>
+						</trim>
+					</if>
+					GROUP BY t1.date,t2.server_id,t2.platform
+				) t GROUP BY date
+			) t1
+			LEFT JOIN (
+				select 
+					date,
+					sum(daily_revenue) dailyRevenue,
+					sum(daily_revenue_new) dailyRevenueNew,
+					sum(daily_revenue)-sum(daily_revenue_new) dailyRevenueOld,
+					sum(live_user) liveUser,
+					sum(live_user_new) liveUserNew,
+					sum(live_user)-sum(live_user_new) liveUserOld,
+					sum(retention_day2)/sum(live_user_new) retentionDay2,
+					sum(retention_day3)/sum(live_user_new) retentionDay3,
+					sum(retention_day5)/sum(live_user_new) retentionDay5,
+					sum(retention_day7)/sum(live_user_new) retentionDay7,
+					sum(retention_day15)/sum(live_user_new) retentionDay15,
+					sum(retention_day30)/sum(live_user_new) retentionDay30,
+					sum(pay_user) payUser,
+					sum(pay_user_new) payUserNew,
+					sum(pay_user)-sum(pay_user_new) payUserOld,
+					sum(pay_user)/sum(live_user) payRate,
+					sum(pay_user_new)/sum(live_user_new) payRateNew,
+					(sum(pay_user)-sum(pay_user_new))/(sum(live_user)-sum(live_user_new)) payRateOld,
+					sum(daily_revenue)/sum(live_user) arpu,
+					sum(daily_revenue)/sum(pay_user) arppu
+				from t_basic_info t1
+				where date &gt;= #{param.start} and date &lt; #{param.end}
+				<if test="param.platform != null and param.platform.length &gt; 0">
+					and platform in
+					<trim prefix="(" suffix=")" suffixOverrides=",">
+						<foreach collection="param.platform" item="item">
+							#{item},
+						</foreach>
+					</trim>
+				</if>
+				<if test="param.serverId != null and param.serverId.length &gt; 0">
+					and server_id in
+					<trim prefix="(" suffix=")" suffixOverrides=",">
+						<foreach collection="param.serverId" item="item">
+							#{item},
+						</foreach>
+					</trim>
+				</if>
+				group by date
+			)t2 ON t2.date = t1.date 
+		) t
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit};
+	</select>
+	<select id="getStatisticCount" resultType="long">
+		select count(date)
+		from t_date
+		where date &gt;= #{param.start} and date &lt; #{param.end}
+	</select>
+	<select id="getStatisticWithUserRegistered" resultType="com.syhd.ahriman.dto.BasicInfoVO">
+		SELECT * FROM (
+			SELECT 
+				t0.date,
+				IFNULL(t0.totalRegistered,0) totalRegistered,
+				IFNULL(t2.total_revenue,0) totalRevenue,
+				IFNULL(t1.dailyRevenue,0) dailyRevenue,
+				IFNULL(t1.dailyRevenueNew,0) dailyRevenueNew,
+				IFNULL(t1.dailyRevenueOld,0) dailyRevenueOld,
+				IFNULL(t1.liveUser,0) liveUser,
+				IFNULL(t1.liveUserNew,0) liveUserNew,
+				IFNULL(t1.liveUserOld,0) liveUserOld,
+				IFNULL(t1.retentionDay2,0) retentionDay2,
+				IFNULL(t1.retentionDay3,0) retentionDay3,
+				IFNULL(t1.retentionDay5,0) retentionDay5,
+				IFNULL(t1.retentionDay7,0) retentionDay7,
+				IFNULL(t1.retentionDay15,0) retentionDay15,
+				IFNULL(t1.retentionDay30,0) retentionDay30,
+				IFNULL(t1.payUser,0) payUser,
+				IFNULL(t1.payUserNew,0) payUserNew,
+				IFNULL(t1.payUserOld,0) payUserOld,
+				IFNULL(t1.payRate,0) payRate,
+				IFNULL(t1.payRateNew,0) payRateNew,
+				IFNULL(t1.payRateOld,0) payRateOld,
+				IFNULL(t1.arpu,0) arpu,
+				IFNULL(t1.arppu,0) arppu
+			FROM (
+				SELECT date,sum(totalRegistered) totalRegistered
+				FROM (
+					SELECT t1.date,t2.platform,max(t2.total_registered) totalRegistered 
+					FROM t_date t1
+					LEFT JOIN t_user_registered t2 ON t2.date &lt; t1.date
+					WHERE 1 = 1
+					<if test="param.platform != null and param.platform.length &gt; 0">
+						AND platform in
+						<trim prefix="(" suffix=")" suffixOverrides=",">
+							<foreach collection="param.platform" item="item">
+								#{item},
+							</foreach>
+						</trim>
+					</if>
+					GROUP BY t1.date,t2.platform
+				) t
+				GROUP BY date
+			) t0
+			LEFT JOIN (
+				select 
+					date,
+					sum(daily_revenue) dailyRevenue,
+					sum(daily_revenue_new) dailyRevenueNew,
+					sum(daily_revenue)-sum(daily_revenue_new) dailyRevenueOld,
+					sum(live_user) liveUser,
+					sum(live_user_new) liveUserNew,
+					sum(live_user)-sum(live_user_new) liveUserOld,
+					sum(retention_day2)/sum(live_user_new) retentionDay2,
+					sum(retention_day3)/sum(live_user_new) retentionDay3,
+					sum(retention_day5)/sum(live_user_new) retentionDay5,
+					sum(retention_day7)/sum(live_user_new) retentionDay7,
+					sum(retention_day15)/sum(live_user_new) retentionDay15,
+					sum(retention_day30)/sum(live_user_new) retentionDay30,
+					sum(pay_user) payUser,
+					sum(pay_user_new) payUserNew,
+					sum(pay_user)-sum(pay_user_new) payUserOld,
+					sum(pay_user)/sum(live_user) payRate,
+					sum(pay_user_new)/sum(live_user_new) payRateNew,
+					(sum(pay_user)-sum(pay_user_new))/(sum(live_user)-sum(live_user_new)) payRateOld,
+					sum(daily_revenue)/sum(live_user) arpu,
+					sum(daily_revenue)/sum(pay_user) arppu
+				from t_basic_info t1
+				where date &gt;= #{param.start} and date &lt; #{param.end}
+				<if test="param.platform != null and param.platform.length &gt; 0">
+					and platform in
+					<trim prefix="(" suffix=")" suffixOverrides=",">
+						<foreach collection="param.platform" item="item">
+							#{item},
+						</foreach>
+					</trim>
+				</if>
+				group by date
+			) t1 ON t1.date = t0.date
+			LEFT JOIN (
+				SELECT date,sum(total_revenue) total_revenue 
+				FROM (
+					SELECT t1.date,t2.server_id,t2.platform,max( t2.total_revenue ) total_revenue 
+					FROM t_date t1
+					LEFT JOIN t_basic_info t2 ON t2.date &lt;= t1.date
+					WHERE 1 = 1
+					<if test="param.platform != null and param.platform.length &gt; 0">
+						and t2.platform in
+						<trim prefix="(" suffix=")" suffixOverrides=",">
+							<foreach collection="param.platform" item="item">
+								#{item},
+							</foreach>
+						</trim>
+					</if>
+					GROUP BY t1.date,t2.server_id,t2.platform
+				) t 
+				GROUP BY date
+			) t2 ON t2.date = t0.date
+		) t
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
+	</select>
+	<select id="getStatisticCountWithUserRegistered" resultType="long">
+		select count(date)
+		from t_date
+		where date &gt;= #{param.start} and date &lt; #{param.end}
+	</select>
+	<select id="getAllPlatform" resultType="string">
+		select distinct platform from t_basic_info
+	</select>
+	<select id="getLastCountDate" resultType="java.util.Date">
+		select max(date) from t_basic_info where server_id = #{serverId}
+	</select>
+	<insert id="batchInsert">
+		insert into ${storedTable} (date, server_id, platform, total_revenue, daily_revenue,
+		daily_revenue_new, live_user, live_user_new, retention_day2, retention_day3, 
+		retention_day5, retention_day7, retention_day15, retention_day30, pay_user, pay_user_new) 
+		values <trim suffixOverrides=",">
+			<foreach collection="records" item="record">
+				(#{record.date,jdbcType=DATE}, #{record.serverId,jdbcType=INTEGER},
+				#{record.platform,jdbcType=VARCHAR}, #{record.totalRevenue,jdbcType=DECIMAL}, #{record.dailyRevenue,jdbcType=DECIMAL},
+				#{record.dailyRevenueNew,jdbcType=DECIMAL}, #{record.liveUser,jdbcType=INTEGER},
+				#{record.liveUserNew,jdbcType=INTEGER},
+				#{record.retentionDay2,jdbcType=INTEGER}, #{record.retentionDay3,jdbcType=INTEGER}, #{record.retentionDay5,jdbcType=INTEGER},
+				#{record.retentionDay7,jdbcType=INTEGER}, #{record.retentionDay15,jdbcType=INTEGER},
+				#{record.retentionDay30,jdbcType=INTEGER},
+				#{record.payUser,jdbcType=INTEGER}, #{record.payUserNew,jdbcType=INTEGER}),
+			</foreach>
+		</trim>
+	</insert>
+<!-- 
+	<update id="createTodayKpiPayTable" statementType="CALLABLE">
+		{call create_temp_kpi_pay_table()}
+	</update>
+	<insert id="batchInsertTemp">
+		insert into t_today_kpi_pay (date, server_id, platform, active_user_number, revenue,
+		pay_user_number, old_player_number,
+		old_pay_revenue, old_pay_number, new_player_number, new_pay_revenue, new_pay_number) 
+		values <trim suffixOverrides=",">
+			<foreach collection="records" item="record">
+				(#{record.date,jdbcType=DATE}, #{record.serverId,jdbcType=INTEGER},
+				#{record.platform,jdbcType=VARCHAR}, #{record.activeUserNumber,jdbcType=INTEGER}, 
+				#{record.revenue,jdbcType=DECIMAL}, #{record.payUserNumber,jdbcType=INTEGER},
+				#{record.oldPlayerNumber,jdbcType=INTEGER}, #{record.oldPayRevenue,jdbcType=DECIMAL},
+				#{record.oldPayNumber,jdbcType=INTEGER}, #{record.newPlayerNumber,jdbcType=INTEGER},
+				#{record.newPayRevenue,jdbcType=DECIMAL}, #{record.newPayNumber,jdbcType=INTEGER}),
+			</foreach>
+		</trim>
+	</insert>
+	<select id="getMixinStatistic" resultType="com.syhd.ahriman.dto.KpiPayVO">
+		select
+			date,
+			IFNULL(sum(active_user_number),0) activeUserNumber,
+			IFNULL(sum(revenue),0) revenue,
+			IFNULL(sum(pay_user_number),0) payUserNumber,
+			IFNULL(sum(revenue)/sum(pay_user_number),0) payArppu,
+			IFNULL(sum(pay_user_number)/sum(active_user_number),0) payRate,
+			IFNULL(sum(revenue)/sum(active_user_number),0) activeArpu,
+			IFNULL(sum(old_player_number),0) oldPlayerNumber,
+			IFNULL(sum(old_pay_revenue),0) oldPayRevenue,
+			IFNULL(sum(old_pay_number),0) oldPayNumber,
+			IFNULL(sum(old_pay_revenue)/sum(old_pay_number),0) payArppuOld,
+			IFNULL(sum(old_pay_number)/sum(old_player_number),0) payRateOld,
+			IFNULL(sum(old_pay_revenue)/sum(old_player_number),0) activeArpuOld,
+			IFNULL(sum(new_player_number),0) newPlayerNumber,
+			IFNULL(sum(new_pay_revenue),0) newPayRevenue,
+			IFNULL(sum(new_pay_number),0) newPayNumber,
+			IFNULL(sum(new_pay_revenue)/sum(new_pay_number),0) payArppuNew,
+			IFNULL(sum(new_pay_number)/sum(new_player_number),0) payRateNew,
+			IFNULL(sum(new_pay_revenue)/sum(new_player_number),0) activeArpuNew
+		from (
+			select 
+				date, active_user_number, revenue,
+				pay_user_number, old_player_number,
+				old_pay_revenue, old_pay_number, new_player_number, new_pay_revenue, new_pay_number
+			from t_kpi_pay
+			where date &gt;= #{param.start}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			union all
+			select 
+				date, active_user_number, revenue,
+				pay_user_number, old_player_number,
+				old_pay_revenue, old_pay_number, new_player_number, new_pay_revenue, new_pay_number
+			from t_today_kpi_pay
+			where date &gt;= #{param.start}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+		)t
+		group by date
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
+	</select>
+	<select id="getMixinStatisticCount" resultType="long">
+		select IFNUll(count(date),0) from (
+			select distinct date
+			from t_kpi_pay
+			where date &gt;= #{param.start}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			union all
+			select distinct date
+			from t_today_kpi_pay
+			where date &gt;= #{param.start}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+		)t
+	</select> -->
+</mapper>

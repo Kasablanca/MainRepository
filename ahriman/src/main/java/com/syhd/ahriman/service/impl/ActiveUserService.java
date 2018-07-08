@@ -162,7 +162,7 @@ public class ActiveUserService {
 				dailyActiveUserMapper.batchInsert(recordList,storedTable);
 			}
 		} catch (Exception e) {
-			logger.error("活跃用户数据查询失败", e.getCause());
+			logger.error("活跃用户数据查询失败", e);
 			throw new RuntimeException("活跃用户数据查询失败"); // 需要回滚事务
 		}
 	}

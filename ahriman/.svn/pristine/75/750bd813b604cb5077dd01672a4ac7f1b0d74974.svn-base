@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.syhd.ahriman.dao.mapper.NewValidUserMapper">
+	<resultMap id="BaseResultMap"
+		type="com.syhd.ahriman.dao.model.NewValidUser">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="date" jdbcType="DATE" property="date" />
+		<result column="server_id" jdbcType="INTEGER"
+			property="serverId" />
+		<result column="platform" jdbcType="VARCHAR"
+			property="platform" />
+		<result column="new_user_count" jdbcType="INTEGER"
+			property="newUserCount" />
+		<result column="disposable_count" jdbcType="INTEGER"
+			property="disposableCount" />
+		<result column="commonly_count" jdbcType="INTEGER"
+			property="commonlyCount" />
+		<result column="loyalty_count" jdbcType="INTEGER"
+			property="loyaltyCount" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, date, server_id, platform, new_user_count, disposable_count,
+		commonly_count,
+		loyalty_count
+	</sql>
+	<select id="selectByPrimaryKey"
+		parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_new_valid_user
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey"
+		parameterType="java.lang.Integer">
+		delete from t_new_valid_user
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert"
+		parameterType="com.syhd.ahriman.dao.model.NewValidUser">
+		insert into t_new_valid_user (id, date, server_id,
+		platform, new_user_count, disposable_count,
+		commonly_count, loyalty_count)
+		values (#{id,jdbcType=INTEGER}, #{date,jdbcType=DATE},
+		#{serverId,jdbcType=INTEGER},
+		#{platform,jdbcType=VARCHAR}, #{newUserCount,jdbcType=INTEGER},
+		#{disposableCount,jdbcType=INTEGER},
+		#{commonlyCount,jdbcType=INTEGER}, #{loyaltyCount,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.syhd.ahriman.dao.model.NewValidUser">
+		insert into t_new_valid_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+			<if test="serverId != null">
+				server_id,
+			</if>
+			<if test="platform != null">
+				platform,
+			</if>
+			<if test="newUserCount != null">
+				new_user_count,
+			</if>
+			<if test="disposableCount != null">
+				disposable_count,
+			</if>
+			<if test="commonlyCount != null">
+				commonly_count,
+			</if>
+			<if test="loyaltyCount != null">
+				loyalty_count,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=DATE},
+			</if>
+			<if test="serverId != null">
+				#{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="platform != null">
+				#{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="newUserCount != null">
+				#{newUserCount,jdbcType=INTEGER},
+			</if>
+			<if test="disposableCount != null">
+				#{disposableCount,jdbcType=INTEGER},
+			</if>
+			<if test="commonlyCount != null">
+				#{commonlyCount,jdbcType=INTEGER},
+			</if>
+			<if test="loyaltyCount != null">
+				#{loyaltyCount,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.syhd.ahriman.dao.model.NewValidUser">
+		update t_new_valid_user
+		<set>
+			<if test="date != null">
+				date = #{date,jdbcType=DATE},
+			</if>
+			<if test="serverId != null">
+				server_id = #{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="platform != null">
+				platform = #{platform,jdbcType=VARCHAR},
+			</if>
+			<if test="newUserCount != null">
+				new_user_count = #{newUserCount,jdbcType=INTEGER},
+			</if>
+			<if test="disposableCount != null">
+				disposable_count = #{disposableCount,jdbcType=INTEGER},
+			</if>
+			<if test="commonlyCount != null">
+				commonly_count = #{commonlyCount,jdbcType=INTEGER},
+			</if>
+			<if test="loyaltyCount != null">
+				loyalty_count = #{loyaltyCount,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.syhd.ahriman.dao.model.NewValidUser">
+		update t_new_valid_user
+		set date = #{date,jdbcType=DATE},
+		server_id = #{serverId,jdbcType=INTEGER},
+		platform = #{platform,jdbcType=VARCHAR},
+		new_user_count = #{newUserCount,jdbcType=INTEGER},
+		disposable_count = #{disposableCount,jdbcType=INTEGER},
+		commonly_count = #{commonlyCount,jdbcType=INTEGER},
+		loyalty_count = #{loyaltyCount,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="getStatistic" resultType="com.syhd.ahriman.dto.NewValidUserVO">
+		select 
+			date,
+			IFNULL(sum(new_user_count),0) newUserCount,
+			IFNULL(sum(disposable_count),0) disposableCount,
+			IFNULL(sum(commonly_count),0) commonlyCount,
+			IFNULL(sum(loyalty_count),0) loyaltyCount,
+			IFNULL(sum(disposable_count)/sum(new_user_count),0) disposableRate,
+			IFNULL(sum(commonly_count)/sum(new_user_count),0) commonlyRate,
+			IFNULL(sum(loyalty_count)/sum(new_user_count),0) loyaltyRate
+		from t_new_valid_user
+		where date &gt;= #{param.start} and date &lt; #{param.end}
+		<if test="param.platform != null and param.platform.length &gt; 0">
+			and platform in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.platform" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		<if test="param.serverId != null and param.serverId.length &gt; 0">
+			and server_id in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.serverId" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		group by date
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
+	</select>
+	<select id="getStatisticCount" resultType="long">
+		select count(distinct date)
+		from t_new_valid_user
+		where date &gt;= #{param.start} and date &lt; #{param.end}
+		<if test="param.platform != null and param.platform.length &gt; 0">
+			and platform in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.platform" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+		<if test="param.serverId != null and param.serverId.length &gt; 0">
+			and server_id in
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<foreach collection="param.serverId" item="item">
+					#{item},
+				</foreach>
+			</trim>
+		</if>
+	</select>
+	<select id="getAllPlatform" resultType="string">
+		select distinct platform from t_new_valid_user
+	</select>
+	<select id="getLastCountDate" resultType="java.util.Date" >
+		select max(date) from t_new_valid_user
+		<if test="serverId != null">
+			where server_id = #{serverId}
+		</if>
+	</select>
+	<insert id="batchInsert">
+		insert into ${storedTable} (date, server_id,
+		platform, new_user_count, disposable_count,
+		commonly_count, loyalty_count) 
+		values <trim suffixOverrides=",">
+			<foreach collection="records" item="record">
+				(#{record.date,jdbcType=DATE},
+				#{record.serverId,jdbcType=INTEGER},
+				#{record.platform,jdbcType=VARCHAR}, #{record.newUserCount,jdbcType=INTEGER},
+				#{record.disposableCount,jdbcType=INTEGER},
+				#{record.commonlyCount,jdbcType=INTEGER}, #{record.loyaltyCount,jdbcType=INTEGER}),
+			</foreach>
+		</trim>
+	</insert>
+	<update id="createTempTable" statementType="CALLABLE">
+		{call create_temp_new_valid_user_table()}
+	</update>
+	<select id="getMixinStatistic" resultType="com.syhd.ahriman.dto.NewValidUserVO">
+		select 
+			date,
+			IFNULL(sum(new_user_count),0) newUserCount,
+			IFNULL(sum(disposable_count),0) disposableCount,
+			IFNULL(sum(commonly_count),0) commonlyCount,
+			IFNULL(sum(loyalty_count),0) loyaltyCount,
+			IFNULL(sum(disposable_count)/sum(new_user_count),0) disposableRate,
+			IFNULL(sum(commonly_count)/sum(new_user_count),0) commonlyRate,
+			IFNULL(sum(loyalty_count)/sum(new_user_count),0) loyaltyRate
+		from (
+			select * from t_new_valid_user
+			where date &gt;= #{param.start} and date &lt; #{param.end}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			union all
+			select * from t_today_new_valid_user
+			where date &gt;= #{param.start}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+		) t
+		group by date
+		order by ${pageAndSort.field} ${pageAndSort.sord}
+		limit ${(pageAndSort.page-1)*pageAndSort.limit},${pageAndSort.limit}
+	</select>
+	<select id="getMixinStatisticCount" resultType="long">
+		select count(date) from (
+			select distinct date
+			from t_new_valid_user
+			where date &gt;= #{param.start} and date &lt; #{param.end}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			union all
+			select distinct date
+			from t_today_new_valid_user
+			where date &gt;= #{param.start}
+			<if test="param.platform != null and param.platform.length &gt; 0">
+				and platform in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.platform" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+			<if test="param.serverId != null and param.serverId.length &gt; 0">
+				and server_id in
+				<trim prefix="(" suffix=")" suffixOverrides=",">
+					<foreach collection="param.serverId" item="item">
+						#{item},
+					</foreach>
+				</trim>
+			</if>
+		)t
+	</select>
+	<update id="updateByUniqueKeySelective"
+		parameterType="com.syhd.ahriman.dao.model.NewValidUser">
+		update t_new_valid_user
+		<set>
+			<if test="disposableCount != null">
+				disposable_count = #{disposableCount,jdbcType=INTEGER},
+			</if>
+			<if test="commonlyCount != null">
+				commonly_count = #{commonlyCount,jdbcType=INTEGER},
+			</if>
+			<if test="loyaltyCount != null">
+				loyalty_count = #{loyaltyCount,jdbcType=INTEGER},
+			</if>
+		</set>
+		where server_id = #{serverId} and platform = #{platform} and date = #{date,jdbcType=DATE}
+	</update>
+</mapper>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::common_header(~{::title},~{::link})">
+	<title>用户价值(LTV)</title>
+	<link rel="stylesheet" href="/css/chosen.css" th:href="@{/css/chosen.css}">
+	<link rel="stylesheet" href="/css/style.css" th:href="@{/css/style.css}">
+  	<link rel="stylesheet" href="/css/prism.css" th:href="@{/css/prism.css}">
+</head>
+<body>
+	<div class="x-nav">
+		<span class="layui-breadcrumb">
+			<a href="javascript:;"><cite>首页</cite></a>
+			<a href="javascript:;"><cite>重要监控数据</cite></a>
+			<a href="javascript:;"><cite>用户价值(LTV)</cite></a>
+		</span>
+	</div>
+	<div class="x-body">
+		<div class="layui-card">
+			<div class="layui-card-header">查询条件</div>
+			<div class="layui-card-body">
+				<form id="searchForm" class="layui-container x-so">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">开始日</label>
+							<div class="layui-input-inline" style="width: 100px;">
+								<input name="start" autocomplete="off" id="start"
+									class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">截止日</label>
+							<div class="layui-input-inline" style="width: 100px;">
+								<input name="end" autocomplete="off" id="end"
+									class="layui-input">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">渠道</label>
+							<div class="layui-input-inline">
+								<select id="platform" name="platform" multiple class="chosen-select">
+									<option value="-1" selected>全部渠道</option>
+									<option th:each="item : ${platform}" th:value="${item}" th:text="${item}"></option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">服务器</label>
+							<div class="layui-input-inline">
+								<select id="serverId" name="serverId" multiple class="chosen-select">
+									<option value="-1" selected>全部服务器</option>
+									<option th:each="server : ${serverList}" th:value="${server.serverid}" th:text="${server.servername}"></option>
+								</select>
+							</div>
+						</div>
+						<a class="layui-btn layui-btn-small" style="margin-left: 5px;float: right;" href="javascript:location.replace(location.href);" title="刷新">
+							<i class="layui-icon" >&#xe666;</i></a>
+						<button class="layui-btn" type="button" lay-submit lay-filter="export" style="float: right;margin-left: 5px;"><i class="layui-icon">&#xe601;</i></button>
+						<button id="searchBtn" class="layui-btn" type="button" lay-submit lay-filter="search" style="float: right;"><i class="layui-icon">&#xe615;</i></button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-header">数据说明</div>
+			<div class="layui-card-body">
+				生命周期价值：用户在生命周期内为该游戏创造的收入总计<br>
+				X日LTV：某时间段导入的用户在未来不同时间段创造的收入/导入用户数量<br>
+				例如：1月1日的5日LTV=“1月1日导入用户‘在’1月1日-1月5日‘收入的总和/1月1日导入用户的数量
+			</div>
+		</div>
+		<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+		<div class="layui-card" style="background-color: rgba(0,0,0,0);">
+			<div id="main" class="layui-col-lg12"  lay-filter="main"></div><!-- style="height: 400px;width: 100%;" -->
+		</div>
+	</div>
+
+	<th:block th:replace="base:: common_javascript(~{::script})">
+		<script src="/js/echarts.js" th:src="@{/js/echarts.js}"></script>
+		<script src="/js/chosen.jquery.js" th:src="@{/js/chosen.jquery.js}"></script>
+		<script src="./index.js" th:src="@{/importantMonitor/kpiuserltv/index.js}"></script>
+		<script src="/js/prism.js" th:src="@{/js/prism.js}"></script>
+  		<script src="/js/init.js" th:src="@{/js/init.js}"></script>
+	</th:block>
+</body>
+</html>
