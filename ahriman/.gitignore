@@ -1,9 +1,0 @@
-.settings
-/target/
-/build/
-.classpath
-.project
-.factorypath
-system.*
-workspace*/
-src/main/resources/application-remote.properties

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration>
-<configuration>
+<configuration debug="true">
 	
 	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
 	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
@@ -16,13 +16,6 @@
 	<logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>
 	<logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>
 
-	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<append>false</append>
-		<encoder>
-			<pattern>${FILE_LOG_PATTERN}</pattern>
-		</encoder>
-		<file>d://Log/demo-springboot.log</file>
-	</appender>
 <!-- 	
 	<appender name="ACCESS_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<encoder>
@@ -41,45 +34,84 @@
 			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
 		</encoder>
 	</appender>
-
-	<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
-		<connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
-			<dataSource class="com.zaxxer.hikari.HikariDataSource">
-				<!-- Joran cannot substitute variables that are not attribute values. 
-					Therefore, we cannot declare the next parameter like the others. -->
-				<param name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/spring?characterEncoding=UTF-8" />
-				<param name="username" value="root" />
-				<param name="password" value="9527" />
-				<param name="readOnly" value="false" />
-			</dataSource>
-		</connectionSource>
-	</appender>
 	
 	<springProfile name="test">
-		<!-- configuration to be enabled when the "staging" profile is active -->
+		<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+			<append>false</append>
+			<encoder>
+				<pattern>${FILE_LOG_PATTERN}</pattern>
+			</encoder>
+			<file>d://Log/demo-springboot.log</file>
+		</appender>
+		<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+			<connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
+				<dataSource class="com.zaxxer.hikari.HikariDataSource">
+					<!-- Joran cannot substitute variables that are not attribute values. 
+						Therefore, we cannot declare the next parameter like the others. -->
+					<param name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/spring?characterEncoding=UTF-8" />
+					<param name="username" value="root" />
+					<param name="password" value="9527" />
+					<param name="readOnly" value="false" />
+				</dataSource>
+			</connectionSource>
+		</appender>
 	</springProfile>
 
 	<springProfile name="dev">
-		<!-- configuration to be enabled when the "dev" or "staging" profiles are active -->
+		<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+			<append>false</append>
+			<encoder>
+				<pattern>${FILE_LOG_PATTERN}</pattern>
+			</encoder>
+			<file>d://Log/demo-springboot.log</file>
+		</appender>
+		<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+			<connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
+				<dataSource class="com.zaxxer.hikari.HikariDataSource">
+					<!-- Joran cannot substitute variables that are not attribute values. 
+						Therefore, we cannot declare the next parameter like the others. -->
+					<param name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/spring?characterEncoding=UTF-8" />
+					<param name="username" value="root" />
+					<param name="password" value="9527" />
+					<param name="readOnly" value="false" />
+				</dataSource>
+			</connectionSource>
+		</appender>
+		
 		<root level="INFO">
 			<appender-ref ref="DB" />
 			<appender-ref ref="CONSOLE" />
 			<appender-ref ref="FILE" />
 		</root>
 		<logger name="com.min.someapp.aspect.ControllerLogAspect" level="INFO" additivity="false">
-			<!-- <appender-ref ref="ACCESS_LOG_FILE" /> -->
 			<appender-ref ref="DB" />
 		</logger>
 	</springProfile>
 
 	<springProfile name="prod">
-		<!-- configuration to be enabled when the "production" profile is not active -->
+		<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+			<append>false</append>
+			<encoder>
+				<pattern>${FILE_LOG_PATTERN}</pattern>
+			</encoder>
+			<file>demo-springboot.log</file>
+		</appender>
+		<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+			<connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
+				<dataSource class="com.zaxxer.hikari.HikariDataSource">
+					<param name="jdbcUrl" value="jdbc:mysql://192.168.1.4:3306/spring?characterEncoding=UTF-8" />
+					<param name="driverClassName" value="com.mysql.jdbc.Driver" />
+					<param name="username" value="root" />
+					<param name="password" value="9527" />
+					<param name="readOnly" value="false" />
+				</dataSource>
+			</connectionSource>
+		</appender>
+		
 		<root level="WARN">
 			<appender-ref ref="DB" />
-			<appender-ref ref="FILE" />
 		</root>
 		<logger name="com.min.someapp.aspect.ControllerLogAspect" level="INFO" additivity="false">
-			<!-- <appender-ref ref="ACCESS_LOG_FILE" /> -->
 			<appender-ref ref="DB" />
 		</logger>
 	</springProfile>
