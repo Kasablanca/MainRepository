@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base::common_header(~{::title},~{::link})">
+	<title>权限管理</title>
+	<link rel="stylesheet" href="/css/chosen.css" th:href="@{/css/chosen.css}">
+	<link rel="stylesheet" href="/css/style.css" th:href="@{/css/style.css}">
+  	<link rel="stylesheet" href="/css/prism.css" th:href="@{/css/prism.css}">
+  	<link rel="stylesheet" type="text/css" th:href="@{/depend/ztree/css/zTreeStyle/zTreeStyle.css}">
+  	<link rel="stylesheet" type="text/css" th:href="@{/system/authority/index.css}">
+</head>
+<body>
+	<div class="x-nav">
+		<span class="layui-breadcrumb">
+			<a href="javascript:;"><cite>系统管理</cite></a>
+			<a href="javascript:;"><cite>权限管理</cite></a>
+		</span>
+		<a class="layui-btn layui-btn-small" style="line-height: 1.6em; margin-top: 3px; float: right" href="javascript:location.replace(location.href);" title="刷新">
+			<i class="layui-icon" style="line-height: 30px">&#xe666;</i></a>
+	</div>
+	<div class="x-body">
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<button id="insertBtn" class="layui-btn" style="margin-left: 5px;"><i class="layui-icon"></i>新增</button>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<form id="searchForm" class="layui-form"><!-- class="layui-form layui-col-md12 x-so" -->
+					<div class="layui-input-inline">
+						<input class="layui-input" id="aname" type="text" name="aname" placeholder="请输入权限名" autocomplete="off">
+					</div>
+					<button type="button" id="searchBtn" class="layui-btn x-right"><i class="layui-icon">&#xe615;</i></button>
+				</form>
+			</div>
+		</div>
+		<div class="layui-card">
+			<div class="layui-card-body">
+				<ul id="main" class="ztree"></ul>
+			</div>
+		</div>
+	</div>
+	<div id="contextMenu">
+		<ul>
+			<li id="addNode">增加权限</li>
+			<li id="editNode">编辑权限</li>
+			<li id="deleteNode">删除权限</li>
+		</ul>
+	</div>
+	<th:block th:replace="base:: common_javascript(~{::script})">
+		<script src="/depend/ztree/js/jquery.ztree.all.js" th:src="@{/depend/ztree/js/jquery.ztree.all.js}"></script>
+		<script src="./index.js" th:src="@{/system/authority/index.js}"></script>
+	</th:block>
+</body>
+</html>

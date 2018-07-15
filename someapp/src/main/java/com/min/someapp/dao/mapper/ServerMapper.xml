@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.someapp.dao.mapper.ServerMapper">
+	<resultMap id="BaseResultMap" type="com.min.someapp.dao.model.Server">
+		<id column="server_id" jdbcType="INTEGER" property="serverId" />
+		<result column="server_name" jdbcType="VARCHAR" property="serverName" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		server_id, server_name, url
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from t_server
+		where server_id = #{serverId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_server
+		where server_id = #{serverId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.min.someapp.dao.model.Server">
+		insert into t_server (server_id, server_name, url
+		)
+		values (#{serverId,jdbcType=INTEGER}, #{serverName,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.min.someapp.dao.model.Server">
+		insert into t_server
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="serverId != null">
+				server_id,
+			</if>
+			<if test="serverName != null">
+				server_name,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="serverId != null">
+				#{serverId,jdbcType=INTEGER},
+			</if>
+			<if test="serverName != null">
+				#{serverName,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.min.someapp.dao.model.Server">
+		update t_server
+		<set>
+			<if test="serverName != null">
+				server_name = #{serverName,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where server_id = #{serverId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.min.someapp.dao.model.Server">
+		update t_server
+		set server_name = #{serverName,jdbcType=VARCHAR},
+		url = #{url,jdbcType=VARCHAR}
+		where server_id = #{serverId,jdbcType=INTEGER}
+	</update>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select * from t_server
+	</select>
+</mapper>
