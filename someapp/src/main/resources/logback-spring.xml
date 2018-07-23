@@ -99,7 +99,7 @@
 		<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
 			<connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
 				<dataSource class="com.zaxxer.hikari.HikariDataSource">
-					<param name="jdbcUrl" value="jdbc:mysql://192.168.1.9:3306/spring?characterEncoding=UTF-8" />
+					<param name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/spring?characterEncoding=UTF-8" />
 					<param name="driverClassName" value="com.mysql.jdbc.Driver" />
 					<param name="username" value="root" />
 					<param name="password" value="9527" />
