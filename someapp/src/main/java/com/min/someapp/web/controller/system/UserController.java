@@ -38,7 +38,7 @@ public class UserController {
 	
 	@RequestMapping("list")
 	public TableData list(User filter,PageAndSort pageAndSort) {
-		return userService.getUserList(filter, pageAndSort);
+		return userService.getList(filter, pageAndSort);
 	}
 	
 	@RequestMapping("insertPage")

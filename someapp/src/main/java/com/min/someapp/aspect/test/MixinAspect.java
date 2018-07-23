@@ -7,10 +7,11 @@ import org.aspectj.lang.annotation.DeclareParents;
 @Aspect
 //@Component
 public class MixinAspect {
-	@DeclareParents(value="cn.lm.service.impl..*", defaultImpl=DefaultUsageTracked.class)
+	
+	@DeclareParents(value="com.min.someapp.service..Test*", defaultImpl=DefaultUsageTracked.class)
 	public static UsageTracked mixin;
 
-	@Before("execution(* cn.lm.service.impl.*Impl.*(..)) && this(usageTracked)")
+	@Before("execution(* com.min.someapp.service..*.*(..)) && this(usageTracked)")
 	public void recordUsage(UsageTracked usageTracked) {
 		usageTracked.incrementUseCount();
 	}

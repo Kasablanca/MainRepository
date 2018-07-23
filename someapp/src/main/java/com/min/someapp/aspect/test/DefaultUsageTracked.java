@@ -6,7 +6,7 @@ public class DefaultUsageTracked implements UsageTracked {
 	@Override
 	public void incrementUseCount() {
 		setUserCount(getUserCount() + 1);
-		System.out.println(userCount);
+		//System.out.println(userCount);
 	}
 
 	public long getUserCount() {

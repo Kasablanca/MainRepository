@@ -88,7 +88,7 @@ public class UserService {
 	}
 	
 	@Cacheable
-	public TableData getUserList(User filter,PageAndSort pageAndSort) {
+	public TableData getList(User filter,PageAndSort pageAndSort) {
 		List<User> userList = userMapper.getUserList(filter,pageAndSort);
 		long count = userMapper.getUserListCount(filter,pageAndSort);
 		

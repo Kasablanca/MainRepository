@@ -116,7 +116,7 @@ public class TestAspect {
 		// ... use jp
 	}*/
 
-	@Around("execution(List<Account> find*(..)) && " +
+	@Around("execution(com.min.someapp.dto.TableData get*(..)) && " +
 			"com.min.someapp.aspect.test.SystemArchitecture.inDataAccessLayer() && " +
 			"args(accountHolderNamePattern)")
 	public Object preProcessQueryPattern(ProceedingJoinPoint pjp,
@@ -126,7 +126,7 @@ public class TestAspect {
 		return pjp.proceed(new Object[] {newPattern});
 	}
 
-	@DeclareParents(value="com.xzy.myapp.service.*+", defaultImpl=DefaultUsageTracked.class)
+	@DeclareParents(value="com.min.someapp.service.*+", defaultImpl=DefaultUsageTracked.class)
 	public static UsageTracked mixin;
 
 	@Before("com.min.someapp.aspect.test.SystemArchitecture.businessService() && this(usageTracked)")
