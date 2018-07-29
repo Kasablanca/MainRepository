@@ -8,9 +8,9 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.min.someapp.web.DeleteGroup;
-import com.min.someapp.web.InsertGroup;
-import com.min.someapp.web.UpdateGroup;
+import com.min.someapp.web.validation.DeleteGroup;
+import com.min.someapp.web.validation.InsertGroup;
+import com.min.someapp.web.validation.UpdateGroup;
 
 public class Authority implements Serializable {
 

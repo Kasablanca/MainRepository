@@ -15,9 +15,9 @@ import com.min.someapp.dto.Result;
 import com.min.someapp.service.system.AuthorityService;
 import com.min.someapp.utils.HttpUtils;
 import com.min.someapp.utils.ValidationUtils;
-import com.min.someapp.web.DeleteGroup;
-import com.min.someapp.web.InsertGroup;
-import com.min.someapp.web.UpdateGroup;
+import com.min.someapp.web.validation.DeleteGroup;
+import com.min.someapp.web.validation.InsertGroup;
+import com.min.someapp.web.validation.UpdateGroup;
 
 @RestController
 @RequestMapping("authority")
@@ -49,7 +49,7 @@ public class AuthorityController {
 		Integer optAccId = HttpUtils.getUserIdInSession(httpSession);
 		target.setAddAccId(optAccId);
 		target.setUpdAccId(optAccId);
-		return ValidationUtils.determineResult(error, authorityService.insert(target));
+		return ValidationUtils.decideResult(error, authorityService.insert(target));
 	}
 	
 	@RequestMapping("updatePage")
@@ -61,7 +61,7 @@ public class AuthorityController {
 	public Result update(@Validated(UpdateGroup.class) Authority target,BindingResult error) {
 		Integer optAccId = HttpUtils.getUserIdInSession(httpSession);
 		target.setUpdAccId(optAccId);
-		return ValidationUtils.determineResult(error, authorityService.update(target));
+		return ValidationUtils.decideResult(error, authorityService.update(target));
 	}
 	
 	@RequestMapping("delete")

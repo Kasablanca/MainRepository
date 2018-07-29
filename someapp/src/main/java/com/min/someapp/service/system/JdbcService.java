@@ -15,6 +15,7 @@ import com.min.someapp.dao.ConnectionManager;
 import com.min.someapp.dao.mapper.ServerMapper;
 import com.min.someapp.dao.model.LoginLog;
 import com.min.someapp.dao.model.Server;
+import com.min.someapp.dto.Result;
 
 @Service
 public class JdbcService {
@@ -25,7 +26,7 @@ public class JdbcService {
 	@Autowired
 	private ServerMapper serverMapper;
 	
-	public List<LoginLog> getLoginLog() throws SQLException{
+	public Result getLoginLog() throws SQLException{
 		List<Server> serverList = serverMapper.selectAll();
 		List<LoginLog> list = new ArrayList<>();
 		
@@ -47,10 +48,13 @@ public class JdbcService {
 			}
 		}
 		
-		return list;
+		Result result = Result.getSuccessResult();
+		result.setData(list);
+		
+		return result;
 	}
 	
-	public long getLoginLogCount() throws SQLException {
+	public Result getLoginLogCount() throws SQLException {
 		List<Server> serverList = serverMapper.selectAll();
 		long count = 0;
 		
@@ -62,7 +66,10 @@ public class JdbcService {
 				count += resultSet.getLong(1);
 			}
 		}
-		return count;
+		
+		Result result = Result.getSuccessResult();
+		result.setData(count);
+		return result;
 	}
 	
 }

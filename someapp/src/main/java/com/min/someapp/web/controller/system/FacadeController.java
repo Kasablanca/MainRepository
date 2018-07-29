@@ -1,17 +1,20 @@
 package com.min.someapp.web.controller.system;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.min.someapp.dao.model.User;
 import com.min.someapp.service.system.UserService;
 import com.min.someapp.web.security.AuthorityInterceptor;
 
-@Controller
+@RestController
 public class FacadeController {
 	
 	@Autowired
@@ -32,13 +35,24 @@ public class FacadeController {
 	}
 	
 	@RequestMapping("dashboard")
-	public String dashboard() {
-		return "dashboard";
+	public ModelAndView dashboard() {
+		return new ModelAndView("dashboard");
 	}
 	
 	@RequestMapping("errorPage")
-	public String errorPage() {
-		return "errorPage";
+	public ModelAndView errorPage() {
+		return new ModelAndView("errorPage");
 	}
+	
+	@RequestMapping("messages")
+	public String map(HttpServletRequest request, String key) {
+		return ctx.getMessage(key, null, localeResolver.resolveLocale(request));
+	}
+	
+	@Autowired
+	private ApplicationContext ctx;
+	
+	@Autowired
+	private LocaleResolver localeResolver;
 	
 }

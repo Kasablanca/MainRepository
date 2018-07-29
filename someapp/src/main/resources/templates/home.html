@@ -13,6 +13,19 @@
 		</div>
 		<ul class="layui-nav right">
 			<li class="layui-nav-item">
+				<a href="javascript:;"><i class="iconfont">&#xe7ae;</i></a>
+				<dl class="layui-nav-child">
+					<dd>
+						<a href="javascript:;" th:href="|@{/home}?siteLanguage=zh_CN|">中文</a>
+					</dd>
+					<dd>
+						<a href="javascript:;" th:href="|@{/home}?siteLanguage=en_US|">English</a>
+					</dd>
+				</dl>
+			</li>
+		</ul>
+		<ul class="layui-nav right">
+			<li class="layui-nav-item">
 				<a href="javascript:;"><img src="http://t.cn/RCzsdCq" class="layui-nav-img">用户</a>
 				<dl class="layui-nav-child">
 					<dd>
@@ -21,7 +34,8 @@
 					<dd>
 						<a href="/logout" th:href="@{/logout}">退出登录</a>
 					</dd>
-				</dl></li>
+				</dl>
+			</li>
 		</ul>
 	</div>
 	<div class="left-nav">

@@ -1,15 +1,30 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="base::common_header(~{::title},~{})">
-	<title>请登录</title>
+	<title th:text="#{loginPage.title}"></title>
 </head>
 <body class="login-bg">
+	<div class="container">
+		<ul class="layui-nav right">
+			<li class="layui-nav-item">
+				<a href="javascript:;"><i class="iconfont">&#xe7ae;</i></a>
+				<dl class="layui-nav-child">
+					<dd>
+						<a href="javascript:;" th:href="|@{/login}?siteLanguage=zh_CN|">中文</a>
+					</dd>
+					<dd>
+						<a href="javascript:;" th:href="|@{/login}?siteLanguage=en_US|">English</a>
+					</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
     <div class="login layui-anim layui-anim-up">
-        <div class="message">恶灵退散-后台管理登录</div>
+        <div class="message" th:text="#{loginPage.head}"></div>
         <div id="darkbannerwrap"></div>
         <div th:if="${error} != null and ${error} == true">
         	<div style="color: red;">
-        		登录失败，请重试.
+        		[[#{loginPage.loginFailed}]]
         		<th:block th:if="${SPRING_SECURITY_LAST_EXCEPTION != null}" 
         			th:text="${SPRING_SECURITY_LAST_EXCEPTION.message}">
         		</th:block>
@@ -21,11 +36,11 @@
             </div>
         </div>
         <form id="mainForm" method="post" class="layui-form" action="/login" th:action="@{/login}" >
-            <input id="accName" name="accName" placeholder="账号" type="text" lay-verify="required" class="layui-input" value="trump" >
+            <input id="accName" name="accName" placeholder="账号" th:attr="placeholder=#{loginPage.account}" type="text" lay-verify="required" class="layui-input" value="trump" >
             <hr class="hr15">
-            <input id="password" name="password" placeholder="密码" type="password" lay-verify="required" class="layui-input" value="12345">
+            <input id="password" name="password" placeholder="密码" th:attr="placeholder=#{loginPage.password}" type="password" lay-verify="required" class="layui-input" value="12345">
             <hr class="hr15">
-            <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+            <input value="" th:value="#{loginPage.login}" lay-submit lay-filter="login" style="width:100%;" type="submit">
             <hr class="hr20" >
         </form>
     </div>

@@ -7,9 +7,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.springframework.boot.web.servlet.ServletContextInitializer;
+import org.springframework.stereotype.Component;
 import org.springframework.web.WebApplicationInitializer;
 
-//@Component
+@Component
 public class DefaultWebApplicationInitializer implements WebApplicationInitializer, 
 		ServletContainerInitializer, ServletContextInitializer {
 

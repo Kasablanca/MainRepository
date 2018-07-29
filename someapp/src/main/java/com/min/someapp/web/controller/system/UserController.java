@@ -51,7 +51,7 @@ public class UserController {
 		Integer optAccId = HttpUtils.getUserIdInSession(httpSession);
 		target.setAddAccId(optAccId);
 		target.setUpdAccId(optAccId);
-		return ValidationUtils.determineResult(error, userService.insert(target,authorityGroupIds));
+		return ValidationUtils.decideResult(error, userService.insert(target,authorityGroupIds));
 	}
 	
 	@RequestMapping("updatePage")
@@ -68,7 +68,7 @@ public class UserController {
 	public Result update(@Validated User target,BindingResult error,String authorityGroupIds) {
 		Integer optAccId = HttpUtils.getUserIdInSession(httpSession);
 		target.setUpdAccId(optAccId);
-		return ValidationUtils.determineResult(error, userService.update(target,authorityGroupIds));
+		return ValidationUtils.decideResult(error, userService.update(target,authorityGroupIds));
 	}
 	
 	@RequestMapping("delete")

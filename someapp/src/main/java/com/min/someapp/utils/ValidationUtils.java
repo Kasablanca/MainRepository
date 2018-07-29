@@ -28,7 +28,7 @@ public class ValidationUtils {
 	 * @param result service返回结果
 	 * @return 需要的结果
 	 */
-	public static Result determineResult(BindingResult error,Result result) {
+	public static Result decideResult(BindingResult error,Result result) {
 		if(error.hasErrors()) {
 			Result rst = Result.getErrorResult();
 			rst.setMessage(error.getAllErrors().get(0).getDefaultMessage());

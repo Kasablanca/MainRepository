@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration>
-<configuration debug="true">
+<configuration><!-- debug="true" -->
 	
 	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
 	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
@@ -58,13 +58,14 @@
 	</springProfile>
 
 	<springProfile name="dev">
+<!-- 		
 		<appender name="FILE" class="ch.qos.logback.core.FileAppender">
 			<append>false</append>
 			<encoder>
 				<pattern>${FILE_LOG_PATTERN}</pattern>
 			</encoder>
 			<file>demo-springboot.log</file>
-		</appender>
+		</appender> -->
 		<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
 			<connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
 				<dataSource class="com.zaxxer.hikari.HikariDataSource">
@@ -81,7 +82,6 @@
 		<root level="INFO">
 			<appender-ref ref="DB" />
 			<appender-ref ref="CONSOLE" />
-			<appender-ref ref="FILE" />
 		</root>
 		<logger name="com.min.someapp.aspect.ControllerLogAspect" level="INFO" additivity="false">
 			<appender-ref ref="DB" />

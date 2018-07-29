@@ -1,4 +1,4 @@
-package com.min.someapp.web;
+package com.min.someapp.web.validation;
 
 /**
  * springMvc 验证组
